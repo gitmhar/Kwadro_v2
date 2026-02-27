@@ -1,31 +1,25 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express, { type Request, type Response } from "express";
 import { createServer } from "http";
-import cors from "cors";
+import app from "./app.js";
 import { initSocket } from "./config/socket.js";
 import { connectDB } from "./config/database.js";
-import reservation from "./routes/reservation.js";
 
-const app = express();
+const PORT = process.env.PORT || 3000;
 const httpServer = createServer(app);
 
-// Middleware
-
-app.use(express.json());
-app.use(cors({ origin: process.env.FRONTEND_URL }));
-
+// Websocket Initialization
 initSocket(httpServer);
-
-// Routes
-
-app.use("/book", reservation);
 
 // Localhost port connection
 
-connectDB().then(() => {
-  httpServer.listen(process.env.PORT, () => {
-    console.log(`Server running, connected to ${process.env.PORT}`);
+connectDB()
+  .then(() => {
+    httpServer.listen(PORT, () => {
+      console.log(`Server running, connected to ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("Failed to connect to DB:", error);
   });
-});

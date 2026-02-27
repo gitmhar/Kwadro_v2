@@ -16,6 +16,7 @@ const ReservationSchema = new Schema<IReservation>(
     email: {
       type: String,
       required: true,
+      match: [/^\S+@\S+\.\S+$/, "Please use a valid email"],
     },
     date: {
       type: Date,

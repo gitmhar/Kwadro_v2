@@ -14,3 +14,13 @@ export interface IReservation extends Document {
   status: "pending" | "confirmed" | "cancelled";
   //   client: Schema.Types.ObjectId;
 }
+
+export interface SanitizedReservationInput {
+  tableNumber: number;
+  name: string;
+  email: string; // MUST be string (not optional)
+  startTime: string;
+  duration: number;
+  contact: string;
+  attendees: number;
+}
