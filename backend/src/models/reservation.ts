@@ -3,11 +3,12 @@ import type { IReservation } from "../types/reservation.js";
 
 const ReservationSchema = new Schema<IReservation>(
   {
-    // tableNumber: {
-    //   type: Number,
-    //   required: true,
-    //   min: 1,
-    // },
+    tableNumber: {
+      type: Number,
+      required: [true, "Please select a table"],
+      min: [1, "Table number must be at least 1"],
+      max: [8, "We only have 8 tables available"],
+    },
     name: {
       type: String,
       required: true,
@@ -21,7 +22,7 @@ const ReservationSchema = new Schema<IReservation>(
       required: true,
     },
     startTime: {
-      type: String,
+      type: Date,
       required: true,
     },
     duration: {
@@ -30,7 +31,7 @@ const ReservationSchema = new Schema<IReservation>(
       min: 0.5,
     },
     endTime: {
-      type: String,
+      type: Date,
       required: true,
     },
     contact: {
@@ -58,6 +59,8 @@ const ReservationSchema = new Schema<IReservation>(
   },
   { timestamps: true },
 );
+
+ReservationSchema.index({ tableNumber: 1, date: 1 });
 
 export const Reservation = model<IReservation>(
   "Reservation",

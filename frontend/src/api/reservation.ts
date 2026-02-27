@@ -1,11 +1,20 @@
 import api from "../api/api";
 
-export const createReservation = async (data: any) => {
-  try {
-    const response = await api.post("/reservation", data);
+export const reservationServices = {
+  getBusySlots: async (tableNumber: number, date: string) => {
+    const response = await api.get(`/book/busy/${tableNumber}`, {
+      params: { date },
+    });
     return response.data;
-  } catch (error) {
-    console.error("Error booking reservation", error);
-    throw error;
-  }
+  },
+
+  getActiveReservations: async () => {
+    const response = await api.get("/book/active");
+    return response.data;
+  },
+
+  createReservation: async (data: any) => {
+    const response = await api.post("/book", data);
+    return response.data;
+  },
 };

@@ -1,19 +1,59 @@
 import { useState } from "react";
-import { createReservation } from "../../api/reservation";
+import { reservationServices } from "../../api/reservation";
 import { useNavigate } from "react-router-dom";
+import { checkOverlap } from "../../utils/booking/checkOverlap";
+import type { CheckOverlap } from "../../types/booking";
+import {
+  isTooEarly,
+  isTooLate,
+  pastTheTime,
+} from "../../utils/booking/timeUtils";
+import { getAvailableDurations } from "../../utils/booking/availableDurations";
+import { combineDateAndTime } from "../../utils/booking/dateUtils";
 
-export default function BookingForm({ selectedDate }: { selectedDate: Date }) {
-  const [startTime, setStartTime] = useState("10:00");
+export default function BookingForm({
+  selectedDate,
+  tableNumber,
+  getOperatingHours,
+  busySlots,
+}: {
+  selectedDate: Date;
+  tableNumber: number | null;
+  getOperatingHours: (date: Date) => { open: number; close: number };
+  busySlots: CheckOverlap[];
+}) {
+  const { open, close } = getOperatingHours(selectedDate);
+  const [startTime, setStartTime] = useState(
+    `${String(open).padStart(2, "0")}:00`,
+  );
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     contact: "",
-    startTime: "",
     duration: "1",
     attendees: "1",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const durationHours = Number(formData.duration);
+  const hasConflict = checkOverlap(
+    startTime,
+    durationHours,
+    selectedDate,
+    busySlots,
+  );
+
+  const isPastTime = pastTheTime(startTime, selectedDate);
+  const tooEarly = isTooEarly(startTime, selectedDate);
+  const tooLate = isTooLate(startTime, durationHours, selectedDate);
+
+  const isBlocked = tooEarly || tooLate || isPastTime || hasConflict;
+
+  const minTime = `${String(open).padStart(2, "0")}:00`;
+  const maxTime = `${String(close - 1).padStart(2, "0")}:59`;
 
   const navigate = useNavigate();
+
+  const durations = getAvailableDurations(startTime, selectedDate, busySlots);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -29,22 +69,28 @@ export default function BookingForm({ selectedDate }: { selectedDate: Date }) {
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    const [hours, minutes] = startTime.split(":");
-    const finalDateTime = new Date(selectedDate);
-    finalDateTime.setHours(parseInt(hours), parseInt(minutes));
+    if (isLoading || isBlocked) return;
+
+    setIsLoading(true);
+
+    const localDateTime = combineDateAndTime(selectedDate, startTime);
+
+    console.log(localDateTime);
 
     const submissionData = {
       ...formData,
-      startTime: finalDateTime.toISOString(),
-      tableNumber: 1,
+      startTime: localDateTime.toISOString(),
+      tableNumber: tableNumber,
     };
 
     try {
-      await createReservation(submissionData);
+      await reservationServices.createReservation(submissionData);
       console.log("Reservation successful!");
       navigate("/");
     } catch (error) {
       console.error("Unable to make schedule");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,9 +103,11 @@ export default function BookingForm({ selectedDate }: { selectedDate: Date }) {
         <input
           type="time"
           id="startTime"
-          className="form-control"
+          className={`form-control ${isBlocked ? "is-invalid" : ""}`}
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
+          min={minTime}
+          max={maxTime}
         />
         <label htmlFor="duration" className="form-label">
           Duration
@@ -71,11 +119,11 @@ export default function BookingForm({ selectedDate }: { selectedDate: Date }) {
           value={formData.duration}
           onChange={handleChange}
         >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          {durations.map((d) => (
+            <option key={d} value={d}>
+              {d} {d === 1 ? "Hours" : "Hours"}
+            </option>
+          ))}
         </select>
       </div>
       <div className="mb-3 ">
@@ -133,9 +181,34 @@ export default function BookingForm({ selectedDate }: { selectedDate: Date }) {
           onChange={handleChange}
         />
       </div>
-      <div className="d-flex justify-content-end">
-        <button type="submit" className="btn btn-dark">
-          Submit
+      <div className="d-flex flex-column align-items-end">
+        {isBlocked && (
+          <p className="text-danger small fw-bold mb-2">
+            ⚠️
+            {tooLate
+              ? `We close at ${close === 24 ? "12 MN" : close > 12 ? close - 12 + " PM" : close + " AM"}`
+              : tooEarly
+                ? `We open at ${open >= 12 ? (open === 12 ? "12 NN" : open - 12 + " PM") : open + " AM"}`
+                : isPastTime
+                  ? "You cannot book in the past!"
+                  : "Slot Occupied!"}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={isBlocked === true || formData.name === ""}
+          className={`btn ${isBlocked ? "btn-danger" : "btn-dark"}`}
+          style={{ cursor: isBlocked ? "not-allowed" : "pointer" }}
+        >
+          {isLoading && (
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          )}
+          {isLoading ? "Processing..." : isBlocked ? "Slot Occupied" : "Submit"}
         </button>
       </div>
     </form>

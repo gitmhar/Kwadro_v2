@@ -1,26 +1,31 @@
-import express, { type Request, type Response } from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express, { type Request, type Response } from "express";
+import { createServer } from "http";
 import cors from "cors";
+import { initSocket } from "./config/socket.js";
 import { connectDB } from "./config/database.js";
 import reservation from "./routes/reservation.js";
 
-dotenv.config();
+const app = express();
+const httpServer = createServer(app);
 
 // Middleware
 
-const app = express();
 app.use(express.json());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
-app.use(cors());
+initSocket(httpServer);
 
 // Routes
 
-app.use("/reservation", reservation);
+app.use("/book", reservation);
 
 // Localhost port connection
 
 connectDB().then(() => {
-  app.listen(process.env.PORT, () => {
+  httpServer.listen(process.env.PORT, () => {
     console.log(`Server running, connected to ${process.env.PORT}`);
   });
 });
