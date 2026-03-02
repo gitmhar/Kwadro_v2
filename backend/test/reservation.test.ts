@@ -1,6 +1,12 @@
-// import "../test/setupMock.js";
+import { jest } from "@jest/globals";
 import request from "supertest";
 import app from "../src/app.js";
+
+jest.mock("../src/config/socket.ts", () => ({
+  getIO: jest.fn(() => ({
+    emit: jest.fn(),
+  })),
+}));
 
 describe("POST /book", () => {
   it("should successfully create a new reservation", async () => {
@@ -52,5 +58,20 @@ describe("POST /book", () => {
 
     expect(res.status).toBe(409);
     expect(res.body.message).toMatch(/already booked/i);
+  });
+
+  it("should prevent booking for a negative duration", async () => {
+    const res = await request(app).post("/book").send({
+      tableNumber: 1,
+      startTime: new Date().toISOString(),
+      duration: 1,
+      name: "Hankler",
+      email: "negative@one.com",
+      contact: "09123456789",
+      attendees: -1,
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBeDefined();
   });
 });
