@@ -15,10 +15,15 @@ import type {
   GetBusySlotsParams,
   getBusySlotsQuery,
 } from "../types/booking.js";
+import Stripe from "stripe";
 
 export const createReservation = async (req: Request, res: Response) => {
   try {
+    if (!req.user) return res.status(401).json({ message: "No user found" });
+    const firebaseUid = req.user.uid;
+    if (!firebaseUid) return res.status(401).json({ message: "No user found" });
     const input = sanitizeReservationInput(req.body);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 
     const { startDateTime, endDateTime } = buildReservationTimes(
       input.startTime,
@@ -38,16 +43,45 @@ export const createReservation = async (req: Request, res: Response) => {
     }
 
     const totalPrice = calculateTotalPrice(input.duration, 150);
+    const isStripe = req.body.paymentMethod === "stripe";
 
     const reservationData = buildReservationData({
       input,
       startDateTime,
       endDateTime,
       totalPrice,
+      status: isStripe ? "pending" : "confirmed",
+      firebaseUid: firebaseUid 
     });
 
     console.log("Saving this to DB:", reservationData);
     const reservation = await Reservation.create(reservationData);
+
+    if (isStripe) {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: `Table ${reservation.tableNumber} Booking`,
+              },
+              unit_amount: totalPrice,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        metadata: {
+          reservationId: reservation._id.toString(),
+          firebaseUid: firebaseUid,
+        },
+        success_url: `${process.env.FRONTEND_URL}/success?id=${reservation._id}`,
+        cancel_url: `${process.env.FRONTEND_URL}/booking-summary`,
+      });
+      return res.status(201).json({ url: session.url });
+    }
 
     try {
       const io = getIO();
@@ -97,5 +131,19 @@ export const getActiveReservations = async (req: Request, res: Response) => {
     res.json(active);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch active bookings" });
+  }
+};
+
+export const getReservationStatus = async (req: Request, res: Response) => {
+  const { reservationId } = req.params;
+  try {
+    const reservation =
+      await Reservation.findById(reservationId).select("status");
+    if (!reservation)
+      return res.status(404).json({ message: "Reservation not found " });
+    res.json({ status: reservation.status });
+  } catch (err: any) {
+    console.log(err.message);
+    res.status(500).json({ message: "Server error" });
   }
 };

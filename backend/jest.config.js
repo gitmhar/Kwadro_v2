@@ -5,7 +5,7 @@ export default {
   testEnvironment: "node",
   extensionsToTreatAsEsm: [".ts"],
   moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1",
+    '^(\\.{1,2}/.*)\\.js$': ['$1.ts', '$1.tsx', '$1.js', '$1']
   },
   transform: {
     "^.+\\.tsx?$": [
@@ -15,5 +15,5 @@ export default {
       },
     ],
   },
-  setupFilesAfterEnv: ["<rootDir>/test/setup.ts"],
 };
+

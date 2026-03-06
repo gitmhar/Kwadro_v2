@@ -13,6 +13,11 @@ export const reservationServices = {
     return response.data;
   },
 
+  getReservationStatus: async (reservationId: string) => {
+    const response = await api.get(`/book/status/${reservationId}`);
+    return response.data;
+  },
+
   createReservation: async (data: any) => {
     const response = await api.post("/book", data);
     return response.data;

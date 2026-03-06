@@ -27,7 +27,7 @@ describe("GET /busy/:tableNumber", () => {
 
     expect(res.status).toBe(200);
 
-    const busySlot = res.body[0];
+    const busySlot = res.body[0];   // <--- huh?? What is this?
 
     console.log("DEBUG - Sent Date Query:", testDateOnly);
     console.log("DEBUG - Received Body:", res.body);

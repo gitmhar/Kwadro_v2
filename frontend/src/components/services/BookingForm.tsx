@@ -81,12 +81,17 @@ export default function BookingForm({
       ...formData,
       startTime: localDateTime.toISOString(),
       tableNumber: tableNumber,
+      paymentMethod: "stripe",
     };
 
     try {
-      await reservationServices.createReservation(submissionData);
-      console.log("Reservation successful!");
-      navigate("/");
+      const data = await reservationServices.createReservation(submissionData);
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.log("Reservation created without payment!");
+        navigate("/success");
+      }
     } catch (error) {
       console.error("Unable to make schedule");
     } finally {

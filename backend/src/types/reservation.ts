@@ -12,7 +12,8 @@ export interface IReservation extends Document {
   endTime: Date;
   totalPrice: number;
   status: "pending" | "confirmed" | "cancelled";
-  //   client: Schema.Types.ObjectId;
+  stripeSessionId: string;
+  firebaseUid: string;
 }
 
 export interface SanitizedReservationInput {

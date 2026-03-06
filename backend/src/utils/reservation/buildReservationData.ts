@@ -8,6 +8,8 @@ interface BuildReservationParams {
   startDateTime: Date;
   endDateTime: Date;
   totalPrice: number;
+  status: string;
+  firebaseUid: string;
 }
 
 export const buildReservationData = ({
@@ -15,6 +17,7 @@ export const buildReservationData = ({
   startDateTime,
   endDateTime,
   totalPrice,
+  firebaseUid,
 }: BuildReservationParams): Partial<IReservation> => {
   return {
     name: input.name,
@@ -30,5 +33,6 @@ export const buildReservationData = ({
     endTime: endDateTime,
     totalPrice,
     status: "pending",
+    firebaseUid,
   };
 };

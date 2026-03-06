@@ -52,11 +52,14 @@ const ReservationSchema = new Schema<IReservation>(
       enum: ["pending", "confirmed", "cancelled"],
       default: "pending",
     },
-    // client: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
+    stripeSessionId: {
+      type: String,
+    },
+    firebaseUid: {
+      type: String,
+      required: true,
+      index: true,
+    },
   },
   { timestamps: true },
 );

@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import "../utils/stylesheets/style.css";
+import { useAuth } from "../context/AuthContext";
+import TestCheckoutButton from "./Success";
 
 export default function Home() {
   useEffect(() => {
@@ -10,5 +12,19 @@ export default function Home() {
     document.body.classList.remove("modal-open");
   }, []);
 
-  return <h1>hello</h1>;
+  const { user, role } = useAuth();
+
+  console.log("Current session owner UID:", user?.uid);
+  return (
+    <div>
+      {user ? (
+        <h1>
+          Welcome, {role} {user.displayName}!
+        </h1>
+      ) : (
+        <h1>You are not logged in!</h1>
+      )}
+      <TestCheckoutButton />
+    </div>
+  );
 }
