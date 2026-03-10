@@ -3,7 +3,8 @@ dotenv.config();
 
 import type { Request, Response } from "express";
 import Stripe from "stripe";
-import { handleCheckoutCompleted } from "../services/reservation.services.js";
+import { handleCheckoutCompleted } from "../services/webhook.js";
+import { Reservation } from "../models/reservation.js";
 
 export const stripeWebhook = async (req: Request, res: Response) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
@@ -34,4 +35,30 @@ export const stripeWebhook = async (req: Request, res: Response) => {
   //   }
 
   res.json({ received: true });
+};
+
+export const cancelReservation = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const reservation = await Reservation.findById(id);
+
+    if (!reservation) {
+      return res.redirect(`${process.env.FRONTEND_URL}/book?status=error`);
+    }
+
+    if (reservation.status === "paid") {
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/book?status=already-paid`,
+      );
+    }
+
+    reservation.status = "cancelled";
+    await reservation.save();
+
+    // ✅ Send a redirect after successful cancellation
+    return res.redirect(`${process.env.FRONTEND_URL}/book?status=cancelled`);
+  } catch (err: any) {
+    return res.redirect(`${process.env.FRONTEND_URL}/book?status=error`);
+  }
 };

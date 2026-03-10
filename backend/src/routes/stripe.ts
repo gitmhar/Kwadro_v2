@@ -1,11 +1,13 @@
 import express from "express";
-import * as stripeHandler from "../controllers/stripe.js";
+import { stripeWebhook, cancelReservation } from "../controllers/stripe.js";
 
 const router = express.Router();
 
 router.post(
   "/",
-  stripeHandler.stripeWebhook,
+  stripeWebhook,
 );
+
+router.get("/cancel/:id", cancelReservation)
 
 export default router;

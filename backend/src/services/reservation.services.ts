@@ -1,22 +1,25 @@
 import type Stripe from "stripe";
 import { getIO } from "../config/socket.js";
 import { Reservation } from "../models/reservation.js";
+import mongoose from "mongoose";
 
 export const findReservationConflict = async (
   tableNumber: number,
   start: Date,
   end: Date,
+  excludeId?: string,
 ) => {
-  return Reservation.findOne({
+  const query: any = {
     tableNumber,
-    status: { $ne: "cancelled" },
-    $or: [
-      {
-        startTime: { $lt: end },
-        endTime: { $gt: start },
-      },
-    ],
-  });
+    status: { $in: ["pending", "paid"] },
+    $and: [{ startTime: { $lt: end } }, { endTime: { $gt: start } }],
+  };
+
+  if (excludeId) {
+    query._id = { $ne: new mongoose.Types.ObjectId(excludeId) };
+  }
+
+  return Reservation.findOne(query);
 };
 
 export const findBusySlots = async (
@@ -26,7 +29,7 @@ export const findBusySlots = async (
 ) => {
   return Reservation.find({
     tableNumber,
-    status: { $ne: "cancelled" },
+    status: { $in: ["pending", "paid"] },
     startTime: { $gte: startOfDay, $lte: endOfDay },
   })
     .select("startTime endTime")
@@ -37,35 +40,7 @@ export const findActiveReservations = async () => {
   const now = new Date();
   return Reservation.find({
     endTime: { $gt: now },
-    status: { $ne: "cancelled" },
+    status: { $in: ["pending", "paid"] },
   }).sort({ startTime: 1 });
 };
 
-
-export const handleCheckoutCompleted = async (
-  session: Stripe.Checkout.Session,
-) => {
-  const { reservationId } = session.metadata || {};
-
-  console.log(`Payment successful for reservation: ${reservationId}`);
-
-  const reservation = await Reservation.findByIdAndUpdate(
-    reservationId,
-    {
-      status: "confirmed",
-      $unset: { createdAt: 1 },
-    },
-    { new: true },
-  );
-
-  try {
-    const io = getIO();
-    io.emit("reservation_created", {
-      tableNumber: reservation?.tableNumber,
-      startTime: reservation?.startTime,
-      endTime: reservation?.endTime,
-    });
-  } catch (err: any) {
-    console.log("Socket notification failed, but payment was saved");
-  }
-};

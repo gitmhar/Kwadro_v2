@@ -11,9 +11,10 @@ export interface IReservation extends Document {
   contact: string;
   endTime: Date;
   totalPrice: number;
-  status: "pending" | "confirmed" | "cancelled";
+  status: "pending" | "paid" | "cancelled" | "expired";
   stripeSessionId: string;
   firebaseUid: string;
+  createdAt: Date;
 }
 
 export interface SanitizedReservationInput {

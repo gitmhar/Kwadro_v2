@@ -92,8 +92,8 @@ export default function BookingForm({
         console.log("Reservation created without payment!");
         navigate("/success");
       }
-    } catch (error) {
-      console.error("Unable to make schedule");
+    } catch (error: any) {
+      console.error(error.response.data.message);
     } finally {
       setIsLoading(false);
     }

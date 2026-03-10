@@ -49,7 +49,7 @@ const ReservationSchema = new Schema<IReservation>(
     },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "cancelled"],
+      enum: ["pending", "paid", "cancelled", "expired"],
       default: "pending",
     },
     stripeSessionId: {
@@ -60,11 +60,14 @@ const ReservationSchema = new Schema<IReservation>(
       required: true,
       index: true,
     },
+    createdAt: {
+      type: Date,
+    },
   },
   { timestamps: true },
 );
 
-ReservationSchema.index({ tableNumber: 1, date: 1 });
+ReservationSchema.index({ tableNumber: 1, date: 1 }, { unique: true });
 
 export const Reservation = model<IReservation>(
   "Reservation",

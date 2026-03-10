@@ -5,6 +5,7 @@ import { createServer } from "http";
 import app from "./app.js";
 import { initSocket } from "./config/socket.js";
 import { connectDB } from "./config/database.js";
+import "./services/cronjob.js";
 
 const PORT = process.env.PORT || 3000;
 const httpServer = createServer(app);
@@ -18,6 +19,7 @@ connectDB()
   .then(() => {
     httpServer.listen(PORT, () => {
       console.log(`Server running, connected to ${PORT}`);
+      console.log(`Cron Job Scheduler is active`);
     });
   })
   .catch((error) => {

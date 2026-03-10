@@ -18,7 +18,9 @@ app.use(
   express.raw({ type: "application/json" }),
   stripeHandler,
 );
+
 app.use(express.json());
+app.use("/api/reservations", stripeHandler);
 app.use("/book", reservation);
 
 // Health check route
