@@ -44,3 +44,13 @@ export const findActiveReservations = async () => {
   }).sort({ startTime: 1 });
 };
 
+export const updateReservation = async (reservationId: string) => {
+  return Reservation.findOneAndUpdate(
+    {
+      _id: reservationId,
+      status: { $ne: "paid" },
+    },
+    { $set: { status: "paid" } },
+    { new: true },
+  );
+};

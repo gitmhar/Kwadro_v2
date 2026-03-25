@@ -6,6 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <a href=""></a>
+    
+    <h1>Booking Confirmed!</h1>
+    <p>Hi ${name}, your table at <strong>Kwadro Billiards</strong> is ready.</p>
+    <ul>
+        <li><strong>Table:</strong> ${tableNumber}</li>
+        <li><strong>Time:</strong> ${formattedTime}</li>
+        <li><strong>Ref ID:</strong> ${reservationId}</li>
+    </ul>
+    <p>See you there!</p>
+
+    <h1>Refund Processed</h1>
+    <p>Hi ${name}, your payment for Table ${tableNumber} was received after 30-minute limit.</p>
+    <p>Since the table was taken by another player, we have issued a <strong>full refund</strong></p>
+    <p>Please try booking a different timeslot!</p>
 </body>
 </html>
