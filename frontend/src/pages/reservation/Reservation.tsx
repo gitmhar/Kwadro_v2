@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useBusySlots } from "../hooks/useBusySlots";
-import { useActiveReservation } from "../hooks/useActiveReservations";
-import { getOperatingHours } from "../utils/booking/operatingHours";
-import { isTableOccupied } from "../utils/booking/tableStatus";
-import BookingCalendar from "../components/services/BookingCalendar";
-import BookingForm from "../components/services/BookingForm";
+import { useBusySlots } from "../../hooks/useBusySlots";
+import { useActiveReservation } from "../../hooks/useActiveReservations";
+import { getOperatingHours } from "../../utils/booking/operatingHours";
+import { isTableOccupied } from "../../utils/booking/tableStatus";
+import BookingCalendar from "../../components/booking/BookingCalendar";
+import BookingForm from "../../components/booking/BookingForm";
 
 export default function Reservation() {
   const [selectedDate, setSelectedDate] = useState(new Date());

@@ -1,33 +1,18 @@
 import { useEffect } from "react";
 import { socket } from "./lib/socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import MainLayout from "./layout/MainLayout";
 import Home from "./pages/Home";
-import Reservation from "./pages/Reservation";
+import Reservation from "./pages/reservation/Reservation";
 import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/admin/Dashboard";
 import Success from "./pages/Success";
-import BookingSummary from "./components/services/BookingSummary";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-  typography: {
-    fontFamily: '"Poppins", "Great Vibes", sans-serif',
-
-    h1: { fontWeight: 900 },
-    h2: { fontWeight: 700 },
-  },
-  palette: {
-    primary: {
-      main: "#212529",
-    },
-    secondary: {
-      main: "#10b981",
-    },
-  },
-});
+import theme from "./utils/theme";
+import TableGrid from "./components/booking/TableGrid";
+import TestModal from "./components/booking/TestModal";
 
 function App() {
   useEffect(() => {
@@ -54,7 +39,8 @@ function App() {
             <Route path="/admin-dashboard" element={<Dashboard />} />
             {/* Services */}
             <Route path="/book" element={<Reservation />} />
-            <Route path="/summary" element={<BookingSummary />} />
+            <Route path="/table" element={<TableGrid />} />
+            <Route path="/modal" element={<TestModal />} />
             {/* Response */}
             <Route path="/success" element={<Success />} />
           </Route>

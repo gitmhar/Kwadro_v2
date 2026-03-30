@@ -1,32 +1,166 @@
 @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-/* .react-calendar__tile--now {
-  background-color: #000000;
-  color: #ffffff !important;
-  border-radius: 8px;
-  font-weight: 600;
-} */
+/* =================================================================
+                            The Calendar
+=====================================================================*/
+
+.react-calendar {
+  background-color: transparent;
+  border: none;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* =================================================================
+=====================================================================     
+=====================================================================*/
+
+/* =================================================================
+              Calendar Navigations (Month % Arrow)
+=====================================================================*/
+
+.react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+  height: 44px;
+}
+
+/* Style the Month/Year text */
+.react-calendar__navigation__label {
+  background: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  pointer-events: none;
+  flex-grow: 0 !important;
+  padding: 0 10px;
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Style the navigation arrows (< and >) */
+.react-calendar__navigation__prev-button,
+.react-calendar__navigation__next-button {
+  color: #9c9c9c;
+  background: none;
+  font-size: 1.2rem;
+  min-width: 30px;
+  font-weight: 300;
+}
+
+.react-calendar__navigation__label__container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.react-calendar__navigation button:enabled:hover {
+  background: none;
+  color: #00e676;
+}
+
+.react-calendar__navigation__prev-button,
+.react-calendar__navigation__next-button {
+  background: transparent !important;
+}
+
+/* =================================================================
+                    The Weekdays (SUN - SAT)    
+=====================================================================*/
+
+.react-calendar__month-view__weekdays {
+  color: #9c9c9c;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5rem 0;
+}
+
+/* Hide default underline on weekday abbreviations */
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+/* =================================================================
+                    The Days (Grid & Selection)    
+=====================================================================*/
 
 .react-calendar__tile {
-  font-family: "Poppins", sans-serif;
+  background: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
   font-weight: 600;
+  border-radius: 50%;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.today-highlight {
-  background: #000000;
-  color: #ffffff !important;
-  border-radius: 10px;
+/* Make neighboring months transparent */
+.react-calendar__month-view__days_day--neighboringMonth {
+  opacity: 0;
+  pointer-events: none;
 }
+
+/* Ugly */
+/* .today-highlight {
+  background: #00e676;
+} */
 
 .today-highlight:hover {
-  background: #808080 !important;
+  background: #232629 !important;
+}
+
+.react-calendar__tile--active {
+  background: #00e676 !important;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0px 4px 15px rgba(44, 243, 125, 0.4);
+}
+
+.react-calendar__tile:enabled:hover:not(.react-calendar__tile--active) {
+  background-color: #232629 !important;
+  color: #ffffff;
 }
 
 .react-calendar__tile:disabled {
-  background-color: #ffffff !important;
+  background-color: transparent;
 }
 
-.react-calendar {
-  border-radius: 8px;
-  padding: 1.25rem;
+/* =================================================================
+                          Media Queries    
+=====================================================================*/
+
+@media(max-width: 480px) {
+
+  .choose-date-title {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .react-calendar__navigation__label {
+    min-width: 110px !important;
+    padding: 0 4px !important;
+  }
+
+  .react-calendar__navigation__prev-button,
+  .react-calendar__navigation__next-button {
+    min-width: 24px !important;
+    font-size: 1rem !important;
+  }
+
+  .react-calendar {
+    padding: 0 5px;
+  }
 }
