@@ -10,7 +10,7 @@ import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/admin/Dashboard";
 import Success from "./pages/Success";
-import theme from "./utils/theme";
+import theme from "./theme/theme";
 import TableGrid from "./components/booking/TableGrid";
 import TestModal from "./components/booking/TestModal";
 

@@ -15,8 +15,13 @@ let theme = createTheme({
       main: "#10b981",
     },
     text: {
-      secondary: "#9c9c9c"
-    }
+      primary: "#00E676",
+      secondary: "#9c9c9c",
+    },
+    background: {
+      default: "#121417",
+      paper: "#1a1d21",
+    },
   },
 });
 theme = responsiveFontSizes(theme);

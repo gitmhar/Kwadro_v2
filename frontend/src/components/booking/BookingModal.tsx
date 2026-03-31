@@ -11,17 +11,28 @@ import {
 import { Close } from "@mui/icons-material";
 import { useState } from "react";
 import BookingCalendar from "./BookingCalendar";
-import Forms from "../Forms";
+import Forms from "./Forms";
 import ScheduleBlock from "./partials/ScheduleBlock";
+import { getOperatingHours } from "../../utils/booking/operatingHours";
+import { useBusySlots } from "../../hooks/useBusySlots";
+
+interface BookingModalProps {
+  open: boolean;
+  handleClose: () => void;
+  tableNumber: number | null;
+}
 
 export default function BookingModal({
   open,
   handleClose,
-}: {
-  open: boolean;
-  handleClose: () => void;
-}) {
+  tableNumber,
+}: BookingModalProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const displayTableNum = tableNumber
+    ? tableNumber.toString().padStart(2, "0")
+    : "00";
+  const { busySlots } = useBusySlots(tableNumber, selectedDate);
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -76,7 +87,7 @@ export default function BookingModal({
               gutterBottom
               sx={{ color: "white" }}
             >
-              Book Table 01
+              Book Table {displayTableNum}
             </Typography>
           </Box>
           <Divider sx={{ border: "1px solid #606462", mb: 2 }} />
@@ -117,7 +128,12 @@ export default function BookingModal({
                   type="available"
                 />
               </Stack>
-              <Forms />
+              <Forms
+                selectedDate={selectedDate}
+                tableNumber={tableNumber}
+                getOperatingHours={getOperatingHours}
+                busySlots={busySlots}
+              />
             </Grid>
           </Grid>
         </Container>

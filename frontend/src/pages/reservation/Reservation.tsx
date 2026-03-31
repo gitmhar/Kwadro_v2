@@ -3,161 +3,44 @@ import { useBusySlots } from "../../hooks/useBusySlots";
 import { useActiveReservation } from "../../hooks/useActiveReservations";
 import { getOperatingHours } from "../../utils/booking/operatingHours";
 import { isTableOccupied } from "../../utils/booking/tableStatus";
-import BookingCalendar from "../../components/booking/BookingCalendar";
-import BookingForm from "../../components/booking/BookingForm";
+import { Container, Grid, Typography } from "@mui/material";
+import TableGrid from "../../components/booking/TableGrid";
+import BookingModal from "../../components/booking/BookingModal";
 
 export default function Reservation() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   const [selectedTable, setSelectedTable] = useState<number | null>(null);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const tables = [1, 2, 3, 4, 5, 6, 7, 8];
-
-  const { activeReservations, currentTime } = useActiveReservation();
-  const { busySlots } = useBusySlots(selectedTable, selectedDate);
-
-  console.log("Current Calendar Day:", selectedDate.toDateString());
-  console.log("Total Busy Slots Found:", busySlots.length);
-
+  const handleOpen = (tableNum: number) => {
+    setOpen(true);
+    setSelectedTable(tableNum);
+  };
+  const handleClose = () => setOpen(false);
   return (
-    <>
-      <div className="table-grid d-flex flex-wrap gap-3">
-        {tables.map((num) => {
-          const currentBooking = isTableOccupied(
-            num,
-            activeReservations,
-            currentTime,
-          );
-          const isOccupied = !!currentBooking;
-          return (
-            <div key={num} className="col-md-3">
-              <div
-                className={`card text-center p-3 shadow-sm ${isOccupied ? "border-danger bg-light" : "border-primary"}`}
-                style={{ transition: "0.3s" }}
-              >
-                <h5
-                  className={`${isOccupied ? "text-danger" : "text-primary"}`}
-                >
-                  Table {num}
-                </h5>
-                <div className="my-2">
-                  {isOccupied ? (
-                    <span className="badge bg-danger">OCCUPIED</span>
-                  ) : (
-                    <span className="badge bg-success">AVAILABLE</span>
-                  )}
-                </div>
-                <button
-                  type="button"
-                  className={`btn btn-sm ${isOccupied ? "btn-outline-danger" : "btn-primary"}`}
-                  // data-bs-toggle="modal"
-                  // data-bs-target="#tableModal"
-                  onClick={() => {
-                    setSelectedTable(num);
-                    setModalOpen(true);
-                  }}
-                >
-                  {isOccupied ? "View/Book Later" : "Book Now"}
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Typography
+        variant="body1"
+        sx={{
+          color: "text.primary",
+          mb: 1,
+          textTransform: "uppercase",
+          fontWeight: 700,
+          letterSpacing: "0.5px",
+        }}
+      >
+        Premium Lounge
+      </Typography>
+      <Typography
+        variant="h3"
+        component="h1"
+        sx={{ fontWeight: 600, color: "#fff", mb: 4 }}
+      >
+        Book a Pool Table
+      </Typography>
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+        <TableGrid onOpenModal={handleOpen} />
+      </Grid>
       {/* Modal */}
-      {isModalOpen && (
-        <div className="modal show d-block" id="tableModal" tabIndex={-1}>
-          <div className="modal-dialog modal-xl">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Booking Table {selectedTable}</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  // data-bs-dismiss="modal"
-                  onClick={() => setModalOpen(false)}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-12 col-lg-6">
-                      <BookingCalendar
-                        selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}
-                      />
-                      <div className="mt-3">
-                        <label
-                          htmlFor=""
-                          className="form-label fw-bold text-secondary"
-                        >
-                          Table Schedule for Today:
-                        </label>
-                        {busySlots.filter((slot) => {
-                          const slotDateLocal = new Date(
-                            slot.startTime,
-                          ).toLocaleDateString();
-                          const calendarDateLocal =
-                            selectedDate.toLocaleDateString();
-
-                          return slotDateLocal === calendarDateLocal;
-                        }).length === 0 ? (
-                          <p className="text-success small">
-                            No bookings yet-pick any time
-                          </p>
-                        ) : (
-                          <ul className="list-group">
-                            {busySlots
-                              .filter((slot) => {
-                                const s = new Date(
-                                  slot.startTime,
-                                ).toLocaleDateString();
-                                const c = selectedDate.toLocaleDateString();
-                                console.log(
-                                  `Checking Slot: ${new Date(slot.startTime).toLocaleDateString()} against Calendar: ${selectedDate.toLocaleDateString()}`,
-                                );
-                                return s === c;
-                              })
-                              .map((slot, index) => {
-                                const start = new Date(slot.startTime);
-                                const end = new Date(slot.endTime);
-
-                                return (
-                                  <li
-                                    key={index}
-                                    className="list-group-item list-group-item-light small text-danger"
-                                  >
-                                    <strong>Occupied: </strong>
-                                    {start.toLocaleTimeString([], {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    })}{" "}
-                                    -{" "}
-                                    {end.toLocaleTimeString([], {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    })}
-                                  </li>
-                                );
-                              })}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col-12 col-lg-6">
-                      <BookingForm
-                        selectedDate={selectedDate}
-                        tableNumber={selectedTable}
-                        getOperatingHours={getOperatingHours}
-                        busySlots={busySlots}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+      <BookingModal open={open} handleClose={handleClose} tableNumber={selectedTable}/>
+    </Container>
   );
 }

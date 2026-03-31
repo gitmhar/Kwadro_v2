@@ -1,6 +1,6 @@
 import { Card, Box, Typography, Button, Chip } from "@mui/material";
 
-export default function TableCard({ tableNumber }: { tableNumber: number }) {
+export default function TableCard({ tableNumber, onBookClick }: { tableNumber: number, onBookClick: (tableNumber: number) => void }) {
   return (
     <Card
       sx={{
@@ -14,7 +14,7 @@ export default function TableCard({ tableNumber }: { tableNumber: number }) {
         boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
         transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
         "&:hover": {
-          transform: "translateY(-8px)",
+          transform: { xs: "none", sm: "translateY(-8px)" },
           boxShadow: "0 12px 40px rgba(44, 243, 125, 0.2)",
         },
       }}
@@ -31,11 +31,22 @@ export default function TableCard({ tableNumber }: { tableNumber: number }) {
         <Box>
           <Typography
             variant="caption"
-            sx={{ color: "#9c9c9c", fontWeight: "bold", letterSpacing: 1 }}
+            sx={{
+              color: "#9c9c9c",
+              fontWeight: "bold",
+              letterSpacing: 1,
+              fontSize: { xs: "0.6rem", sm: "0.7rem" },
+            }}
           >
             STANDARD 9FT
           </Typography>
-          <Typography variant="h4" fontWeight="bold">
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: "bold",
+              fontSize: { xs: "1.2rem", sm: "1.5rem", md: "2rem" },
+            }}
+          >
             Table {tableNumber < 10 ? `0${tableNumber}` : tableNumber}
           </Typography>
         </Box>
@@ -57,12 +68,12 @@ export default function TableCard({ tableNumber }: { tableNumber: number }) {
         sx={{
           bgcolor: "black",
           borderRadius: 6,
-          p: 2,
-          mb: 3,
+          p: { xs: 1.5, sm: 2 },
+          mb: { xs: 2, sm: 3 },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: 180,
+          minHeight: { xs: 120, sm: 150, md: 180 },
         }}
       >
         <Box
@@ -90,14 +101,16 @@ export default function TableCard({ tableNumber }: { tableNumber: number }) {
         </Box>
         <Button
           variant="contained"
+          onClick={() => onBookClick(tableNumber)}
           sx={{
             bgcolor: "#2cf37d",
             color: "#000",
             fontWeight: "bold",
-            px: 4,
-            py: 1.5,
+            px: { xs: 2, sm: 3, md: 4 },
+            py: { xs: 0.8, sm: 1.2, md: 1.5 },
             borderRadius: 4,
             textTransform: "none",
+            fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem"},
             "&:hover": { bgcolor: "#24cc68" },
           }}
         >
