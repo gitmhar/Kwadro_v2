@@ -1,8 +1,4 @@
 import { useState } from "react";
-import { useBusySlots } from "../../hooks/useBusySlots";
-import { useActiveReservation } from "../../hooks/useActiveReservations";
-import { getOperatingHours } from "../../utils/booking/operatingHours";
-import { isTableOccupied } from "../../utils/booking/tableStatus";
 import { Container, Grid, Typography } from "@mui/material";
 import TableGrid from "../../components/booking/TableGrid";
 import BookingModal from "../../components/booking/BookingModal";

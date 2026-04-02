@@ -133,6 +133,7 @@ export default function BookingModal({
                 tableNumber={tableNumber}
                 getOperatingHours={getOperatingHours}
                 busySlots={busySlots}
+                handleClose={handleClose}
               />
             </Grid>
           </Grid>

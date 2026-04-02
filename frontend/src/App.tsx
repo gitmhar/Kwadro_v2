@@ -11,8 +11,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/admin/Dashboard";
 import Success from "./pages/Success";
 import theme from "./theme/theme";
-import TableGrid from "./components/booking/TableGrid";
-import TestModal from "./components/booking/TestModal";
+import BookingSummary from "./pages/reservation/BookingSummary";
+
 
 function App() {
   useEffect(() => {
@@ -39,8 +39,7 @@ function App() {
             <Route path="/admin-dashboard" element={<Dashboard />} />
             {/* Services */}
             <Route path="/book" element={<Reservation />} />
-            <Route path="/table" element={<TableGrid />} />
-            <Route path="/modal" element={<TestModal />} />
+            <Route path="/summary" element={<BookingSummary />} />
             {/* Response */}
             <Route path="/success" element={<Success />} />
           </Route>

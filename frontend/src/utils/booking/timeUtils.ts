@@ -23,7 +23,7 @@ export const isTooLate = (startTime: string, duration: number, date: Date) => {
   const adjustedHours = hours === 0 ? 24 : hours;
 
   if (adjustedHours + duration > close) return true;
-  if (adjustedHours < getOperatingHours(date).open) return false; 
+  if (adjustedHours < getOperatingHours(date).open) return false;
 
   // Date-based check for precision
   const proposedStart = new Date(date);
@@ -48,4 +48,87 @@ export const isTooLate = (startTime: string, duration: number, date: Date) => {
   }
 
   return proposedEnd.getTime() > closingTime.getTime();
+};
+
+export const getNextAvailableSlot = (
+  tableReservations: any[],
+  isOccupied: boolean,
+  currentBooking?: any,
+) => {
+  const now = new Date();
+  const day = now.getDay();
+
+  const isWeekend = day === 0 || day === 6 || day === 5;
+  const closingTime = new Date(now);
+
+  if (isWeekend) {
+    closingTime.setHours(24, 0, 0, 0);
+  } else {
+    closingTime.setHours(22, 0, 0, 0);
+  }
+
+  const futureReservations = tableReservations
+    .filter((res) => new Date(res.startTime) > now)
+    .sort(
+      (a, b) =>
+        new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+    );
+
+  const THIRTY_MIN = 30 * 60 * 1000;
+
+  // If currently occupied
+  if (isOccupied && currentBooking) {
+    const end = new Date(currentBooking.endDateTime || currentBooking.endTime);
+
+    const timeUntilClosingAfterBooking = closingTime.getTime() - end.getTime();
+
+    // If not enough time left after booking
+    if (timeUntilClosingAfterBooking <= THIRTY_MIN) {
+      return "Open Tomorrow";
+    }
+
+    // If there is another booking after this
+    if (futureReservations.length > 0) {
+      const nextStart = new Date(futureReservations[0].startTime);
+      return `Next: ${nextStart.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })}`;
+    }
+
+    return `Available after ${end.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })}`;
+  }
+
+  // If not occupied, check last booking of the day
+  if (futureReservations.length > 0) {
+    const lastReservation = futureReservations[futureReservations.length - 1];
+    const lastEnd = new Date(
+      lastReservation.endDateTime || lastReservation.endTime,
+    );
+
+    const timeAfterLastBooking = closingTime.getTime() - lastEnd.getTime();
+
+    if (timeAfterLastBooking <= THIRTY_MIN) {
+      return "Open Tomorrow";
+    }
+
+    const nextStartTime = new Date(futureReservations[0].startTime);
+    return `Next Slot: ${nextStartTime.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    })}`;
+  }
+
+  // No reservations at all
+  if (closingTime.getTime() - now.getTime() <= THIRTY_MIN) {
+    return "Open Tomorrow";
+  }
+
+  return "Open All Day";
 };

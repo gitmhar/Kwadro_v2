@@ -1,16 +1,32 @@
 import { Card, Box, Typography, Button, Chip } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
-export default function TableCard({ tableNumber, onBookClick }: { tableNumber: number, onBookClick: (tableNumber: number) => void }) {
+interface TableCardProps {
+  tableNumber: number;
+  onBookClick: (tableNumber: number) => void;
+  isOccupied: boolean;
+  remainingTime?: string;
+  nextSlotTime: string;
+}
+
+export default function TableCard({
+  tableNumber,
+  onBookClick,
+  isOccupied,
+  remainingTime,
+  nextSlotTime,
+}: TableCardProps) {
   return (
     <Card
       sx={{
-        maxWidth: 350,
+        maxWidth: 450,
         bgcolor: "#191C1F",
         color: "white",
         p: 3,
         borderRadius: 8,
         position: "relative",
-        borderLeft: "5px solid #2cf37d",
+        borderLeft: isOccupied ? "5px solid #ff4d4d" : "5px solid #2cf37d",
+        opacity: isOccupied ? 0.9 : 1,
         boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
         transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
         "&:hover": {
@@ -51,11 +67,13 @@ export default function TableCard({ tableNumber, onBookClick }: { tableNumber: n
           </Typography>
         </Box>
         <Chip
-          label="AVAILABLE"
+          label={isOccupied ? "OCCUPIED" : "AVAILABLE"}
           size="small"
           sx={{
-            bgcolor: "rgba(44, 243, 125, 0.1)",
-            color: "#2cf37d",
+            bgcolor: isOccupied
+              ? "rgba(255, 77, 77, 0.1)"
+              : "rgba(44, 243, 125, 0.1)",
+            color: isOccupied ? "#ff4d4d" : "#2cf37d",
             fontWeight: "bold",
             borderRadius: 2,
             fontSize: "0.7rem",
@@ -70,6 +88,7 @@ export default function TableCard({ tableNumber, onBookClick }: { tableNumber: n
           borderRadius: 6,
           p: { xs: 1.5, sm: 2 },
           mb: { xs: 2, sm: 3 },
+          position: "relative",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -79,8 +98,48 @@ export default function TableCard({ tableNumber, onBookClick }: { tableNumber: n
         <Box
           component="img"
           src="/pool-table.png"
-          sx={{ width: "100%", borderRadius: 2 }}
+          sx={{
+            width: "100%",
+            borderRadius: 2,
+            opacity: isOccupied ? 0.4 : 1,
+            filter: isOccupied ? "grayscale(40%)" : "none",
+          }}
         />
+
+        {isOccupied && remainingTime && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "rgba(0,0,0,0.85)", // Darker for better contrast
+              px: 1,
+              py: 1,
+              borderRadius: 10,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              border: "1px solid rgba(255, 77, 77, 0.3)",
+            }}
+          >
+            <AccessTimeIcon
+              sx={{
+                color: "#ff4d4d",
+                fontSize: { xs: "0.9rem", sm: "1.1rem" },
+              }}
+            />
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: { xs: "0.6rem", sm: "0.7rem" },
+                fontWeight: "bold",
+              }}
+            >
+              {remainingTime}
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {/* Footer Section */}
@@ -92,29 +151,54 @@ export default function TableCard({ tableNumber, onBookClick }: { tableNumber: n
         }}
       >
         <Box>
-          <Typography variant="caption" sx={{ color: "#9c9c9c" }}>
-            Hourly Rate
-          </Typography>
-          <Typography variant="h5" fontWeight="bold">
-            $3.00
-          </Typography>
+          {isOccupied ? (
+            <>
+              <Typography
+                variant="caption"
+                sx={{ color: "#9c9c9c", fontWeight: "500" }}
+              >
+                Next Available Slot
+              </Typography>
+              <Typography
+                variant="h6"
+                component="h6"
+                sx={{
+                  fontWeight: "bold",
+                  color:
+                    nextSlotTime === "Open Tomorrow" ? "#FFA726" : "#2cf37d",
+                }}
+              >
+                {nextSlotTime}
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="caption" sx={{ color: "#9c9c9c" }}>
+                Hourly Rate
+              </Typography>
+              <Typography variant="h5" fontWeight="bold">
+                $3.00
+              </Typography>
+            </>
+          )}
         </Box>
         <Button
           variant="contained"
           onClick={() => onBookClick(tableNumber)}
           sx={{
-            bgcolor: "#2cf37d",
-            color: "#000",
             fontWeight: "bold",
-            px: { xs: 2, sm: 3, md: 4 },
-            py: { xs: 0.8, sm: 1.2, md: 1.5 },
-            borderRadius: 4,
+            px: { xs: 2, sm: 2.5, md: 3 },
+            py: { xs: 0.8, sm: 1.1, md: 1.4 },
+            borderRadius: 2,
             textTransform: "none",
-            fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem"},
-            "&:hover": { bgcolor: "#24cc68" },
+            fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.95rem" },
+            bgcolor: isOccupied ? "transparent" : "#2cf37d",
+            color: isOccupied ? "white" : "black",
+            border: isOccupied ? "1px solid #444" : "none",
+            "&:hover": { bgcolor: isOccupied ? "#333" : "#24cc68" },
           }}
         >
-          Book Now
+          {isOccupied ? "View Schedule" : "Book Now"}
         </Button>
       </Box>
     </Card>

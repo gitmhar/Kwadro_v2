@@ -1,7 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import InfoRow from "./InfoRow";
+import { formatFullReservationTime } from "../../utils/booking/dateUtils";
 
-export default function BillingInformation() {
+export default function BillingInformation({ data }: { data: any }) {
+  const { dateDisplay, timeRange } = formatFullReservationTime(
+    data.startTime,
+    data.duration,
+  );
+
   return (
     <Stack spacing={2}>
       <Typography variant="h6" component="h2" fontWeight="bold" mb={1}>
@@ -9,12 +15,12 @@ export default function BillingInformation() {
       </Typography>
       <InfoRow
         label="Reservation Date and Time"
-        value="2026-03-26 | 02:00 PM - 03:00 PM"
+        value={`${dateDisplay} | ${timeRange}`}
       />
-      <InfoRow label="Biller's Name" value="Johnny Bravado" />
-      <InfoRow label="Biller's Email" value="j0hnmh4r23@gmail.com" />
-      <InfoRow label="Biller's Contact Number" value="09123456789" />
-      <InfoRow label="Number of Attendees" value="10 persons" />
+      <InfoRow label="Biller's Name" value={data.name} />
+      <InfoRow label="Biller's Email" value={data.email} />
+      <InfoRow label="Biller's Contact Number" value={data.contact} />
+      <InfoRow label="Number of Attendees" value={data.attendees} />
     </Stack>
   );
 }

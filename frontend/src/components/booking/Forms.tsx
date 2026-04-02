@@ -20,12 +20,14 @@ import {
 } from "../../utils/booking/timeUtils";
 import { getAvailableDurations } from "../../utils/booking/availableDurations";
 import { combineDateAndTime } from "../../utils/booking/dateUtils";
+import { calculateBookingPrice } from "../../utils/booking/price.util";
 
 interface BookingFormProps {
   selectedDate: Date;
   tableNumber: number | null;
   getOperatingHours: (date: Date) => { open: number; close: number };
   busySlots: CheckOverlap[];
+  handleClose: () => void;
 }
 
 export default function Forms({
@@ -33,6 +35,7 @@ export default function Forms({
   tableNumber,
   getOperatingHours,
   busySlots,
+  handleClose,
 }: BookingFormProps) {
   const { open, close } = getOperatingHours(selectedDate);
   const [startTime, setStartTime] = useState(
@@ -45,6 +48,7 @@ export default function Forms({
     duration: "1",
     attendees: "1",
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const durationHours = Number(formData.duration);
   const hasConflict = checkOverlap(
@@ -108,9 +112,8 @@ export default function Forms({
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
-    if (isLoading || isBlocked) return;
 
-    setIsLoading(true);
+    if (isBlocked) return;
 
     const localDateTime = combineDateAndTime(selectedDate, startTime);
 
@@ -118,22 +121,20 @@ export default function Forms({
       ...formData,
       startTime: localDateTime.toISOString(),
       tableNumber: tableNumber,
-      paymentMethod: "stripe",
     };
 
-    try {
-      const data = await reservationServices.createReservation(submissionData);
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        console.log("Reservation created without payment!");
-        navigate("/");
-      }
-    } catch (error: any) {}
+    const total = calculateBookingPrice(formData.duration); 
+
+    navigate("/summary", { state: { submissionData, totalAmount: total } });
+    handleClose();
   };
 
   return (
-    <Box component="form" sx={{ p: 2, borderRadius: 4 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ p: 2, borderRadius: 4 }}
+    >
       <Stack spacing={2.5}>
         {/* Start Time */}
         <Box>
@@ -260,7 +261,7 @@ export default function Forms({
                   minLength: 0,
                   maxLength: 11,
                   inputMode: "numeric",
-                  pattern: [0 - 9],
+                  // pattern: [0 - 9],
                 },
               }}
             />

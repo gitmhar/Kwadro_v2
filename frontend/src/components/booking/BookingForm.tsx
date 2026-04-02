@@ -66,8 +66,6 @@ export default function BookingForm({
     }));
   };
 
-  
-
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
