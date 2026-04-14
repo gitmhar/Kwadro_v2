@@ -3,7 +3,6 @@ import TableCard from "./TableCard";
 import { isTableOccupied } from "../../utils/booking/tableStatus";
 import { useActiveReservation } from "../../hooks/useActiveReservations";
 import { calculateRemainingTime } from "../../utils/booking/dateUtils";
-import { getNextAvailableSlot } from "../../utils/booking/timeUtils";
 
 export default function TableGrid({
   onOpenModal,
@@ -33,14 +32,14 @@ export default function TableGrid({
         if (currentBooking) {
           timeLeft = calculateRemainingTime(currentBooking.endTime);
         }
-        const tableReservations = activeReservations.filter(
-          (r) => r.tableNumber === num,
-        );
-        const nextSlot = getNextAvailableSlot(
-          tableReservations,
-          isOccupied,
-          currentBooking,
-        );
+        // const tableReservations = activeReservations.filter(
+        //   (r) => r.tableNumber === num,
+        // );
+        // const nextSlot = getNextAvailableSlot(
+        //   tableReservations,
+        //   isOccupied,
+        //   currentBooking,
+        // );
         return (
           <Grid
             size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
@@ -52,7 +51,6 @@ export default function TableGrid({
               onBookClick={() => onOpenModal(num)}
               isOccupied={isOccupied}
               remainingTime={timeLeft}
-              nextSlotTime={nextSlot}
             />
           </Grid>
         );

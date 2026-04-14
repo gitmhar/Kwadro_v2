@@ -7,11 +7,11 @@ export default function ScheduleBlock({
 }: {
   time: string;
   status: string;
-  type: "reserved" | "occupied" | "available";
+  type: "reserved"  | "available"; // | "occupied"
 }) {
   const statusColors = {
-    reserved: { main: "#ff9800", bg: "rgba(255, 152, 0, 0.1)" },
-    occupied: { main: "#f44336", bg: "rgba(244, 67, 54, 0.1)" },
+    reserved: { main: "#f44336", bg: "rgba(255, 152, 0, 0.1)" },
+    // occupied: { main: "#ff9800", bg: "rgba(244, 67, 54, 0.1)" },
     available: { main: "#4eff08", bg: "rgba(36, 204, 104, 0.1)" },
   };
 

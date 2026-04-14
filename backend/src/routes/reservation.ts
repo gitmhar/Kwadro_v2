@@ -12,5 +12,9 @@ router.get(
   verifyFirebase,
   reservation.getReservationStatus,
 );
+router
+  .route("/:reservationId")
+  .get(verifyFirebase, reservation.getReservationId)
+  // .delete(verifyFirebase, reservation.deleteReservation);
 
 export default router;

@@ -120,11 +120,9 @@ export const createReservation = async (req: Request, res: Response) => {
         "DATABASE CONFLICT: Unique index violation",
         error.keyValue,
       );
-      return res
-        .status(409)
-        .json({
-          message: "This slot is already in our records (even if cancelled).",
-        });
+      return res.status(409).json({
+        message: "This slot is already in our records (even if cancelled).",
+      });
     }
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -176,3 +174,42 @@ export const getReservationStatus = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getReservationId = async (req: Request, res: Response) => {
+  const { reservationId } = req.params;
+  try {
+    const reservation = await Reservation.findById(reservationId);
+    if (!reservation)
+      return res.status(404).json({ message: "Reservation not found" });
+    res.json(reservation);
+  } catch (err: any) {
+    console.error(`Error fetching reservation ${reservationId}:`, err.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// export const deleteReservation = async (req: Request, res: Response) => {
+//   const { reservationId } = req.params;
+//   try {
+//     const reservation = await Reservation.findById(reservationId);
+//     if (!reservation) {
+//       return res.status(404).json({
+//         message: "Reservation not found.",
+//       });
+//     }
+//     if (reservation.status !== "pending") {
+//       return res.status(400).json({
+//         message: "Cannot delete a confirmed or paid reservation.",
+//       });
+//     }
+
+//     await Reservation.findByIdAndDelete(reservationId);
+//     res.json({ message: "Reservation hold released successfully" });
+//   } catch (err: any) {
+//     console.error(
+//       `Error deleting reservation with reservationId: ${reservationId}`,
+//       err.message,
+//     );
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };

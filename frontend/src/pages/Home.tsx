@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "../utils/stylesheets/style.css";
 import { useAuth } from "../context/AuthContext";
-import TestCheckoutButton from "./Success";
+import TestCheckoutButton from "./reservation/Success";
 
 export default function Home() {
   useEffect(() => {

@@ -11,10 +11,11 @@ import {
 import { Close } from "@mui/icons-material";
 import { useState } from "react";
 import BookingCalendar from "./BookingCalendar";
-import Forms from "./Forms";
+import Forms from "./BookingForm";
 import ScheduleBlock from "./partials/ScheduleBlock";
 import { getOperatingHours } from "../../utils/booking/operatingHours";
 import { useBusySlots } from "../../hooks/useBusySlots";
+import { getFullSchedule } from "../../utils/booking/timeUtils";
 
 interface BookingModalProps {
   open: boolean;
@@ -111,23 +112,47 @@ export default function BookingModal({
               >
                 Today's Schedule
               </Typography>
-              <Stack spacing={2}>
-                <ScheduleBlock
-                  status="Occupied"
-                  time="14:00 - 15:30"
-                  type="occupied"
-                />
-                <ScheduleBlock
-                  status="RESERVED"
-                  time="15:30 - 17:00"
-                  type="reserved"
-                />
-                <ScheduleBlock
-                  status="AVAILABLE"
-                  time="17:00 - 22:00"
-                  type="available"
-                />
-              </Stack>
+              <Box
+                sx={{
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                  pr: 1,
+                  "&::-webkit-scrollbar": {
+                    width: "6px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    backgroundColor: "rgba(255,255,255,0.0.5)",
+                    borderRadius: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    backgroundColor: "#444444",
+                    borderRadius: "10px",
+                    "&:hover": {
+                      backgroundColor: "#555555",
+                    },
+                  },
+                }}
+              >
+                <Stack spacing={2}>
+                  {getFullSchedule(busySlots, selectedDate)
+                    .sort((a, b) => {
+                      if (a.type === "available" && b.type !== "available")
+                        return -1;
+                      if (a.type !== "available" && b.type === "available")
+                        return 1;
+                      return 0;
+                    })
+                    .map((block, index) => (
+                      <ScheduleBlock
+                        key={index}
+                        status={block.status}
+                        time={block.time}
+                        type={block.type}
+                      />
+                    ))}
+                </Stack>
+              </Box>
+
               <Forms
                 selectedDate={selectedDate}
                 tableNumber={tableNumber}

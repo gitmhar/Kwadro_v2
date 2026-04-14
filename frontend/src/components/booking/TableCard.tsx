@@ -1,12 +1,12 @@
 import { Card, Box, Typography, Button, Chip } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import BaseCard from "../ui/BaseCard";
 
 interface TableCardProps {
   tableNumber: number;
   onBookClick: (tableNumber: number) => void;
   isOccupied: boolean;
   remainingTime?: string;
-  nextSlotTime: string;
 }
 
 export default function TableCard({
@@ -14,21 +14,12 @@ export default function TableCard({
   onBookClick,
   isOccupied,
   remainingTime,
-  nextSlotTime,
 }: TableCardProps) {
   return (
-    <Card
+    <BaseCard
       sx={{
-        maxWidth: 450,
-        bgcolor: "#191C1F",
-        color: "white",
-        p: 3,
-        borderRadius: 8,
-        position: "relative",
         borderLeft: isOccupied ? "5px solid #ff4d4d" : "5px solid #2cf37d",
         opacity: isOccupied ? 0.9 : 1,
-        boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
-        transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
         "&:hover": {
           transform: { xs: "none", sm: "translateY(-8px)" },
           boxShadow: "0 12px 40px rgba(44, 243, 125, 0.2)",
@@ -151,36 +142,12 @@ export default function TableCard({
         }}
       >
         <Box>
-          {isOccupied ? (
-            <>
-              <Typography
-                variant="caption"
-                sx={{ color: "#9c9c9c", fontWeight: "500" }}
-              >
-                Next Available Slot
-              </Typography>
-              <Typography
-                variant="h6"
-                component="h6"
-                sx={{
-                  fontWeight: "bold",
-                  color:
-                    nextSlotTime === "Open Tomorrow" ? "#FFA726" : "#2cf37d",
-                }}
-              >
-                {nextSlotTime}
-              </Typography>
-            </>
-          ) : (
-            <>
-              <Typography variant="caption" sx={{ color: "#9c9c9c" }}>
-                Hourly Rate
-              </Typography>
-              <Typography variant="h5" fontWeight="bold">
-                $3.00
-              </Typography>
-            </>
-          )}
+          <Typography variant="caption" sx={{ color: "#9c9c9c" }}>
+            Hourly Rate
+          </Typography>
+          <Typography variant="h5" fontWeight="bold">
+            $3.00
+          </Typography>
         </Box>
         <Button
           variant="contained"
@@ -201,6 +168,6 @@ export default function TableCard({
           {isOccupied ? "View Schedule" : "Book Now"}
         </Button>
       </Box>
-    </Card>
+    </BaseCard>
   );
 }

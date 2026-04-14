@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { socket } from "./lib/socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "./theme/theme";
 import MainLayout from "./layout/MainLayout";
 import Home from "./pages/Home";
 import Reservation from "./pages/reservation/Reservation";
@@ -9,10 +10,8 @@ import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/admin/Dashboard";
-import Success from "./pages/Success";
-import theme from "./theme/theme";
-import BookingSummary from "./pages/reservation/BookingSummary";
-
+import Success from "./pages/reservation/Success";
+import CheckoutPage from "./pages/reservation/Checkout";
 
 function App() {
   useEffect(() => {
@@ -39,7 +38,7 @@ function App() {
             <Route path="/admin-dashboard" element={<Dashboard />} />
             {/* Services */}
             <Route path="/book" element={<Reservation />} />
-            <Route path="/summary" element={<BookingSummary />} />
+            <Route path="/checkout-page" element={<CheckoutPage />} />
             {/* Response */}
             <Route path="/success" element={<Success />} />
           </Route>

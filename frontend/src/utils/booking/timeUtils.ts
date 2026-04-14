@@ -50,85 +50,152 @@ export const isTooLate = (startTime: string, duration: number, date: Date) => {
   return proposedEnd.getTime() > closingTime.getTime();
 };
 
-export const getNextAvailableSlot = (
-  tableReservations: any[],
-  isOccupied: boolean,
-  currentBooking?: any,
-) => {
+// Future feature, too lazy to make it work.
+
+// export const getNextAvailableSlot = (
+//   tableReservations: any[],
+//   isOccupied: boolean,
+//   currentBooking?: any,
+// ) => {
+//   const now = new Date();
+//   const day = now.getDay();
+
+//   const isWeekend = day === 0 || day === 6 || day === 5;
+//   const closingTime = new Date(now);
+
+//   if (isWeekend) {
+//     closingTime.setHours(24, 0, 0, 0);
+//   } else {
+//     closingTime.setHours(22, 0, 0, 0);
+//   }
+
+//   const futureReservations = tableReservations
+//     .filter((res) => new Date(res.startTime) > now)
+//     .sort(
+//       (a, b) =>
+//         new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+//     );
+
+//   const THIRTY_MIN = 30 * 60 * 1000;
+
+//   // If currently occupied
+//   if (isOccupied && currentBooking) {
+//     const end = new Date(currentBooking.endDateTime || currentBooking.endTime);
+
+//     const timeUntilClosingAfterBooking = closingTime.getTime() - end.getTime();
+
+//     // If not enough time left after booking
+//     if (timeUntilClosingAfterBooking <= THIRTY_MIN) {
+//       return "Open Tomorrow";
+//     }
+
+//     // If there is another booking after this
+//     if (futureReservations.length > 0) {
+//       const nextStart = new Date(futureReservations[0].startTime);
+//       return `Next: ${nextStart.toLocaleTimeString("en-US", {
+//         hour: "2-digit",
+//         minute: "2-digit",
+//         hour12: true,
+//       })}`;
+//     }
+
+//     return `Available after ${end.toLocaleTimeString("en-US", {
+//       hour: "2-digit",
+//       minute: "2-digit",
+//       hour12: true,
+//     })}`;
+//   }
+
+//   // If not occupied, check last booking of the day
+//   if (futureReservations.length > 0) {
+//     const lastReservation = futureReservations[futureReservations.length - 1];
+//     const lastEnd = new Date(
+//       lastReservation.endDateTime || lastReservation.endTime,
+//     );
+
+//     const timeAfterLastBooking = closingTime.getTime() - lastEnd.getTime();
+
+//     if (timeAfterLastBooking <= THIRTY_MIN) {
+//       return "Open Tomorrow";
+//     }
+
+//     const nextStartTime = new Date(futureReservations[0].startTime);
+//     return `Next Slot: ${nextStartTime.toLocaleTimeString("en-US", {
+//       hour: "2-digit",
+//       minute: "2-digit",
+//       hour12: true,
+//     })}`;
+//   }
+
+//   // No reservations at all
+//   if (closingTime.getTime() - now.getTime() <= THIRTY_MIN) {
+//     return "Open Tomorrow";
+//   }
+
+//   return "Open All Day";
+// };
+
+const formatTime = (date: Date) =>
+  date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+// Timeline Helper
+
+export const getFullSchedule = (busySlots: any[], selectedDate: Date) => {
   const now = new Date();
-  const day = now.getDay();
+  const schedule: any[] = [];
 
+  const day = selectedDate.getDay();
   const isWeekend = day === 0 || day === 6 || day === 5;
-  const closingTime = new Date(now);
 
-  if (isWeekend) {
-    closingTime.setHours(24, 0, 0, 0);
-  } else {
-    closingTime.setHours(22, 0, 0, 0);
+  const openTime = new Date(selectedDate);
+  openTime.setHours(isWeekend ? 12 : 10, 0, 0, 0);
+
+  const closeTime = new Date(selectedDate);
+  closeTime.setHours(isWeekend ? 24 : 22, 0, 0, 0);
+
+  const isToday = selectedDate.toDateString() === now.toDateString();
+  let lastCheckedTime = new Date(openTime);
+
+  if (isToday && now > openTime) {
+    lastCheckedTime = now;
   }
 
-  const futureReservations = tableReservations
-    .filter((res) => new Date(res.startTime) > now)
-    .sort(
-      (a, b) =>
-        new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
-    );
+  if(isToday && now >= closeTime) return [];
 
-  const THIRTY_MIN = 30 * 60 * 1000;
+  const sortedSlots = [...busySlots].sort(
+    (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+  );
 
-  // If currently occupied
-  if (isOccupied && currentBooking) {
-    const end = new Date(currentBooking.endDateTime || currentBooking.endTime);
+  sortedSlots.forEach((slot) => {
+    const slotStart = new Date(slot.startTime);
+    const slotEnd = new Date(slot.endTime);
 
-    const timeUntilClosingAfterBooking = closingTime.getTime() - end.getTime();
+    if (slotEnd <= lastCheckedTime) return;
 
-    // If not enough time left after booking
-    if (timeUntilClosingAfterBooking <= THIRTY_MIN) {
-      return "Open Tomorrow";
+    if (slotStart > lastCheckedTime) {
+      schedule.push({
+        status: "AVAILABLE",
+        time: `${formatTime(lastCheckedTime)} - ${formatTime(slotStart)}`,
+        type: "available",
+      });
     }
 
-    // If there is another booking after this
-    if (futureReservations.length > 0) {
-      const nextStart = new Date(futureReservations[0].startTime);
-      return `Next: ${nextStart.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      })}`;
-    }
+    schedule.push({
+      status: "RESERVED",
+      time: `${formatTime(slotStart)} - ${formatTime(slotEnd)}`,
+      type: "reserved",
+    });
 
-    return `Available after ${end.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })}`;
+    lastCheckedTime = slotEnd;
+  });
+
+  if (lastCheckedTime < closeTime) {
+    schedule.push({
+      status: "AVAILABLE",
+      time: `${formatTime(lastCheckedTime)} - ${formatTime(closeTime)}`,
+      type: "available",
+    });
   }
 
-  // If not occupied, check last booking of the day
-  if (futureReservations.length > 0) {
-    const lastReservation = futureReservations[futureReservations.length - 1];
-    const lastEnd = new Date(
-      lastReservation.endDateTime || lastReservation.endTime,
-    );
-
-    const timeAfterLastBooking = closingTime.getTime() - lastEnd.getTime();
-
-    if (timeAfterLastBooking <= THIRTY_MIN) {
-      return "Open Tomorrow";
-    }
-
-    const nextStartTime = new Date(futureReservations[0].startTime);
-    return `Next Slot: ${nextStartTime.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    })}`;
-  }
-
-  // No reservations at all
-  if (closingTime.getTime() - now.getTime() <= THIRTY_MIN) {
-    return "Open Tomorrow";
-  }
-
-  return "Open All Day";
+  return schedule;
 };
