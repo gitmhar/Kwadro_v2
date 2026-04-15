@@ -1,4 +1,4 @@
-import { Box, Typography, Stack } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export default function ScheduleBlock({
   time,
@@ -7,11 +7,11 @@ export default function ScheduleBlock({
 }: {
   time: string;
   status: string;
-  type: "reserved"  | "available"; // | "occupied"
+  type: "reserved" | "available" | "pending";
 }) {
   const statusColors = {
     reserved: { main: "#f44336", bg: "rgba(255, 152, 0, 0.1)" },
-    // occupied: { main: "#ff9800", bg: "rgba(244, 67, 54, 0.1)" },
+    pending: { main: "#ff9800", bg: "rgba(244, 67, 54, 0.1)" },
     available: { main: "#4eff08", bg: "rgba(36, 204, 104, 0.1)" },
   };
 

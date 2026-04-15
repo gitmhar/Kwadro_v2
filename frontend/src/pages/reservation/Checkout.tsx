@@ -10,10 +10,20 @@ import { reservationServices } from "../../api/reservation";
 export default function CheckoutPage() {
   const location = useLocation();
   const bookingData = location.state;
+  const reservationId = bookingData?.reservationId;
   const navigate = useNavigate();
   if (!bookingData) return <Navigate to="/book" />;
 
   const handleBack = async () => {
+    console.log("Attempting to delete ID:", reservationId);
+    if (reservationId) {
+      try {
+        await reservationServices.deleteReservation(reservationId);
+        console.log("Reservation hold released");
+      } catch (error) {
+        console.error("Failed to delete pending reservation:", error);
+      }
+    }
     navigate("/book");
   };
 
@@ -48,8 +58,8 @@ export default function CheckoutPage() {
         <Box sx={{ flex: 1 }}>
           <OrderSummary
             duration={bookingData.submissionData.duration}
-            total={bookingData.submissionData.totalAmount}
             bookingData={bookingData.submissionData}
+            reservationId={reservationId}
             isSuccessPage={false}
             onBack={handleBack}
           />

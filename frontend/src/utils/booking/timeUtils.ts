@@ -145,7 +145,7 @@ export const getFullSchedule = (busySlots: any[], selectedDate: Date) => {
   const schedule: any[] = [];
 
   const day = selectedDate.getDay();
-  const isWeekend = day === 0 || day === 6 || day === 5;
+  const isWeekend = day === 0 || day === 6;
 
   const openTime = new Date(selectedDate);
   openTime.setHours(isWeekend ? 12 : 10, 0, 0, 0);
@@ -157,10 +157,10 @@ export const getFullSchedule = (busySlots: any[], selectedDate: Date) => {
   let lastCheckedTime = new Date(openTime);
 
   if (isToday && now > openTime) {
-    lastCheckedTime = now;
+    lastCheckedTime = new Date(now);
   }
 
-  if(isToday && now >= closeTime) return [];
+  if (isToday && now >= closeTime) return [];
 
   const sortedSlots = [...busySlots].sort(
     (a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
@@ -173,17 +173,24 @@ export const getFullSchedule = (busySlots: any[], selectedDate: Date) => {
     if (slotEnd <= lastCheckedTime) return;
 
     if (slotStart > lastCheckedTime) {
-      schedule.push({
-        status: "AVAILABLE",
-        time: `${formatTime(lastCheckedTime)} - ${formatTime(slotStart)}`,
-        type: "available",
-      });
+      const diff =
+        (slotStart.getTime() - lastCheckedTime.getTime()) / (1000 * 60);
+
+      if (diff >= 15) {
+        schedule.push({
+          status: "AVAILABLE",
+          time: `${formatTime(lastCheckedTime)} - ${formatTime(slotStart)}`,
+          type: "available",
+        });
+      }
     }
 
+    const isPending = slot.status === "pending";
+
     schedule.push({
-      status: "RESERVED",
+      status: isPending ? "PENDING" : "RESERVED",
       time: `${formatTime(slotStart)} - ${formatTime(slotEnd)}`,
-      type: "reserved",
+      type: isPending ? "pending" : "reserved",
     });
 
     lastCheckedTime = slotEnd;

@@ -49,56 +49,57 @@ export const createReservation = async (req: Request, res: Response) => {
     }
 
     const totalPrice = calculateTotalPrice(input.duration, 150);
-    const isStripe = req.body.paymentMethod === "stripe";
-
     const reservationData = buildReservationData({
       input,
       startDateTime,
       endDateTime,
       totalPrice,
-      status: isStripe ? "pending" : "paid",
+      status: "pending",
       firebaseUid: firebaseUid,
     });
+
+    const isStripe = req.body.paymentMethod === "stripe";
+
 
     console.log("Saving this to DB:", reservationData);
     const reservation = await Reservation.create(reservationData);
 
-    if (isStripe) {
-      console.log(
-        "Success URL:",
-        `${process.env.FRONTEND_URL}/success?id=${reservation._id}`,
-      );
-      console.log(
-        "Cancel URL:",
-        `${process.env.BACKEND_URL}/api/reservations/cancel/${reservation._id}`,
-      );
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
-        line_items: [
-          {
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: `Table ${reservation.tableNumber} Booking`,
-              },
-              unit_amount: totalPrice,
-            },
-            quantity: 1,
-          },
-        ],
-        mode: "payment",
-        metadata: {
-          reservationId: reservation._id.toString(),
-          firebaseUid: firebaseUid,
-        },
-        success_url: `${process.env.FRONTEND_URL}/success?id=${reservation._id}`,
-        cancel_url: `${process.env.BACKEND_URL}/api/reservations/cancel/${reservation._id}`,
-      });
-      return res
-        .status(201)
-        .json({ url: session.url, createdAt: reservation.createdAt });
-    }
+    // if (isStripe) {
+    //   console.log(
+    //     "Success URL:",
+    //     `${process.env.FRONTEND_URL}/success?id=${reservation._id}`,
+    //   );
+    //   console.log(
+    //     "Cancel URL:",
+    //     `${process.env.BACKEND_URL}/api/reservations/cancel/${reservation._id}`,
+    //   );
+    //   const session = await stripe.checkout.sessions.create({
+    //     payment_method_types: ["card"],
+    //     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    //     line_items: [
+    //       {
+    //         price_data: {
+    //           currency: "usd",
+    //           product_data: {
+    //             name: `Table ${reservation.tableNumber} Booking`,
+    //           },
+    //           unit_amount: totalPrice,
+    //         },
+    //         quantity: 1,
+    //       },
+    //     ],
+    //     mode: "payment",
+    //     metadata: {
+    //       reservationId: reservation._id.toString(),
+    //       firebaseUid: firebaseUid,
+    //     },
+    //     success_url: `${process.env.FRONTEND_URL}/success?id=${reservation._id}`,
+    //     cancel_url: `${process.env.BACKEND_URL}/api/reservations/cancel/${reservation._id}`,
+    //   });
+    //   return res
+    //     .status(201)
+    //     .json({ url: session.url, createdAt: reservation.createdAt });
+    // }
 
     try {
       const io = getIO();
@@ -108,8 +109,9 @@ export const createReservation = async (req: Request, res: Response) => {
         tableNumber: reservation.tableNumber,
         startTime: reservation.startTime,
         endTime: reservation.endTime,
+        status: "pending",
       });
-    } catch {
+    } catch (err) {
       console.log("Socket skipped (not initialized)");
     }
 
@@ -188,28 +190,28 @@ export const getReservationId = async (req: Request, res: Response) => {
   }
 };
 
-// export const deleteReservation = async (req: Request, res: Response) => {
-//   const { reservationId } = req.params;
-//   try {
-//     const reservation = await Reservation.findById(reservationId);
-//     if (!reservation) {
-//       return res.status(404).json({
-//         message: "Reservation not found.",
-//       });
-//     }
-//     if (reservation.status !== "pending") {
-//       return res.status(400).json({
-//         message: "Cannot delete a confirmed or paid reservation.",
-//       });
-//     }
+export const deleteReservation = async (req: Request, res: Response) => {
+  const { reservationId } = req.params;
+  try {
+    const reservation = await Reservation.findById(reservationId);
+    if (!reservation) {
+      return res.status(404).json({
+        message: "Reservation not found.",
+      });
+    }
+    if (reservation.status !== "pending") {
+      return res.status(400).json({
+        message: "Cannot delete a confirmed or paid reservation.",
+      });
+    }
 
-//     await Reservation.findByIdAndDelete(reservationId);
-//     res.json({ message: "Reservation hold released successfully" });
-//   } catch (err: any) {
-//     console.error(
-//       `Error deleting reservation with reservationId: ${reservationId}`,
-//       err.message,
-//     );
-//     res.status(500).json({ message: "Server Error" });
-//   }
-// };
+    await Reservation.findByIdAndDelete(reservationId);
+    res.json({ message: "Reservation hold released successfully" });
+  } catch (err: any) {
+    console.error(
+      `Error deleting reservation with reservationId: ${reservationId}`,
+      err.message,
+    );
+    res.status(500).json({ message: "Server Error" });
+  }
+};

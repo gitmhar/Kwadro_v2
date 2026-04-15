@@ -10,28 +10,38 @@ import {
 } from "../../utils/booking/price.util";
 import BaseCard from "../ui/BaseCard";
 import { useNavigate } from "react-router-dom";
+import { stripeServices } from "../../api/stripe";
+
+interface OrderSummaryProps {
+  duration: any;
+  bookingData: any;
+  reservationId: string;
+  isSuccessPage: boolean;
+  onBack: () => void;
+}
 
 export default function OrderSummary({
   duration,
   bookingData,
+  reservationId,
   isSuccessPage = false,
   onBack,
-}: any) {
+}: OrderSummaryProps) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleFinalSubmit = async () => {
     setIsLoading(true);
     try {
-      const finalData = {
-        ...bookingData,
-        paymentMethod: "stripe",
-      };
-      const response = await reservationServices.createReservation(finalData);
+      const response = await stripeServices.createCheckout(reservationId);
       console.log("Server Response:", response.data);
-      if (response.url) window.location.href = response.url;
+      if (response.url) {
+        window.location.href = response.url;
+      } else {
+        throw new Error("Stripe URL not found in response");
+      }
     } catch (error: any) {
-      console.error(error);
+      console.error("Payment Error:", error);
     } finally {
       setIsLoading(false);
     }

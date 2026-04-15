@@ -126,19 +126,31 @@ export default function Forms({
     if (isBlocked) return;
 
     const localDateTime = combineDateAndTime(selectedDate, startTime);
+    const total = calculateBookingPrice(formData.duration);
 
     const submissionData = {
       ...formData,
       startTime: localDateTime.toISOString(),
       tableNumber: tableNumber,
+      totalAmount: total,
+      status: "pending",
     };
 
-    const total = calculateBookingPrice(formData.duration);
+    try {
+      const pendingReservation =
+        await reservationServices.createReservation(submissionData);
 
-    navigate("/checkout-page", {
-      state: { submissionData, totalAmount: total },
-    });
-    handleClose();
+      navigate("/checkout-page", {
+        state: {
+          submissionData,
+          totalAmount: total,
+          reservationId: pendingReservation._id,
+        },
+      });
+      handleClose();
+    } catch (err: any) {
+      console.error("Failed to secure table hold:", err);
+    }
   };
 
   return (

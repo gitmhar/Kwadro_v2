@@ -35,7 +35,7 @@ export default function BookingModal({
   const { busySlots } = useBusySlots(tableNumber, selectedDate);
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={handleClose} role="dialog">
       <Box
         sx={{
           bgcolor: "#121417",

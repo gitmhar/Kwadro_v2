@@ -14,7 +14,8 @@ router.get(
 );
 router
   .route("/:reservationId")
-  .get(verifyFirebase, reservation.getReservationId)
-  // .delete(verifyFirebase, reservation.deleteReservation);
+  .get(verifyFirebase, reservation.getReservationId);
+
+router.delete("/:reservationId", verifyFirebase, reservation.deleteReservation);
 
 export default router;

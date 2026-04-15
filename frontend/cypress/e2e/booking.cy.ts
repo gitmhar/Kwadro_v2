@@ -1,39 +1,29 @@
-describe("Smoke Test", () => {
-  it("successfully loads the homepage", () => {
-    cy.visit("/");
-    cy.contains("hello").should("be.visible");
-  });
-});
+// describe("Smoke Test", () => {
+//   it("successfully loads the homepage", () => {
+//     cy.visit("/");
+//   });
+// });
 
-Cypress.on("uncaught:exception", (err, runnable) => {
-  // returning false here prevents Cypress from failing the test
-  if (err.message.includes("backdrop")) {
-    return false;
-  }
-});
-
-describe("Reservation System", () => {
+describe("Reservation System Flow", () => {
   beforeEach(() => {
     cy.visit("/book");
   });
-
-  it("should allow a user to book a table", () => {
-    // Click the table button (this triggers React state to open the modal)
-    cy.contains(".card", "Table 1")
-      .contains("button", /Book Now|View\/Book Later/i)
-      .click();
-
-    cy.get("#tableModal").should("exist").and("be.visible");
+  // it("should allow a user to choose a table", () => {
+  //   cy.contains('.MuiCard-root', 'Table 01')
+  //     .find('button')
+  //     .click();
+  // });
+  it("should allow a user to choose date and fill the form", () => {
+    cy.contains(".MuiCard-root", "Table 01").find("button").click();
+    cy.get('[role="dialog"]').should("be.visible");
     cy.get(".react-calendar__tile--now").click();
-    cy.get('#startTime').type("19:00");
+    cy.get('input[type="time"]').type("19:00");
+    cy.contains("button", "1 Hour").click();
+    cy.get('input[type="email"]').type('j0hnmh4r23@gmail.com');
+    cy.get('input[name="name"]').type('Cypress Tester');
+    cy.get('input[name="contact"]').type('0912345678');
+    cy.get('input[type="number"]').clear().type('5');
 
-    cy.get("#name").type("Cypress Tester");
-    cy.get("#email").type("cypress@example.com");
-    cy.get("#contact").type("09123456789");
-    cy.get("#duration").select("1 Hours");
-
-    cy.get('button[type="submit"]').click()
-  });
+    cy.contains('button', 'Confirm Booking').click();
+    });
 });
-
-

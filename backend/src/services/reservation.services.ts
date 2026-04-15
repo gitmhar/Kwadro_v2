@@ -32,7 +32,7 @@ export const findBusySlots = async (
     status: { $in: ["pending", "paid"] },
     startTime: { $gte: startOfDay, $lte: endOfDay },
   })
-    .select("startTime endTime")
+    .select("startTime endTime status")
     .sort({ startTime: 1 });
 };
 

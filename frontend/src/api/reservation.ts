@@ -28,8 +28,8 @@ export const reservationServices = {
     return response.data;
   },
 
-  // deleteReservation: async (reservationId: string) => {
-  //   const response = await api.delete(`/book/${reservationId}`);
-  //   return response.data;
-  // },
+  deleteReservation: async (reservationId: string) => {
+    const response = await api.delete(`/book/${reservationId}`);
+    return response.data;
+  },
 };
