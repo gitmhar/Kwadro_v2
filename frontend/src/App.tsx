@@ -12,6 +12,9 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/admin/Dashboard";
 import Success from "./pages/reservation/Success";
 import CheckoutPage from "./pages/reservation/Checkout";
+import AdminLayout from "./layout/AdminLayout";
+import Reservations from "./pages/admin/Reservations";
+import Intelligence from "./pages/admin/Intelligence";
 
 function App() {
   useEffect(() => {
@@ -28,19 +31,24 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
+          {/* Customer side */}
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             {/* Auth */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            {/* Admin */}
-            <Route path="/admin-dashboard" element={<Dashboard />} />
             {/* Services */}
             <Route path="/book" element={<Reservation />} />
             <Route path="/checkout-page" element={<CheckoutPage />} />
             {/* Response */}
             <Route path="/success" element={<Success />} />
+          </Route>
+          {/* Admin */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/admin/reservations" element={<Reservations />} />
+            <Route path="/admin/intelligence" element={<Intelligence/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
