@@ -20,6 +20,8 @@ import {
 } from "@mui/material";
 import AdminCard from "../../ui/AdminCard";
 import { Campaign, Download, FilterList, Search } from "@mui/icons-material";
+import SectionHeader from "../partials/SectionHeader";
+import DataTable from "../partials/DataTable";
 
 function createData(
   name: string,
@@ -34,7 +36,7 @@ function createData(
 
 export default function CustomerCRM() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const tableData = [
     createData(
@@ -81,8 +83,17 @@ export default function CustomerCRM() {
 
   return (
     <>
+      <SectionHeader
+        title="Customer CRM"
+        subtitle="Intelligence"
+        primaryBtnLabel="Export CSV"
+        secondaryBtnLabel="Send Email Blast"
+        primaryBtnIcon=""
+        secondaryBtnIcon={<Campaign />}
+        hideOnButtonMobile={true}
+      />
       {isMobile ? (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{ mt: 2 }}>
           <Box>
             {/* Search Bar */}
             <TextField
@@ -97,7 +108,7 @@ export default function CustomerCRM() {
                 ),
               }}
               sx={{
-                bgcolor: "#f5f5f5",
+                bgcolor: "#f3f3f3",
                 borderRadius: "12px",
                 px: 2,
                 py: 1,
@@ -219,6 +230,7 @@ export default function CustomerCRM() {
                 variant="contained"
                 startIcon={<Campaign />}
                 sx={{
+                  display: { sm: "none" },
                   bgcolor: "#000000",
                   color: "#ffffff",
                   py: 2,
@@ -242,7 +254,7 @@ export default function CustomerCRM() {
               bgcolor: "#f3f3f3",
               color: "#474747",
               py: 2,
-              borderRadius: "12px",
+              borderRadius: "16px",
               fontWeight: 600,
               textTransform: "none",
             }}
@@ -251,8 +263,15 @@ export default function CustomerCRM() {
           </Button>
         </Stack>
       ) : (
+        // Desktop
         <AdminCard
-          sx={{ p: 0, overflow: "hidden", height: "100%", width: "100%" }}
+          sx={{
+            p: 0,
+            overflow: "hidden",
+            height: "100%",
+            width: "100%",
+            mt: 2,
+          }}
         >
           <Box
             sx={{
@@ -355,114 +374,96 @@ export default function CustomerCRM() {
             </Box>
           </Box>
           <Divider sx={{ opacity: 0.5 }} />
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {[
-                    "IDENTITY",
-                    "LIFETIME VALUE",
-                    "VISITS",
-                    "LAST ACTIVE",
-                    "STATUS",
-                  ].map((head) => (
-                    <TableCell
-                      key={head}
+          <DataTable
+            columns={[
+              {
+                field: "name",
+                headerName: "IDENTITY",
+                render: (row) => (
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Avatar
                       sx={{
-                        color: "#a3a3a3",
-                        fontWeight: 700,
+                        bgcolor: "#f0f0f0",
+                        color: "#474747",
                         fontSize: "0.75rem",
-                        letterSpacing: 1,
-                        borderBottom: "1px solid #f0f0f0",
-                        py: 3,
+                        fontWeight: 700,
                       }}
                     >
-                      {head}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {tableData.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ "&:last-child td": { border: 0 } }}
-                  >
-                    {/* 1. IDENTITY - Giving this more room fixes the compression */}
-                    <TableCell sx={{ py: 2, width: "35%" }}>
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
-                      >
-                        <Avatar
-                          sx={{
-                            bgcolor: "#f0f0f0",
-                            color: "#474747",
-                            fontSize: "0.75rem",
-                            fontWeight: 700,
-                          }}
-                        >
-                          {row.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </Avatar>
-                        <Box>
-                          <Typography
-                            sx={{
-                              fontWeight: 700,
-                              color: "#000",
-                              fontSize: "0.9rem",
-                            }}
-                          >
-                            {row.name}
-                          </Typography>
-                          <Typography
-                            sx={{ color: "#a3a3a3", fontSize: "0.75rem" }}
-                          >
-                            {row.email || "user@email.com"}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </TableCell>
-
-                    {/* 2. VALUE - Bold black like the reference */}
-                    <TableCell sx={{ fontWeight: 700, color: "#000" }}>
-                      {row.value}
-                    </TableCell>
-
-                    {/* 3. VISITS */}
-                    <TableCell sx={{ color: "#474747" }}>
-                      {row.visits}
-                    </TableCell>
-
-                    {/* 4. LAST ACTIVE */}
-                    <TableCell sx={{ color: "#474747" }}>
-                      {row.lastActive}
-                    </TableCell>
-
-                    {/* 5. STATUS - Pill Design */}
-                    <TableCell>
-                      <Box
+                      {row.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </Avatar>
+                    <Box>
+                      <Typography
                         sx={{
-                          display: "inline-block",
-                          bgcolor: "#f0f0f0",
-                          px: 1.5,
-                          py: 0.5,
-                          borderRadius: "20px",
-                          fontSize: "0.65rem",
-                          fontWeight: 800,
+                          fontWeight: 700,
                           color: "#474747",
-                          textTransform: "uppercase",
+                          fontSize: "0.9rem",
                         }}
                       >
-                        {row.status}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                        {row.name}
+                      </Typography>
+                      <Typography
+                        sx={{ color: "#a3a3a3", fontSize: "0.75rem" }}
+                      >
+                        {row.email}
+                      </Typography>
+                    </Box>
+                  </Box>
+                ),
+              },
+              {
+                field: "value",
+                headerName: "LIFETIME VALUE",
+                render: (row) => (
+                  <Typography sx={{ fontWeight: 700, color: "#474747" }}>
+                    {row.value}
+                  </Typography>
+                ),
+              },
+              {
+                field: "visits",
+                headerName: "VISITS",
+                render: (row) => (
+                  <Typography sx={{ color: "#474747" }}>
+                    {row.visits}
+                  </Typography>
+                ),
+              },
+              {
+                field: "lastActive",
+                headerName: "LAST ACTIVE",
+                render: (row) => (
+                  <Typography sx={{ color: "#474747" }}>
+                    {row.lastActive}
+                  </Typography>
+                ),
+              },
+              {
+                field: "status",
+                headerName: "STATUS",
+                render: (row) => (
+                  <Box
+                    sx={{
+                      display: "inline-block",
+                      bgcolor: "#f0f0f0",
+                      px: 1.5,
+                      py: 0.5,
+                      borderRadius: "20px",
+                      fontSize: "0.65rem",
+                      fontWeight: 800,
+                      color: "#474747",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {row.status}
+                  </Box>
+                ),
+              },
+            ]}
+            data={tableData}
+          />
         </AdminCard>
       )}
     </>

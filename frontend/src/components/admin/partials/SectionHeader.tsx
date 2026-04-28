@@ -5,10 +5,10 @@ import type { ReactNode } from "react";
 interface SectionHeaderProps {
   title: string;
   subtitle: string;
-  primaryBtnLabel: string;
-  secondaryBtnLabel: string;
-  primaryBtnIcon: ReactNode;
-  secondaryBtnIcon: ReactNode;
+  primaryBtnLabel?: string;
+  secondaryBtnLabel?: string;
+  primaryBtnIcon?: ReactNode;
+  secondaryBtnIcon?: ReactNode;
   hideOnButtonMobile?: boolean;
 }
 
@@ -21,6 +21,8 @@ export default function SectionHeader({
   secondaryBtnIcon,
   hideOnButtonMobile = false,
 }: SectionHeaderProps) {
+  const hasButtons = primaryBtnLabel || secondaryBtnLabel;
+
   return (
     <Box
       sx={{
@@ -46,45 +48,48 @@ export default function SectionHeader({
           {title}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: hideOnButtonMobile ? { xs: "none", sm: "flex" } : "flex",
-          justifyContent: { xs: "center", sm: "flex-end" },
-          gap: 2,
-          alignItems: "center",
-          width: { xs: "100%", md: "auto" },
-        }}
-      >
-        {primaryBtnLabel && (
-          <Button
-            startIcon={primaryBtnIcon}
-            sx={{
-              bgcolor: "#f3f3f3",
-              px: 2,
-              borderRadius: 2,
-              width: { xs: "100%", sm: "auto" },
-              whiteSpace: "nowrap",
-            }}
-          >
-            {primaryBtnLabel}
-          </Button>
-        )}
-        {secondaryBtnLabel && (
-          <Button
-            startIcon={secondaryBtnIcon}
-            sx={{
-              bgcolor: "#000000",
-              color: "#ffffff",
-              px: 2,
-              borderRadius: 2,
-              width: { xs: "100%", sm: "auto" },
-              whiteSpace: "nowrap",
-            }}
-          >
-            {secondaryBtnLabel}
-          </Button>
-        )}
-      </Box>
+      {hasButtons && (
+        <Box
+          sx={{
+            display: hideOnButtonMobile ? { xs: "none", sm: "flex" } : "flex",
+            justifyContent: { xs: "center", sm: "flex-end" },
+            gap: 2,
+            alignItems: "center",
+            width: { xs: "100%", md: "auto" },
+          }}
+        >
+          {primaryBtnLabel && (
+            <Button
+              startIcon={primaryBtnIcon}
+              sx={{
+                bgcolor: "#f3f3f3",
+                px: 2,
+                borderRadius: 2,
+                width: { xs: "100%", sm: "auto" },
+                whiteSpace: "nowrap",
+              }}
+            >
+              {primaryBtnLabel}
+            </Button>
+          )}
+
+          {secondaryBtnLabel && (
+            <Button
+              startIcon={secondaryBtnIcon}
+              sx={{
+                bgcolor: "#000000",
+                color: "#ffffff",
+                px: 2,
+                borderRadius: 2,
+                width: { xs: "100%", sm: "auto" },
+                whiteSpace: "nowrap",
+              }}
+            >
+              {secondaryBtnLabel}
+            </Button>
+          )}
+        </Box>
+      )}
     </Box>
   );
 }

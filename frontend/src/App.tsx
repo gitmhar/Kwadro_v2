@@ -15,6 +15,8 @@ import CheckoutPage from "./pages/reservation/Checkout";
 import AdminLayout from "./layout/AdminLayout";
 import Reservations from "./pages/admin/Reservations";
 import Intelligence from "./pages/admin/Intelligence";
+import Transaction from "./pages/admin/Transaction";
+import Settings from "./pages/admin/Settings";
 
 function App() {
   useEffect(() => {
@@ -48,7 +50,9 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="/admin/reservations" element={<Reservations />} />
-            <Route path="/admin/intelligence" element={<Intelligence/>}/>
+            <Route path="/admin/intelligence" element={<Intelligence />} />
+            <Route path="/admin/transaction" element={<Transaction />} />
+            <Route path="/admin/settings" element={<Settings />} />
           </Route>
         </Routes>
       </BrowserRouter>

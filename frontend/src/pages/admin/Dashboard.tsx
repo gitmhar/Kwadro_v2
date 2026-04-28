@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import Capacity from "../../components/admin/dashboard/Capacity";
 import TableMonitorGrid from "../../components/admin/dashboard/TableMonitorGrid";
 import TableMonitorCard from "../../components/admin/dashboard/TableMonitorCard";
+import ArrivingSoon from "../../components/admin/reservations/arriving_soon/ArrivingSoon";
 
 export default function Dashboard() {
   // const { user, role } = useAuth();
@@ -17,7 +18,7 @@ export default function Dashboard() {
       <Box mb={3}>
         <Capacity />
       </Box>
-      <Box>
+      <Box sx={{ mb: 5 }}>
         <TableMonitorGrid />
       </Box>
     </Box>

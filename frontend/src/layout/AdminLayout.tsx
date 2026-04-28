@@ -9,6 +9,7 @@ import Sidebar from "../components/partials/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { Menu } from "@mui/icons-material";
+import GlobalFab from "../components/ui/GlobalFab";
 
 export default function AdminLayout() {
   const theme = useTheme();
@@ -62,6 +63,7 @@ export default function AdminLayout() {
         </Box>
         <Box sx={{ px: 3, flexGrow: 1 }}>
           <Outlet />
+          <GlobalFab />
         </Box>
       </Box>
     </Box>
