@@ -320,14 +320,10 @@ export default function CustomerCRM() {
                 select
                 value="ALL CUSTOMERS"
                 variant="standard"
-                InputProps={{ disableUnderline: true }}
-                SelectProps={{
-                  MenuProps: {
-                    PaperProps: {
-                      sx: {
-                        bgcolor: "#f9f9f9",
-                      },
-                    },
+                slotProps={{
+                  input: { disableUnderline: true },
+                  select: {
+                    MenuProps: { PaperProps: { sx: { bgcolor: "#f9f9f9" } } },
                   },
                 }}
                 sx={{

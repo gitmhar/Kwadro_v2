@@ -51,12 +51,41 @@ export default function Sidebar({
       icon: <LocalAtmOutlinedIcon />,
       path: "/admin/transaction",
     },
-    {
-      text: "Settings",
-      icon: <SettingsOutlinedIcon />,
-      path: "/admin/settings",
-    },
   ];
+
+  const renderMenuItem = (item: any) => {
+    const isActive = location.pathname === item.path;
+    return (
+      <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
+        <ListItemButton
+          component={Link}
+          to={item.path}
+          sx={{
+            borderRadius: "12px",
+            backgroundColor: isActive ? "#e0e0e0" : "transparent",
+            "&:hover": { backgroundColor: "#eeeeee" },
+            py: 1.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{ minWidth: 40, color: isActive ? "black" : "#9e9e9e" }}
+          >
+            {item.icon}
+          </ListItemIcon>
+          <ListItemText
+            primary={item.text}
+            slotProps={{
+              primary: {
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? "black" : "#9e9e9e",
+              },
+            }}
+          />
+        </ListItemButton>
+      </ListItem>
+    );
+  };
+
   return (
     <Drawer
       variant={isMobile ? "temporary" : "permanent"}
@@ -104,44 +133,41 @@ export default function Sidebar({
       </Box>
       {/* Dashboard Menu */}
       <List disablePadding>
-        {sidebarMenu.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
-              <ListItemButton
-                component={Link}
-                to={item.path}
-                sx={{
-                  borderRadius: "12px",
-                  backgroundColor: isActive ? "#e0e0e0" : "transparent",
-                  "&:hover": {
-                    backgroundColor: "#eeeeee",
-                  },
-                  py: 1.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 40,
-                    color: isActive ? "black" : "#9e9e9e",
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  slotProps={{
-                    primary: {
-                      fontWeight: isActive ? 600 : 500,
-                      color: isActive ? "black" : "#9e9e9e",
-                    },
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+        {sidebarMenu.map((item) => renderMenuItem(item))}
       </List>
+
+      <Box sx={{ mt: "auto", pt: 2 }}>
+        
+        <List disablePadding>
+          {renderMenuItem({
+            text: "Settings",
+            icon: <SettingsOutlinedIcon />,
+            path: "/admin/settings",
+          })}
+        </List>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            mt: 2,
+            p: 1.5,
+            bgcolor: "#f0f0f0",
+            borderRadius: "12px",
+          }}
+        >
+          <Avatar src="/path-to-avatar.jpg" sx={{ width: 32, height: 32 }} />
+          <Box>
+            <Typography sx={{ fontWeight: 700, fontSize: "0.85rem" }}>
+              Admin Mhar
+            </Typography>
+            <Typography sx={{ color: "#9e9e9e", fontSize: "0.7rem" }}>
+              Staff Admin
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
     </Drawer>
   );
 }
