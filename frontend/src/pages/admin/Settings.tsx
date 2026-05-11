@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import AccountSettings from "../../components/admin/settings/account/AccountSettings";
 import Preferences from "../../components/admin/settings/preference/Preference";
-import AuditAndPermission from "../../components/admin/settings/activity&permission/AuditAndPermission";
+import AuditAndPermission from "../../components/admin/settings/permissions/AuditAndPermission";
 
 export default function Settings() {
   return (

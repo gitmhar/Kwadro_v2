@@ -5,40 +5,40 @@ import {
   Button,
   Grid,
   IconButton,
-  TextField,
   Typography,
 } from "@mui/material";
-import AdminCard from "../../../ui/AdminCard";
+import AdminCard from "../../../ui/cards/AdminCard";
 import { CameraAlt } from "@mui/icons-material";
-import InputField from "../../partials/InputField";
+import InputField from "../../../ui/inputs/InputField";
+
+const fields = [
+  {
+    name: "fullName",
+    label: "FULL NAME",
+    defaultValue: "Alexander Mitchell",
+    type: "text",
+  },
+  {
+    name: "email",
+    label: "EMAIL",
+    defaultValue: "alex.mitchell@dummy.com",
+    type: "email",
+  },
+  {
+    name: "prefName",
+    label: "PREFFERED NAME",
+    defaultValue: "Alex",
+    type: "text",
+  },
+  {
+    name: "contact",
+    label: "PHONE NUMBER",
+    defaultValue: "(+63) 9123456789",
+    type: "text",
+  },
+];
 
 export default function AccountDetails() {
-  const fields = [
-    {
-      name: "fullName",
-      label: "FULL NAME",
-      defaulValue: "Alexander Mitchell",
-      type: "text",
-    },
-    {
-      name: "email",
-      label: "EMAIL",
-      defaulValue: "alex.mitchell@dummy.com",
-      type: "email",
-    },
-    {
-      name: "prefName",
-      label: "PREFFERED NAME",
-      defaulValue: "Alex",
-      type: "text",
-    },
-    {
-      name: "contact",
-      label: "PHONE NUMBER",
-      defaulValue: "(+63) 9123456789",
-      type: "text",
-    },
-  ];
   return (
     <AdminCard sx={{ height: "100%" }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 3, mb: 4 }}>
@@ -80,11 +80,10 @@ export default function AccountDetails() {
       </Box>
       <Grid container spacing={3}>
         {fields.map((field) => (
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid key={field.name} size={{ xs: 12, sm: 6 }}>
             <InputField
-              key={field.name}
               label={field.label}
-              defaultValue={field.defaulValue}
+              defaultValue={field.defaultValue}
               type={field.type}
             />
           </Grid>

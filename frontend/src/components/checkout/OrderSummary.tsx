@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Divider, Stack, Typography, Button, Box } from "@mui/material";
 import PaymentsIcon from "@mui/icons-material/Payments";
-import SummaryRow from "./SummaryRow";
+import SummaryRow from "./shared/SummaryRow";
 import { reservationServices } from "../../api/reservation";
 import {
   calculateBookingPrice,
   formatPrice,
   HOURLY_RATE,
 } from "../../utils/booking/price.util";
-import BaseCard from "../ui/BaseCard";
+import BaseCard from "../ui/cards/BaseCard";
 import { useNavigate } from "react-router-dom";
 import { stripeServices } from "../../api/stripe";
 

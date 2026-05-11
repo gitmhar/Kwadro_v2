@@ -2,7 +2,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../../utils/stylesheets/custom_calendar.css";
 import { Box, Stack, Typography } from "@mui/material";
-import SelectedDatePill from "./partials/SelectedDatePill";
+import SelectedDatePill from "./shared/SelectedDatePill";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];

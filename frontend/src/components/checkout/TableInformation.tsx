@@ -1,6 +1,6 @@
 import { Box, Chip, Stack, Typography } from "@mui/material";
-import BaseCard from "../ui/BaseCard";
-import TableInfo from "./TableInfoRow";
+import BaseCard from "../ui/cards/BaseCard";
+import TableInfo from "./shared/TableInfoRow";
 import { AccessTime, CalendarToday } from "@mui/icons-material";
 import { formatFullReservationTime } from "../../utils/booking/dateUtils";
 

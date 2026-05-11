@@ -4,18 +4,15 @@ import {
   Chip,
   IconButton,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import AdminCard from "../../ui/AdminCard";
+import AdminCard from "../../ui/cards/AdminCard";
 import { AccessTime, DeleteOutline } from "@mui/icons-material";
+import DataTable from "../../ui/data-display/DataTable";
+import ReservationCardShell from "../../ui/shared/ReservationCardShell";
+import UserIdentity from "../../ui/data-display/UserIdentity";
 
 function createData(
   client: string,
@@ -37,153 +34,145 @@ export default function ReservationList() {
     createData("Client 3", "Walk-in", "Table 01", "04-25-2026", "Delete"),
     createData("Client 4", "VIP", "Table 05", "04-25-2026", "Delete"),
     createData("Client 5", "", "Table 04", "04-25-2026", "Delete"),
-    createData("Client 6", "", "Table 04", "04-25-2026", "Delete"),
+    createData("Client 6", "", "Table 02", "06-25-2026", "Delete"),
+    createData("Client 7", "", "Table 07", "05-22-2026", "Delete"),
+    createData("Client 8", "", "Table 01", "05-21-2026", "Delete"),
   ];
   return (
     <>
       {isMobile ? (
+        // Silpon View
         <Stack spacing={2}>
           {tableData.map((row) => (
-            // silpon view
-            <AdminCard key={row.client} sx={{ p: 2.5 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  mb: 2,
-                }}
-              >
-                <Box>
-                  <Typography sx={{ fontWeight: 700, fontSize: "1.1rem" }}>
-                    {row.client}
-                  </Typography>
-                  <Typography
-                    variant="caption"
+            <ReservationCardShell
+              key={row.client}
+              left={
+                <UserIdentity
+                  name={row.client}
+                  subtitle={row.membershipType || "Standard"}
+                />
+              }
+              right={
+                <>
+                  <Chip
+                    label={row.table}
+                    size="small"
                     sx={{
-                      color: "#a3a3a3",
-                      textTransform: "uppercase",
-                      letterSpacing: 1,
+                      borderRadius: "8px",
+                      fontWeight: 600,
+                      bgcolor: "#f3f3f3",
+                      color: "#1a1c1c",
+                    }}
+                  />
+                </>
+              }
+              bottom={
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.2,
+                      mb: 3,
+                      color: "#666",
                     }}
                   >
-                    {row.membershipType || "Standard"}
-                  </Typography>
-                </Box>
-                <Chip
-                  label={row.table}
-                  size="small"
-                  sx={{
-                    borderRadius: "8px",
-                    fontWeight: 600,
-                    bgcolor: "#f3f3f3",
-                  }}
-                />
-              </Box>
+                    <AccessTime sx={{ fontSize: "1.1rem", color: "#a3a3a3" }} />
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: 700, color: "#474747" }}
+                    >
+                      {row.schedule}
+                    </Typography>
+                  </Box>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  mb: 3,
-                  color: "#666",
-                }}
-              >
-                <AccessTime sx={{ fontSize: "1.1rem", color: "#a3a3a3" }} />
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  {row.schedule}
-                </Typography>
-              </Box>
-
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<DeleteOutline />}
-                sx={{
-                  bgcolor: "#fff5f5", // Light red background like your reference
-                  color: "#d32f2f",
-                  boxShadow: "none",
-                  py: 1.5,
-                  borderRadius: "12px",
-                  fontWeight: 700,
-                  "&:hover": { bgcolor: "#ffe0e0", boxShadow: "none" },
-                }}
-              >
-                DELETE RESERVATION
-              </Button>
-            </AdminCard>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    startIcon={<DeleteOutline />}
+                    sx={{
+                      bgcolor: "#fff1f1",
+                      color: "#e11d48",
+                      boxShadow: "none",
+                      py: 1.5,
+                      borderRadius: "12px",
+                      fontWeight: 800,
+                      fontSize: "0.75rem",
+                      "&:hover": { bgcolor: "#ffe2e2", boxShadow: "none" },
+                    }}
+                  >
+                    DELETE RESERVATION
+                  </Button>
+                </>
+              }
+            />
           ))}
         </Stack>
       ) : (
         // Desktop view
         <AdminCard
-          sx={{ p: 0, overflow: "hidden", height: "100%", width: "100%" }}
+          sx={{
+            p: 0,
+            overflow: "hidden",
+            border: "1px solid #f0f0f0",
+            boxShadow: "none",
+            borderRadius: "24px",
+            height: "auto",
+          }}
         >
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {["CLIENT", "TABLE", "SCHEDULE", "ACTION"].map((head) => (
-                    <TableCell
-                      key={head}
-                      sx={{
-                        color: "#a3a3a3",
-                        fontWeight: 700,
-                        fontSize: "0.75rem",
-                        letterSpacing: 1,
-                        borderBottom: "1px solid #f0f0f0",
-                        py: 3,
-                      }}
-                    >
-                      {head}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {tableData.map((row) => (
-                  <TableRow
-                    key={row.client}
-                    sx={{ "&:last-child td": { border: 0 } }}
+          <DataTable
+            columns={[
+              {
+                field: "client",
+                headerName: "CLIENT",
+                render: (row) => (
+                  <Box>
+                    <Typography sx={{ fontWeight: 700, color: "#000" }}>
+                      {row.client}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: "#a3a3a3" }}>
+                      {row.membershipType || "Standard"}
+                    </Typography>
+                  </Box>
+                ),
+              },
+              {
+                field: "table",
+                headerName: "TABLE",
+                render: (row) => (
+                  <Typography sx={{ fontWeight: 700, color: "#474747" }}>
+                    {row.table}
+                  </Typography>
+                ),
+              },
+              {
+                field: "schedule",
+                headerName: "SCHEDULE",
+                render: (row) => (
+                  <Typography sx={{ color: "#474747" }}>
+                    {row.schedule}
+                  </Typography>
+                ),
+              },
+              {
+                field: "action",
+                headerName: "ACTION",
+                render: (row) => (
+                  <IconButton
+                    size="small"
+                    sx={{
+                      border: "1px solid #e0e0e0",
+                      borderRadius: "8px",
+                      color: "#a3a3a3",
+                    }}
                   >
-                    {/* 1. CLIENT COLUMN */}
-                    <TableCell sx={{ py: 3 }}>
-                      <Typography sx={{ fontWeight: 700, color: "#000" }}>
-                        {row.client}
-                      </Typography>
-                      <Typography variant="caption" sx={{ color: "#a3a3a3" }}>
-                        {row.membershipType || "Standard"}
-                      </Typography>
-                    </TableCell>
-
-                    {/* 2. TABLE COLUMN */}
-                    <TableCell sx={{ fontWeight: 700, color: "#474747" }}>
-                      {row.table}
-                    </TableCell>
-
-                    {/* 3. SCHEDULE COLUMN */}
-                    <TableCell sx={{ color: "#474747", fontWeight: 500 }}>
-                      {row.schedule}
-                    </TableCell>
-
-                    {/* 4. ACTION COLUMN */}
-                    <TableCell>
-                      <IconButton
-                        size="small"
-                        sx={{
-                          border: "1px solid #e0e0e0",
-                          borderRadius: "8px",
-                          color: "#a3a3a3",
-                        }}
-                      >
-                        <DeleteOutline fontSize="small" />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                    <DeleteOutline fontSize="small" />
+                  </IconButton>
+                ),
+              },
+            ]}
+            data={tableData}
+          />
         </AdminCard>
       )}
     </>

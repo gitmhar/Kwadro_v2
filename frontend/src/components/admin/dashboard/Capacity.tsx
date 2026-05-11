@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import AdminCard from "../../ui/AdminCard";
+import AdminCard from "../../ui/cards/AdminCard";
+import MetricBox from "../../ui/data-display/MetricBox";
 
 export default function Capacity() {
   return (
@@ -7,19 +8,20 @@ export default function Capacity() {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
-          alignItems: "center",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "center", md: "flex-start", lg: "center" },
           justifyContent: "space-between",
-          gap: { xs: 3, md: 2 },
+          gap: 3,
         }}
       >
+        {/* Left Column */}
         <Box
           sx={{
             display: "flex",
             flexWrap: "wrap",
             flexDirection: "column",
-            textAlign: {xs: "center", lg: "left"},
-            alignItems: {xs: "center", lg: "flex-start"},
+            textAlign: { xs: "center", lg: "left" },
+            alignItems: { xs: "center", lg: "flex-start" },
           }}
         >
           <Typography
@@ -27,7 +29,9 @@ export default function Capacity() {
             sx={{
               textTransform: "uppercase",
               color: "#a3a3a3",
-              letterSpacing: 1,
+              letterSpacing: 1.5,
+              fontWeight: 700,
+              mb: 0.5,
             }}
           >
             CURRENT CAPACITY
@@ -42,21 +46,30 @@ export default function Capacity() {
                 sm: "3rem",
                 md: "3.75rem",
               },
+              lineHeight: 1,
             }}
           >
             84
             <Box
               component="span"
-              sx={{ fontSize: { xs: "1.5rem", md: "2rem" }, color: "#a3a3a3" }}
+              sx={{
+                fontSize: { xs: "1.75rem", md: "2.25rem" },
+                color: "#a3a3a3",
+              }}
             >
               %
             </Box>
           </Typography>
-          <Typography variant="body2" sx={{ color: "#474747" }}>
+          <Typography
+            variant="body2"
+            sx={{ color: "#474747", mt: 1, mb: { xs: 2, md: 0 } }}
+          >
             Operational velocity is within target parameters. <br />4 tables
             undergoing maintenance
           </Typography>
         </Box>
+
+        {/* Right Column */}
         <Box
           sx={{
             display: "flex",
@@ -66,46 +79,8 @@ export default function Capacity() {
             flexWrap: "wrap",
           }}
         >
-          <Box
-            sx={{
-              bgcolor: "#f5f5f5",
-              p: { xs: 3, md: 5 },
-              borderRadius: 3,
-              textAlign: "center",
-              minWidth: { xs: "45%", sm: 120 },
-              flexGrow: { xs: 1, sm: 0 },
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{ fontWeight: 700, color: "#666" }}
-            >
-              ACTIVE
-            </Typography>
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
-              24
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              bgcolor: "#f5f5f5",
-              p: { xs: 3, md: 5 },
-              borderRadius: 3,
-              textAlign: "center",
-              minWidth: { xs: "45%", sm: 120  },
-              flexGrow: { xs: 1, sm: 0 },
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{ fontWeight: 700, color: "#666" }}
-            >
-              QUEUED
-            </Typography>
-            <Typography variant="h5" sx={{ fontWeight: 700 }}>
-              12
-            </Typography>
-          </Box>
+          <MetricBox label="Active" value="24" />
+          <MetricBox label="Queued" value="12" />
         </Box>
       </Box>
     </AdminCard>

@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
-import BaseCard from "../ui/BaseCard";
-import InfoRow from "./InfoRow";
-
+import BaseCard from "../ui/cards/BaseCard";
+import InfoRow from "./shared/InfoRow";
 
 export default function GuestInformation({ data }: { data: any }) {
   return (

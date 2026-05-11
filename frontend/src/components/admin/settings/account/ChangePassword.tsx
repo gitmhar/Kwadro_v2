@@ -1,7 +1,7 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import AdminCard from "../../../ui/AdminCard";
+import AdminCard from "../../../ui/cards/AdminCard";
 import { LockOutline } from "@mui/icons-material";
-import InputField from "../../partials/InputField";
+import InputField from "../../../ui/inputs/InputField";
 
 export default function ChangePassword() {
   const fields = [

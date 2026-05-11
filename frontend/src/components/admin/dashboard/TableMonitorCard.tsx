@@ -1,44 +1,59 @@
 import { Box, Button, Typography } from "@mui/material";
-import AdminCard from "../../ui/AdminCard";
+import AdminCard from "../../ui/cards/AdminCard";
+import { getStatusConfig } from "../../../utils/constants/status.config";
 
 interface TableMonitorCardProps {
   tableNumber: number;
+  status?: string;
 }
 
 export default function TableMonitorCard({
   tableNumber,
+  status = "Available",
 }: TableMonitorCardProps) {
+  const config = getStatusConfig(status);
+
+  const pulseAnimation = {
+    "@keyframes pulse": {
+      "0%": { transform: "scale(0.95)", opacity: 0.8 },
+      "50%": { transform: "scale(1)", opacity: 1 },
+      "100%": { transform: "scale(0.95)", opacity: 0.8 },
+    },
+  };
+
   return (
     <AdminCard
       sx={{
         width: "100%",
-        maxWidth: { xs: "100%", sm: 200, md: 220 },
         aspectRatio: "3 / 4",
-        p: { xs: 2, sm: 3 },
+        p: 2.5,
         borderRadius: 4,
         position: "relative",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        gap: { xs: 1.5, sm: 2 },
+        boxShadow: "none",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: "0 6px 20px rgba(0, 0, 0, 0.04)",
+        },
       }}
     >
+      {/* Dot Indicator */}
       <Box
         sx={{
           position: "absolute",
-          top: { xs: 12, sm: 20 },
-          right: { xs: 12, sm: 20 },
-          width: { xs: 10, sm: 12 },
-          height: { xs: 10, sm: 12 },
-          bgcolor: "text.primary",
+          top: 20,
+          right: 20,
+          width: 10,
+          height: 10,
+          bgcolor: config.dot,
           borderRadius: "50%",
-          boxShadow: "0 0 10px rgba(46, 204, 113, 0.4)",
-          animation: "pulse 2s infinite ease-in-out",
-          "@keyframes pulse": {
-            "0%": { transform: "scale(0.95)", opacity: 0.8 },
-            "50%": { transform: "scale(1)", opacity: 1 },
-            "100%": { transform: "scale(0.95)", opacity: 0.8 },
-          },
+          boxShadow: `0 0 10px ${config.dot}`,
+          ...pulseAnimation,
+          animation:
+            status === "available" ? "pulse 2s infinite ease-in-out" : "none",
         }}
       />
 
@@ -47,13 +62,13 @@ export default function TableMonitorCard({
         sx={{
           fontWeight: 600,
           color: "#1a1a1a",
-          fontSize: { xs: "2rem", sm: "2.8rem", md: "2.8rem" },
+          fontSize: { xs: "2rem", sm: "2.5rem" },
         }}
       >
         {tableNumber < 10 ? `0${tableNumber}` : tableNumber}
       </Typography>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
         <Box>
           <Typography
             variant="caption"
@@ -65,12 +80,12 @@ export default function TableMonitorCard({
             variant="h6"
             sx={{
               fontWeight: 700,
-              color: "text.primary",
+              color: config.text,
               mt: -0.5,
               fontSize: { xs: "0.9rem", sm: "1rem" },
             }}
           >
-            Available
+            {status}
           </Typography>
         </Box>
 
@@ -81,10 +96,10 @@ export default function TableMonitorCard({
             bgcolor: "#000",
             color: "#fff",
             borderRadius: 2,
-            py: { xs: 1, sm: 1.5 },
-            fontWeight: 800,
-            fontSize: { xs: "0.7rem", sm: "0.75rem" },
-            "&:hover": { bgcolor: "#333" },
+            py: 1.2,
+            fontWeight: 700,
+            fontSize: "0.75rem",
+            "&:hover": { bgcolor: "#262626" },
           }}
         >
           ASSIGN

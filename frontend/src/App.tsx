@@ -3,7 +3,7 @@ import { socket } from "./lib/socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
-import MainLayout from "./layout/MainLayout";
+import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Reservation from "./pages/reservation/Reservation";
 import Signup from "./pages/auth/Signup";
@@ -12,10 +12,10 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Dashboard from "./pages/admin/Dashboard";
 import Success from "./pages/reservation/Success";
 import CheckoutPage from "./pages/reservation/Checkout";
-import AdminLayout from "./layout/AdminLayout";
+import AdminLayout from "./layouts/AdminLayout";
 import Reservations from "./pages/admin/Reservations";
 import Intelligence from "./pages/admin/Intelligence";
-import Transaction from "./pages/admin/Transaction";
+import Transaction from "./pages/admin/Transactions";
 import Settings from "./pages/admin/Settings";
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="/admin/reservations" element={<Reservations />} />
             <Route path="/admin/intelligence" element={<Intelligence />} />
-            <Route path="/admin/transaction" element={<Transaction />} />
+            <Route path="/admin/transactions" element={<Transaction />} />
             <Route path="/admin/settings" element={<Settings />} />
           </Route>
         </Routes>

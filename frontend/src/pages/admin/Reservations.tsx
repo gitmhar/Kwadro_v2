@@ -1,53 +1,42 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import ReservationList from "../../components/admin/reservations/ReservationTable";
-import AdminCalendar from "../../components/admin/reservations/AdminCalendar";
-import SectionHeader from "../../components/admin/partials/SectionHeader";
+import AdminCalendar from "../../components/admin/reservations/calendar/AdminCalendar";
+import SectionHeader from "../../components/ui/shared/SectionHeader";
 import ArrivingSoon from "../../components/admin/reservations/arriving_soon/ArrivingSoon";
 import ActiveBookings from "../../components/admin/reservations/active_bookings/ActiveBooking";
 
 export default function Reservations() {
   return (
-    <Box sx={{ maxWidth: "1450px", width: "100%", mx: "auto" }}>
+    <Box
+      sx={{
+        maxWidth: "1450px",
+        width: "100%",
+        mx: "auto",
+        px: { xs: 2, sm: 3, lg: 4 },
+      }}
+    >
+      {/* Header */}
       <SectionHeader
         title="Reservation"
         subtitle="Management"
         primaryBtnLabel="Generate Report"
       />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: 5,
-          my: 3,
-          width: "100%",
-        }}
-      >
-        <Box sx={{ width: "100%" }}>
+
+      {/* Main Management Panel */}
+      <Grid container spacing={4} sx={{ mt: 2, alignItems: "stretch" }}>
+        <Grid size={{ xs: 12, md: 8 }}>
           <ReservationList />
-        </Box>
-        <Box>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 4 }}>
           <AdminCalendar />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          my: 3,
-          width: "100%",
-        }}
-      >
-        <Box>
-          <ArrivingSoon />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          my: 3,
-          width: "100%",
-        }}
-      >
-        <Box>
-          <ActiveBookings />
-        </Box>
+        </Grid>
+      </Grid>
+
+      {/* Secondary Operational Priorities */}
+      <Box sx={{ mt: 6, display: "flex", flexDirection: "column", gap: 6 }}>
+        <ArrivingSoon />
+        <ActiveBookings />
       </Box>
     </Box>
   );

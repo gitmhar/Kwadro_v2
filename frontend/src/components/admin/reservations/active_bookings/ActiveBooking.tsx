@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import SectionHeader from "../../partials/SectionHeader";
+import SectionHeader from "../../../ui/shared/SectionHeader";
 import ABGrid from "./ABGrid";
 
 export default function ActiveBookings() {

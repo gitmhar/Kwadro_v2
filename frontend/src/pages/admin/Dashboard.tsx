@@ -1,9 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import Capacity from "../../components/admin/dashboard/Capacity";
 import TableMonitorGrid from "../../components/admin/dashboard/TableMonitorGrid";
-import TableMonitorCard from "../../components/admin/dashboard/TableMonitorCard";
-import ArrivingSoon from "../../components/admin/reservations/arriving_soon/ArrivingSoon";
 
 export default function Dashboard() {
   // const { user, role } = useAuth();
@@ -14,11 +12,19 @@ export default function Dashboard() {
     //   </h1>
     //   <p>This is your dashboard!</p>
     // </hgroup>
-    <Box sx={{ maxWidth: "1450px", width: "100%", mx: "auto" }}>
-      <Box mb={3}>
+    <Box
+      sx={{
+        maxWidth: "1450px",
+        width: "100%",
+        mx: "auto",
+        px: { xs: 2, sm: 3, lg: 4 },
+        mt: { xs: 2, sm: 3 }
+      }}
+    >
+      <Box sx={{ mb: 4 }}>
         <Capacity />
       </Box>
-      <Box sx={{ mb: 5 }}>
+      <Box>
         <TableMonitorGrid />
       </Box>
     </Box>

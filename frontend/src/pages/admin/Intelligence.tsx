@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import CustomerCRM from "../../components/admin/intelligence/CustomerCRM";
-import AnalyticsCard from "../../components/admin/intelligence/AnalyticsCard";
-import IntelChart from "../../components/admin/intelligence/IntelChart";
+import CustomerCRM from "../../components/admin/intelligence/crm/CustomerCRM";
+import AnalyticsCard from "../../components/admin/intelligence/analytics/AnalyticsCard";
+import IntelChart from "../../components/admin/intelligence/charts/IntelChart";
 
 export default function Intelligence() {
   return (

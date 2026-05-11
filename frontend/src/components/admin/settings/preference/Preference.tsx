@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import AdminCard from "../../../ui/AdminCard";
+import AdminCard from "../../../ui/cards/AdminCard";
 import { Tune } from "@mui/icons-material";
 import InterfaceSetting from "./Interface";
 import NotificationSettings from "./NotificationsSetting";

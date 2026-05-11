@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import InfoRow from "./InfoRow";
+import InfoRow from "./shared/InfoRow";
 import { formatFullReservationTime } from "../../utils/booking/dateUtils";
 
 export default function BillingInformation({ data }: { data: any }) {

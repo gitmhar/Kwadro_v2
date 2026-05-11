@@ -1,6 +1,6 @@
 import { Card, Box, Typography, Button, Chip } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import BaseCard from "../ui/BaseCard";
+import BaseCard from "../ui/cards/BaseCard";
 
 interface TableCardProps {
   tableNumber: number;

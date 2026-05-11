@@ -12,7 +12,7 @@ import { Close } from "@mui/icons-material";
 import { useState } from "react";
 import BookingCalendar from "./BookingCalendar";
 import Forms from "./BookingForm";
-import ScheduleBlock from "./partials/ScheduleBlock";
+import ScheduleBlock from "./shared/ScheduleBlock";
 import { getOperatingHours } from "../../utils/booking/operatingHours";
 import { useBusySlots } from "../../hooks/useBusySlots";
 import { getFullSchedule } from "../../utils/booking/timeUtils";
