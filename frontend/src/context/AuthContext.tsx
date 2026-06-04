@@ -8,18 +8,19 @@ import {
 import { auth, db } from "../lib/firebase";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import type { UserRole } from "../types/auth";
 
 interface AuthContextType {
   user: User | null;
-  role: string | null;
-  loading: Boolean;
+  role: UserRole | null;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +28,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       if (currentUser) {
         const userDoc = await getDoc(doc(db, "users", currentUser.uid));
         if (userDoc.exists()) {
-          setRole(userDoc.data().role);
+          const data = userDoc.data() as { role: UserRole };
+          setRole(data.role);
         }
         setUser(currentUser);
       } else {

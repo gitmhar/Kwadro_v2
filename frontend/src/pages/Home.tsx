@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "../utils/stylesheets/style.css";
+import "../styles/css/style.css";
 import { useAuth } from "../context/AuthContext";
 import TestCheckoutButton from "./reservation/Success";
 

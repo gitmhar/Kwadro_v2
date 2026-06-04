@@ -9,52 +9,34 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
-import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
-import { useTheme, useMediaQuery } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
+import type { UserRole } from "../../../types/auth";
+import type { SidebarConfig, SidebarItem } from "../../../types/sidebar";
+
 
 interface SidebarProps {
+  config: SidebarConfig;
   open: boolean;
   handleToggle: () => void;
   isMobile: boolean;
+  role: UserRole;
 }
 
 export default function Sidebar({
+  config,
   open,
   handleToggle,
   isMobile,
+  role,
 }: SidebarProps) {
   const location = useLocation();
-  const sidebarMenu = [
-    {
-      text: "Monitor",
-      icon: <DashboardOutlinedIcon />,
-      path: "/admin",
-    },
-    {
-      text: "Reservations",
-      icon: <CalendarTodayOutlinedIcon />,
-      path: "/admin/reservations",
-    },
-    {
-      text: "Intelligence",
-      icon: <InsightsOutlinedIcon />,
-      path: "/admin/intelligence",
-    },
-    {
-      text: "Transaction",
-      icon: <LocalAtmOutlinedIcon />,
-      path: "/admin/transaction",
-    },
-  ];
+  const isImageAsset = typeof config.brand.icon === "string";
+  const IconComponent = !isImageAsset ? config.brand.icon : null;
+  const drawerBg = role === "SUPER_ADMIN" ? "#121414" : "#fafafa";
 
-  const renderMenuItem = (item: any) => {
+  const renderMenuItem = (item: SidebarItem) => {
     const isActive = location.pathname === item.path;
+    const Icon = item.icon;
     return (
       <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
         <ListItemButton
@@ -70,12 +52,13 @@ export default function Sidebar({
           <ListItemIcon
             sx={{ minWidth: 40, color: isActive ? "black" : "#9e9e9e" }}
           >
-            {item.icon}
+            <Icon />
           </ListItemIcon>
           <ListItemText
             primary={item.text}
             slotProps={{
               primary: {
+                fontSize: "0.90rem",
                 fontWeight: isActive ? 600 : 500,
                 color: isActive ? "black" : "#9e9e9e",
               },
@@ -96,55 +79,76 @@ export default function Sidebar({
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: 260,
-          borderRight: "none",
-          backgroundColor: "#fafafa",
+          borderRight: "1px solid #444748",
+          backgroundColor: drawerBg,
           padding: "20px",
         },
       }}
     >
       {/* Header */}
       <Box sx={{ display: "flex", alignItems: "center", mb: 4, gap: 2 }}>
-        <Avatar
-          variant="rounded"
-          sx={{ bgcolor: "black", width: 40, height: 40 }}
-        >
-          <Box component="span" sx={{ fontSize: "1.2rem", color: "white" }}>
-            <TerminalOutlinedIcon />
-          </Box>
-        </Avatar>
+        {config.brand.icon && (
+          <Avatar
+            variant="rounded"
+            sx={{
+              bgcolor: config.brand.avatarBg ?? "#000",
+              width: 40,
+              height: 40,
+            }}
+          >
+            {isImageAsset ? (
+              <img
+                src={config.brand.icon as string}
+                alt="Logo"
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
+            ) : (
+              IconComponent && (
+                <Box
+                  component="span"
+                  sx={{ fontSize: "1.2rem", color: "white" }}
+                >
+                  <IconComponent />
+                </Box>
+              )
+            )}
+          </Avatar>
+        )}
+
         <Box>
           <Typography
             variant="subtitle1"
-            sx={{ fontWeight: 600, lineHeight: 1.2, color: "#000" }}
+            sx={{
+              fontWeight: 600,
+              lineHeight: 1.2,
+              color: config.brand.titleColor ?? "#000",
+            }}
           >
-            Command <br /> Center
+            {config.brand.title}
           </Typography>
           <Typography
             variant="caption"
             sx={{
-              color: "text.secondary",
+              color: "#fafafa",
               textTransform: "uppercase",
               letterSpacing: 1,
             }}
           >
-            Global Administration
+            {config.brand.subtitle}
           </Typography>
         </Box>
       </Box>
       {/* Dashboard Menu */}
-      <List disablePadding>
-        {sidebarMenu.map((item) => renderMenuItem(item))}
-      </List>
+      {config.sections.map((section, i) => (
+        <List key={i} disablePadding>
+          {section.items.map((item) => renderMenuItem(item))}
+        </List>
+      ))}
 
       <Box sx={{ mt: "auto", pt: 2 }}>
-        <List disablePadding>
-          {renderMenuItem({
-            text: "Settings",
-            icon: <SettingsOutlinedIcon />,
-            path: "/admin/settings",
-          })}
-        </List>
-
+        {config.footer && (
+          <List disablePadding>{config.footer.map(renderMenuItem)}</List>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -158,11 +162,11 @@ export default function Sidebar({
         >
           <Avatar src="/path-to-avatar.jpg" sx={{ width: 32, height: 32 }} />
           <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: "0.85rem" }}>
-              Admin Mhar
+            <Typography sx={{ fontWeight: 700, fontSize: "0.75rem" }}>
+              {role}
             </Typography>
-            <Typography sx={{ color: "#9e9e9e", fontSize: "0.7rem" }}>
-              Staff Admin
+            <Typography sx={{ color: "#9e9e9e", fontSize: "0.65rem" }}>
+              {role}
             </Typography>
           </Box>
         </Box>

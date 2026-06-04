@@ -17,6 +17,9 @@ import Reservations from "./pages/admin/Reservations";
 import Intelligence from "./pages/admin/Intelligence";
 import Transaction from "./pages/admin/Transactions";
 import Settings from "./pages/admin/Settings";
+import SuperAdminLayout from "./layouts/SuperAdminLayout";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import Executive from "./pages/super-admin/Executive";
 
 function App() {
   useEffect(() => {
@@ -47,12 +50,22 @@ function App() {
             <Route path="/success" element={<Success />} />
           </Route>
           {/* Admin */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="/admin/reservations" element={<Reservations />} />
-            <Route path="/admin/intelligence" element={<Intelligence />} />
-            <Route path="/admin/transactions" element={<Transaction />} />
-            <Route path="/admin/settings" element={<Settings />} />
+          <Route
+            element={<ProtectedRoute allowedRoles={["ADMIN", "SUPER_ADMIN"]} />}
+          >
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="/admin/reservations" element={<Reservations />} />
+              <Route path="/admin/intelligence" element={<Intelligence />} />
+              <Route path="/admin/transactions" element={<Transaction />} />
+              <Route path="/admin/settings" element={<Settings />} />
+            </Route>
+          </Route>
+          {/* Super Admin */}
+          <Route element={<ProtectedRoute allowedRoles={["SUPER_ADMIN"]} />}>
+            <Route path="/super-admin" element={<SuperAdminLayout />}>
+              <Route index element={<Executive />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
