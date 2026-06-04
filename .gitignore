@@ -17,3 +17,6 @@ build/
 
 # Firebase service account
 service-account.json
+
+# AI Agent
+.antigravitycli/
