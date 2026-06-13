@@ -1,5 +1,4 @@
 import type { SvgIconComponent } from "@mui/icons-material";
-import type { ReactNode } from "react";
 
 export type SidebarItem = {
   text: string;

@@ -10,12 +10,22 @@ export default function KpiCardsSection() {
   ];
 
   return (
-    <Grid container spacing={2} sx={{ mb: '16px' }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        mb: '16px',
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
       {kpis.map((kpi, idx) => (
-        <Grid key={idx} size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid key={idx} size={{ xs: 12, md: 6, lg: 3 }} sx={{ width: '100%', boxSizing: 'border-box' }}>
           <KpiCard {...kpi} />
         </Grid>
       ))}
     </Grid>
   );
 }
+

@@ -22,11 +22,21 @@ export default function Executive() {
       <KpiCardsSection />
 
       {/* SECTION 2: Heatmap & Alerts 70/30 layout */}
-      <Grid container spacing={2} sx={{ mb: '16px' }}>
-        <Grid size={{ xs: 12, lg: 8 }}>
+      <Grid
+        container
+        spacing={2}
+        columns={10}
+        sx={{
+          mb: '16px',
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
+        }}
+      >
+        <Grid size={{ xs: 10, xl: 7 }} sx={{ width: '100%', boxSizing: 'border-box' }}>
           <PeakOccupancyHeatmap />
         </Grid>
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid size={{ xs: 10, xl: 3 }} sx={{ width: '100%', boxSizing: 'border-box' }}>
           <HighRiskAlerts />
         </Grid>
       </Grid>
@@ -35,4 +45,4 @@ export default function Executive() {
       <StaffActivitySnapshot />
     </Box>
   );
-}
+}

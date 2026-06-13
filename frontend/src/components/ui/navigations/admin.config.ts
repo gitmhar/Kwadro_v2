@@ -28,7 +28,7 @@ export const adminSidebar: SidebarItem[] = [
   {
     text: "Transaction",
     icon: LocalAtmOutlinedIcon,
-    path: "/admin/transaction",
+    path: "/admin/transactions",
     group: "main",
   },
 ];

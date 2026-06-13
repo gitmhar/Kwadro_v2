@@ -12,7 +12,7 @@ export const superAdminSidebar: SidebarItem[] = [
   {
     text: "Executive",
     icon: DashboardOutlinedIcon,
-    path: "/super-admin/executive",
+    path: "/super-admin",
     group: "main",
   },
   {
@@ -58,7 +58,7 @@ export const superAdminSidebarConfig: SidebarConfig = {
     icon: BrandLogo,
     title: "Cue Control",
     subtitle: "SUPER ADMIN",
-    avatarBg: "#fafafa",
+    // avatarBg: "#fafafa",
     titleColor: "#ffffff"
   },
   sections: [

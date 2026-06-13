@@ -20,6 +20,7 @@ import Settings from "./pages/admin/Settings";
 import SuperAdminLayout from "./layouts/SuperAdminLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Executive from "./pages/super-admin/Executive";
+import Operations from "./pages/super-admin/Operations";
 
 function App() {
   useEffect(() => {
@@ -65,6 +66,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={["SUPER_ADMIN"]} />}>
             <Route path="/super-admin" element={<SuperAdminLayout />}>
               <Route index element={<Executive />} />
+              <Route path="/super-admin/operations" element={<Operations />} />
             </Route>
           </Route>
         </Routes>

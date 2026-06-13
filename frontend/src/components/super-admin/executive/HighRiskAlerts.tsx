@@ -35,6 +35,7 @@ export default function HighRiskAlerts() {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
+        width: '100%',
         overflow: 'hidden',
         maxWidth: '100%',
         boxSizing: 'border-box',

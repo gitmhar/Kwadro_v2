@@ -32,6 +32,7 @@ export default function KpiCard({
         display: "flex",
         flexDirection: "column",
         height: "100%",
+        width: "100%",
         maxWidth: "100%",
         boxSizing: "border-box",
       }}

@@ -91,7 +91,7 @@ export default function Sidebar({
           <Avatar
             variant="rounded"
             sx={{
-              bgcolor: config.brand.avatarBg ?? "#000",
+              bgcolor: config.brand.avatarBg ?? "transparent",
               width: 40,
               height: 40,
             }}

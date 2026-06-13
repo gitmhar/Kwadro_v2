@@ -10,6 +10,8 @@ import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { Menu } from "@mui/icons-material";
 import GlobalFab from "../components/ui/feedback/GlobalFab";
+import { adminSidebarConfig } from "../components/ui/navigations/admin.config";
+
 
 export default function AdminLayout() {
   const theme = useTheme();
@@ -18,7 +20,13 @@ export default function AdminLayout() {
   const handleToggle = () => setOpen(!open);
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
-      <Sidebar open={open} handleToggle={handleToggle} isMobile={isMobile} />
+      <Sidebar
+        config={adminSidebarConfig}
+        role="ADMIN"
+        open={open}
+        handleToggle={handleToggle}
+        isMobile={isMobile}
+      />
       <Box
         component="main"
         sx={{
