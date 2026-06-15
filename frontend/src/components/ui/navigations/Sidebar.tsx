@@ -129,7 +129,7 @@ export default function Sidebar({
           <Typography
             variant="caption"
             sx={{
-              color: "#fafafa",
+              color: config.brand.subtitleColor ?? "#000",
               textTransform: "uppercase",
               letterSpacing: 1,
             }}

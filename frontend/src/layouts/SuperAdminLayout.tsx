@@ -10,7 +10,7 @@ import Sidebar from "../components/ui/navigations/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { superAdminSidebarConfig } from "../components/ui/navigations/super_admin.config";
-import { cueColors } from "../components/super-admin/executive/cueColors";
+import { cueColors } from "../theme/dashboard/cueColors";
 
 export default function SuperAdminLayout() {
   const theme = useTheme();
@@ -18,7 +18,15 @@ export default function SuperAdminLayout() {
   const [open, setOpen] = useState(false);
   const handleToggle = () => setOpen(!open);
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", width: "100%", maxWidth: "100%", boxSizing: "border-box" }}>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        width: "100%",
+        maxWidth: "100%",
+        boxSizing: "border-box",
+      }}
+    >
       <Sidebar
         config={superAdminSidebarConfig}
         role="SUPER_ADMIN"
@@ -64,7 +72,14 @@ export default function SuperAdminLayout() {
               <Menu />
             </IconButton>
           )}
-          <Typography variant="h4" sx={{ fontWeight: 600, color: "#FFFFFF", fontSize: { xs: "20px", sm: "24px" } }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 600,
+              color: "#FFFFFF",
+              fontSize: { xs: "20px", sm: "24px" },
+            }}
+          >
             Command Center
           </Typography>
           <Typography
@@ -103,4 +118,3 @@ export default function SuperAdminLayout() {
     </Box>
   );
 }
-

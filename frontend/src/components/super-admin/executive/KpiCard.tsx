@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { cueColors } from "./cueColors";
+import { cueColors } from "../../../theme/dashboard/cueColors";
 import AdminCard from "../../ui/cards/AdminCard";
 
 export interface KpiCardProps {
@@ -77,8 +77,8 @@ export default function KpiCard({
             fontFamily: '"JetBrains Mono", monospace',
             fontSize: "10px",
             fontWeight: 500,
-            whiteSpace: { xs: "normal", sm: "nowrap" }, 
-            wordBreak: "keep-all", 
+            whiteSpace: { xs: "normal", sm: "nowrap" },
+            wordBreak: "keep-all",
           }}
         >
           {indicatorText}

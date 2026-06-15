@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Typography, ButtonBase } from "@mui/material";
-import { cueColors } from "../executive/cueColors";
+import { cueColors } from "../../../theme/dashboard/cueColors";
 import { Close, EventBusy } from "@mui/icons-material";
 
 interface BlackoutEvent {
@@ -76,7 +76,7 @@ export default function HolidayBlackoutScheduling() {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <EventBusy sx={{ color: cueColors.primary}}/>
+          <EventBusy sx={{ color: cueColors.primary }} />
           <Typography
             sx={{
               fontFamily: '"JetBrains Mono", monospace',
@@ -179,7 +179,7 @@ export default function HolidayBlackoutScheduling() {
                   },
                 }}
               >
-                <Close/>
+                <Close />
               </ButtonBase>
             </Box>
           ))

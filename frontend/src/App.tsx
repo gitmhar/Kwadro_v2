@@ -21,6 +21,9 @@ import SuperAdminLayout from "./layouts/SuperAdminLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Executive from "./pages/super-admin/Executive";
 import Operations from "./pages/super-admin/Operations";
+import Financial from "./pages/super-admin/Financial";
+import Security from "./pages/super-admin/Security";
+import SA_Intelligence from "./pages/super-admin/SA_Intelligence";
 
 function App() {
   useEffect(() => {
@@ -67,6 +70,9 @@ function App() {
             <Route path="/super-admin" element={<SuperAdminLayout />}>
               <Route index element={<Executive />} />
               <Route path="/super-admin/operations" element={<Operations />} />
+              <Route path="/super-admin/financial" element={<Financial />} />
+              <Route path="/super-admin/intelligence" element={<SA_Intelligence/>} />
+              <Route path="/super-admin/security" element={<Security />} />
             </Route>
           </Route>
         </Routes>

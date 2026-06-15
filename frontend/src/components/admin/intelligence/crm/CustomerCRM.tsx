@@ -84,7 +84,7 @@ export default function CustomerCRM() {
         secondaryBtnLabel="Send Email Blast"
         primaryBtnIcon=""
         secondaryBtnIcon={<Campaign />}
-        hideOnButtonMobile={true}
+        hideButtonOnMobile={true}
       />
       {isMobile ? (
         <Stack spacing={2} sx={{ mt: 2 }}>

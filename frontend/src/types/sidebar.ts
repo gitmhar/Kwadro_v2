@@ -14,6 +14,7 @@ export type SidebarConfig = {
     subtitle: string;
     avatarBg?: string;
     titleColor?: string;
+    subtitleColor?: string;
   };
   sections: {
     title?: string;

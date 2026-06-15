@@ -46,7 +46,8 @@ export const adminSidebarConfig: SidebarConfig = {
     icon: TerminalOutlined,
     title: "Command Center",
     subtitle: "Global Administration",
-    avatarBg: "#000000"
+    avatarBg: "#000000",
+    subtitleColor: "#000000",
   },
   sections: [
     {

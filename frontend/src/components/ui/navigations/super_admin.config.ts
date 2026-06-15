@@ -59,7 +59,8 @@ export const superAdminSidebarConfig: SidebarConfig = {
     title: "Cue Control",
     subtitle: "SUPER ADMIN",
     // avatarBg: "#fafafa",
-    titleColor: "#ffffff"
+    titleColor: "#ffffff",
+    subtitleColor: "#ffffff"
   },
   sections: [
     {

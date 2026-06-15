@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { cueColors } from "../executive/cueColors";
+import { cueColors } from "../../../theme/dashboard/cueColors";
 import { GridView } from "@mui/icons-material";
 
 type TableStatus = "AVAILABLE" | "OFFLINE" | "MAINTENANCE";

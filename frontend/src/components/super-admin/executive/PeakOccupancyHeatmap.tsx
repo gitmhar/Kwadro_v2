@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { cueColors } from "./cueColors";
+import { cueColors } from "../../../theme/dashboard/cueColors";
 import HeatmapCell from "./HeatmapCell";
 
 // Generate mock density opacities for 7 days * 24 hours
@@ -142,12 +142,12 @@ export default function PeakOccupancyHeatmap() {
           "&::-webkit-scrollbar-thumb": { background: "#2E2E2E" },
         }}
       >
-        <Box 
-          sx={{ 
-            minWidth: { xs: "100%", md: "700px" }, 
-            display: "flex", 
-            width: "100%", 
-            boxSizing: "border-box" 
+        <Box
+          sx={{
+            minWidth: { xs: "100%", md: "700px" },
+            display: "flex",
+            width: "100%",
+            boxSizing: "border-box",
           }}
         >
           {/* Main Matrix Container - Full Width */}
