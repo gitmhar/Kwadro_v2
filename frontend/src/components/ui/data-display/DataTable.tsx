@@ -14,7 +14,7 @@ export type Column<T> = {
   headerName: string;
   width?: string | number;
   align?: "left" | "center" | "right";
-  render?: (row: T, col?: any, toggleFn?: (arg0: any) => void) => ReactNode;
+  render?: (row: T) => ReactNode;
 };
 
 interface DataTableProps<T> {

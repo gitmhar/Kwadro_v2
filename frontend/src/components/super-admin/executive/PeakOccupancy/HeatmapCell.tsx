@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
 import { Box } from "@mui/material";
-import { transformHeatmapData } from "../../../utils/charts/heatmap/transformHeatmapData";
-import { buildHeatmapOption } from "../../../utils/charts/heatmap/buildHeatmapOption";
+import { transformHeatmapData } from "../../../../utils/charts/heatmap/transformHeatmapData";
+import { buildHeatmapOption } from "../../../../utils/charts/heatmap/buildHeatmapOption";
 
 interface HeatmapChartProps {
   data: number[][];

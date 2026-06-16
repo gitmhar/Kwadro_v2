@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import { cueColors } from "../../../theme/dashboard/cueColors";
-import AdminCard from "../../ui/cards/AdminCard";
+import { cueColors } from "../../../../theme/dashboard/cueColors";
+import AdminCard from "../../../ui/cards/AdminCard";
+import ProgressBar from "../../../ui/shared/ProgressBar";
 
 export interface KpiCardProps {
   title: string;
@@ -83,26 +84,7 @@ export default function KpiCard({
         >
           {indicatorText}
         </Typography>
-        <Box
-          sx={{
-            height: "20px",
-            flex: 1,
-            backgroundColor: cueColors.surfaceDim,
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 0,
-              backgroundColor: progressBg,
-              width: `${percentageFilled}%`,
-            }}
-          />
-        </Box>
+        <ProgressBar percentageFilled={percentageFilled} color={progressBg} />
       </Box>
     </AdminCard>
   );

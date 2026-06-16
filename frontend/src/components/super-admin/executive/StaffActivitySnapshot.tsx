@@ -1,6 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import BadgeIcon from "@mui/icons-material/Badge";
 import { cueColors } from "../../../theme/dashboard/cueColors";
+import AdminCard from "../../ui/cards/AdminCard";
+import SectionHeader from "../../ui/shared/SectionHeader";
+import type { TimelineEntry } from "../../ui/shared/TimelineFeed";
+import ScrollableContainer from "../../ui/shared/ScrollableContainer";
+import TimelineFeed from "../../ui/shared/TimelineFeed";
 
 interface ActivityItem {
   id: string;
@@ -11,149 +16,88 @@ interface ActivityItem {
 }
 
 export default function StaffActivitySnapshot() {
-  const activities: ActivityItem[] = [
+  const entries: TimelineEntry[] = [
     {
       id: "1",
-      name: "M. Chen",
-      action: "checked in",
-      time: "08:45",
+      header: (
+        <>
+          <strong>M. Chen</strong>{" "}
+          <span style={{ opacity: 0.7 }}>checked in</span>
+        </>
+      ),
+      subheader: "08:45",
       detail: "Location: HKG-Central",
     },
     {
       id: "2",
-      name: "J. Smith",
-      action: "initiated table maintenance",
-      time: "09:12",
+      header: (
+        <>
+          <strong>J. Smith</strong>{" "}
+          <span style={{ opacity: 0.7 }}>initiated table maintenance</span>
+        </>
+      ),
+      subheader: "09:12",
       detail: "Table: 12 | Status: Offline",
     },
     {
       id: "3",
-      name: "L. Valenti",
-      action: "processed refund",
-      time: "09:44",
+      header: (
+        <>
+          <strong>L. Valenti</strong>{" "}
+          <span style={{ opacity: 0.7 }}>processed refund</span>
+        </>
+      ),
+      subheader: "09:44",
       detail: "Transaction ID: #99021-AX",
     },
     {
       id: "4",
-      name: "A. Russo",
-      action: "Shift Leader Override",
-      time: "10:05",
+      header: (
+        <>
+          <strong>A. Russo</strong>{" "}
+          <span style={{ opacity: 0.7 }}>Shift Leader Override</span>
+        </>
+      ),
+      subheader: "10:05",
       detail: "Action: POS Price Unlock",
     },
     {
       id: "5",
-      name: "K. Tanaka",
-      action: "session terminated",
-      time: "10:15",
+      header: (
+        <>
+          <strong>K. Tanaka</strong>{" "}
+          <span style={{ opacity: 0.7 }}>session terminated</span>
+        </>
+      ),
+      subheader: "10:15",
       detail: "Reason: Shift End | Location: TYO-Shibuya",
     },
   ];
 
   return (
-    <Box
+    <AdminCard
       sx={{
         backgroundColor: cueColors.surfaceContainer,
         border: `1px solid ${cueColors.outlineVariant}`,
+        borderRadius: 0,
         p: "24px",
         height: "400px",
         display: "flex",
         flexDirection: "column",
       }}
     >
-      <Typography
-        sx={{
-          fontFamily: '"JetBrains Mono", monospace',
-          fontSize: "11px",
-          fontWeight: "bold",
-          color: cueColors.onSurface,
-          textTransform: "uppercase",
-          mb: "24px",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-        }}
-      >
-        <BadgeIcon sx={{ fontSize: "18px", color: cueColors.primary }} />
-        STAFF ACTIVITY SNAPSHOT
-      </Typography>
+      {/* Header */}
+      <SectionHeader
+        variant="super-admin"
+        icon={<BadgeIcon sx={{ color: cueColors.primary }} />}
+        title="STAFF ACTIVITY SNAPSHOT"
+        sx={{ borderBottom: "none", mb: 1, gap: "8px" }}
+      />
 
       {/* Log Feed */}
-      <Box
-        sx={{
-          flexGrow: 1,
-          overflowY: "auto",
-          pr: "8px",
-          "&::-webkit-scrollbar": { width: "4px" },
-          "&::-webkit-scrollbar-track": { background: cueColors.surface },
-          "&::-webkit-scrollbar-thumb": { background: "#2E2E2E" },
-        }}
-      >
-        {activities.map((activity) => (
-          <Box
-            key={activity.id}
-            sx={{
-              position: "relative",
-              pl: "24px",
-              borderLeft: `1px solid ${cueColors.outlineVariant}`,
-              pb: "16px",
-            }}
-          >
-            {/* Rigid Square Marker Dot */}
-            <Box
-              sx={{
-                position: "absolute",
-                left: "-4.5px",
-                top: "6px",
-                width: "8px",
-                height: "8px",
-                backgroundColor: cueColors.primary,
-                borderRadius: 0,
-              }}
-            />
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                mb: "4px",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "14px",
-                  color: cueColors.onSurface,
-                }}
-              >
-                <strong>{activity.name}</strong>{" "}
-                <span style={{ opacity: 0.7 }}>{activity.action}</span>
-              </Typography>
-              <Typography
-                sx={{
-                  color: cueColors.onSurfaceVariant,
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: "10px",
-                }}
-              >
-                {activity.time}
-              </Typography>
-            </Box>
-
-            <Typography
-              sx={{
-                fontSize: "11px",
-                fontFamily: '"JetBrains Mono", monospace',
-                textTransform: "uppercase",
-                opacity: 0.5,
-                color: cueColors.onSurface,
-              }}
-            >
-              {activity.detail}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-    </Box>
+      <ScrollableContainer sx={{}}>
+        <TimelineFeed entries={entries} />
+      </ScrollableContainer>
+    </AdminCard>
   );
 }

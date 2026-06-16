@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import TransactionLog from "../../components/admin/transaction/logs/TransactionLog";
+import TransactionLog from "../../components/admin/transaction/transaction_logs/TransactionLog";
 import Upper from "../../components/admin/transaction/overview/Upper";
 import SysAudit from "../../components/admin/transaction/audit/SysAudit";
 

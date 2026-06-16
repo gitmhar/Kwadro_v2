@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
-import { cueColors } from "../../../theme/dashboard/cueColors";
+import { cueColors } from "../../../../theme/dashboard/cueColors";
 import AlertItem, { type AlertItemProps } from "./AlertItem";
+import AdminCard from "../../../ui/cards/AdminCard";
+import SectionHeader from "../../../ui/shared/SectionHeader";
+import ScrollableContainer from "../../../ui/shared/ScrollableContainer";
 
 export default function HighRiskAlerts() {
   const alerts: (AlertItemProps & { id: string })[] = [
@@ -31,10 +34,12 @@ export default function HighRiskAlerts() {
   ];
 
   return (
-    <Box
+    <AdminCard
       sx={{
         backgroundColor: cueColors.surfaceContainer,
         border: `1px solid ${cueColors.outlineVariant}`,
+        borderRadius: 0,
+        p: 0,
         display: "flex",
         flexDirection: "column",
         height: "100%",
@@ -45,55 +50,29 @@ export default function HighRiskAlerts() {
       }}
     >
       {/* Alert Header Banner */}
-      <Box
-        sx={{
-          p: "16px",
-          borderBottom: `1px solid ${cueColors.outlineVariant}`,
-          backgroundColor: cueColors.surfaceContainerHigh,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+      <SectionHeader
+        variant="super-admin"
+        title="High-risk Alerts"
+        statusBadge={`${alerts.length} ACTIVE`}
+        statusBadgeSx={{
+          backgroundColor: cueColors.error,
+          color: cueColors.onError,
+          fontSize: "10px",
+          fontWeight: "bold",
         }}
-      >
-        <Typography
-          sx={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: "11px",
-            fontWeight: "bold",
-            color: cueColors.onSurface,
-          }}
-        >
-          HIGH-RISK ALERTS
-        </Typography>
-        <Box
-          sx={{
-            backgroundColor: cueColors.error,
-            color: cueColors.onError,
-            fontSize: "10px",
-            fontWeight: "bold",
-            px: "8px",
-            py: "2px",
-          }}
-        >
-          {alerts.length} ACTIVE
-        </Box>
-      </Box>
+        sx={{ backgroundColor: cueColors.surfaceContainerHigh, p: 2, mb: 0 }}
+      />
 
       {/* Scrollable list */}
-      <Box
-        sx={{
-          flexGrow: 1,
-          overflowY: "auto",
-          maxHeight: { xs: "350px", xl: "344px" },
-          "&::-webkit-scrollbar": { width: "4px" },
-          "&::-webkit-scrollbar-track": { background: cueColors.surface },
-          "&::-webkit-scrollbar-thumb": { background: "#2E2E2E" },
-        }}
+      <ScrollableContainer
+        direction="vertical"
+        maxHeight={{ xs: "350px", xl: "345px" }}
+        sx={{ flexGrow: 1 }}
       >
         {alerts.map((alert) => (
           <AlertItem key={alert.id} {...alert} />
         ))}
-      </Box>
-    </Box>
+      </ScrollableContainer>
+    </AdminCard>
   );
 }

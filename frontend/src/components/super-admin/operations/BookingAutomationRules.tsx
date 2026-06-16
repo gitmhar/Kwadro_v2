@@ -1,14 +1,4 @@
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import { cueColors } from "../../../theme/dashboard/cueColors";
 import { SmartToy } from "@mui/icons-material";
 import AdminCard from "../../ui/cards/AdminCard";
@@ -47,62 +37,64 @@ const initialRules: AutomationRule[] = [
   },
 ];
 
-const columns: Column<AutomationRule>[] = [
-  {
-    field: "trigger",
-    headerName: "RULE TRIGGER",
-    render: (row: any) => (
-      <span
-        style={{
-          fontFamily: '"JetBrains Mono", monospace',
-          fontSize: "0.6875rem",
-          fontWeight: 500,
-          letterSpacing: "0.05em",
-          lineHeight: 1.2,
-          color: cueColors.primary,
-        }}
-      >
-        {row.trigger}
-      </span>
-    ),
-  },
-  {
-    field: "logic",
-    headerName: "ACTION LOGIC",
-    render: (row: any) => (
-      <span
-        style={{
-          fontFamily: '"Inter", sans-serif',
-          fontSize: "0.875rem",
-          fontWeight: row.boldLogic ? 700 : 400,
-          color: cueColors.onSurface,
-          opacity: row.boldLogic ? 1 : 0.7,
-        }}
-      >
-        {row.logic}
-      </span>
-    ),
-  },
-  {
-    field: "enabled",
-    headerName: "ENABLED",
-    align: "right",
-    render: (row, _col, toggleFn) => (
-      <OpToggle checked={row.enabled} onChange={() => toggleFn?.(row)} />
-    ),
-  },
-];
-
 export default function BookingAutomationRules() {
   const [rules, setRules] = useState<AutomationRule[]>(initialRules);
 
-  const toggleRule = (index: number) => {
+  const toggleRule = (trigger: string) => {
     setRules((prev) =>
-      prev.map((rule, idx) =>
-        idx === index ? { ...rule, enabled: !rule.enabled } : rule,
+      prev.map((rule) =>
+        rule.trigger === trigger ? { ...rule, enabled: !rule.enabled } : rule,
       ),
     );
   };
+
+  const columns: Column<AutomationRule>[] = [
+    {
+      field: "trigger",
+      headerName: "RULE TRIGGER",
+      render: (row: any) => (
+        <span
+          style={{
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: "0.6875rem",
+            fontWeight: 500,
+            letterSpacing: "0.05em",
+            lineHeight: 1.2,
+            color: cueColors.primary,
+          }}
+        >
+          {row.trigger}
+        </span>
+      ),
+    },
+    {
+      field: "logic",
+      headerName: "ACTION LOGIC",
+      render: (row: any) => (
+        <span
+          style={{
+            fontFamily: '"Inter", sans-serif',
+            fontSize: "0.875rem",
+            fontWeight: row.boldLogic ? 700 : 400,
+            color: cueColors.onSurface,
+            opacity: row.boldLogic ? 1 : 0.7,
+          }}
+        >
+          {row.logic}
+        </span>
+      ),
+    },
+    {
+      field: "enabled",
+      headerName: "ENABLED",
+      align: "right",
+      render: (row: AutomationRule) => (
+        <OpToggle 
+        checked={row.enabled} 
+        onChange={() => toggleRule(row.trigger)} />
+      ),
+    },
+  ];
 
   return (
     <AdminCard
@@ -120,7 +112,7 @@ export default function BookingAutomationRules() {
       }}
     >
       {/* Header bar */}
-      
+
       <SectionHeader
         icon={<SmartToy sx={{ color: cueColors.primary }} />}
         title="Booking Automation Rules"

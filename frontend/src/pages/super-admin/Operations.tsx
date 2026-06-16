@@ -2,9 +2,9 @@ import React from "react";
 import { Box, Typography, Button, Grid } from "@mui/material";
 import { cueColors } from "../../theme/dashboard/cueColors";
 import GlobalPricingRules from "../../components/super-admin/operations/GlobalPricingRules/GlobalPricingRules";
-import TableAvailabilityOverrides from "../../components/super-admin/operations/TableAvailabilityOverrides";
+import TableAvailabilityOverrides from "../../components/super-admin/operations/TableAvailability/TableAvailabilityOverrides";
 import ReservationPolicies from "../../components/super-admin/operations/ReservationPolicies";
-import HolidayBlackoutScheduling from "../../components/super-admin/operations/HolidayBlackoutScheduling";
+import HolidayBlackoutScheduling from "../../components/super-admin/operations/HolidayBlackout/HolidayBlackoutScheduling";
 import BookingAutomationRules from "../../components/super-admin/operations/BookingAutomationRules";
 
 export default function Operations() {

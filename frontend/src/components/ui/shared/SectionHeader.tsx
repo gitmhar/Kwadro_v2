@@ -10,20 +10,22 @@ interface SectionHeaderProps {
   title: string;
   subtitle?: string;
 
-  // Contento na sayo
+  // Content preferences
   statusBadge?: ReactNode;
+  statusBadgeSx?: object;
   primaryBtnLabel?: string;
   secondaryBtnLabel?: string;
   primaryBtnIcon?: ReactNode;
   secondaryBtnIcon?: ReactNode;
 
-  // Harap sa [direction] na! Sir yes sir!
+  // Left and Right Contents
   leftElement?: ReactNode;
   rightElement?: ReactNode;
 
-  // Style mo!
+  // Style
   variant?: "admin" | "super-admin";
   hideButtonOnMobile?: boolean;
+  titleFirst?: boolean;
   sx?: object;
 }
 
@@ -40,8 +42,46 @@ export default function SectionHeader({
   rightElement,
   hideButtonOnMobile = false,
   variant = "admin",
+  titleFirst = false,
   sx,
+  statusBadgeSx,
 }: SectionHeaderProps) {
+  const titleNode = title && (
+    <Typography
+      sx={{
+        fontWeight: 600,
+        fontFamily:
+          variant === "super-admin" ? '"JetBrains Mono", monospace' : undefined,
+        color: variant === "super-admin" ? cueColors.onSurface : undefined,
+        fontSize: variant === "super-admin" ? "0.6875rem" : "2.125rem",
+        letterSpacing: variant === "super-admin" ? "0.05em" : undefined,
+        textTransform: variant === "super-admin" ? "uppercase" : undefined,
+      }}
+    >
+      {title}
+    </Typography>
+  );
+
+  const subtitleNode = subtitle && (
+    <Typography
+      variant="caption"
+      sx={{
+        fontWeight: 600,
+        textTransform: "uppercase",
+        letterSpacing: variant === "admin" ? 3 : undefined,
+        color:
+          variant === "super-admin"
+            ? cueColors.onSurfaceVariant
+            : headerTheme.admin.subtitleColor,
+        fontFamily:
+          variant === "super-admin" ? '"JetBrains Mono", monospace' : undefined,
+        fontSize: variant === "super-admin" ? "0.625rem" : undefined,
+      }}
+    >
+      {subtitle}
+    </Typography>
+  );
+
   const left = leftElement ?? (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
       {icon && (
@@ -54,43 +94,16 @@ export default function SectionHeader({
         </Box>
       )}
       <Box>
-        {subtitle && (
-          <Typography
-            variant="caption"
-            sx={{
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: 3,
-              color:
-                variant === "super-admin"
-                  ? cueColors.primary
-                  : headerTheme.admin.subtitleColor,
-              fontFamily:
-                variant === "super-admin"
-                  ? '"JetBrains Mono", monospace'
-                  : undefined,
-            }}
-          >
-            {subtitle}
-          </Typography>
-        )}
-        {title && (
-          <Typography
-            sx={{
-              fontWeight: 600,
-              fontFamily:
-                variant === "super-admin"
-                  ? '"JetBrains Mono", monospace'
-                  : undefined,
-              color: variant === "super-admin" ? cueColors.primary : undefined,
-              fontSize: variant === "super-admin" ? "0.85rem" : "2.125rem",
-              letterSpacing: variant === "super-admin" ? "0.05em" : undefined,
-              textTransform:
-                variant === "super-admin" ? "uppercase" : undefined,
-            }}
-          >
-            {title}
-          </Typography>
+        {titleFirst ? (
+          <>
+            {titleNode}
+            {subtitleNode}
+          </>
+        ) : (
+          <>
+            {subtitleNode}
+            {titleNode}
+          </>
         )}
       </Box>
     </Box>
@@ -109,6 +122,7 @@ export default function SectionHeader({
             py: "2px",
             backgroundColor: cueColors.surfaceBright,
             border: `1px solid ${cueColors.outlineVariant}`,
+            ...statusBadgeSx,
           }}
         >
           {statusBadge}
@@ -159,73 +173,6 @@ export default function SectionHeader({
   );
 
   return (
-    // <Box
-    //   sx={{
-    //     display: "flex",
-    //     justifyContent: "space-between",
-    //     flexDirection: { xs: "column", sm: "row" },
-    //     gap: { xs: 3, md: 0 },
-    //   }}
-    // >
-    //   <Box>
-    //     <Typography
-    //       variant="caption"
-    //       sx={{
-    //         fontWeight: 600,
-    //         textTransform: "uppercase",
-    //         letterSpacing: 3,
-    //         color: "#777777",
-    //       }}
-    //     >
-    //       {subtitle}
-    //     </Typography>
-    //     <Typography variant="h4" sx={{ fontWeight: 600 }}>
-    //       {title}
-    //     </Typography>
-    //   </Box>
-    //   {hasButtons && (
-    //     <Box
-    //       sx={{
-    //         display: hideButtonOnMobile ? { xs: "none", sm: "flex" } : "flex",
-    //         justifyContent: { xs: "center", sm: "flex-end" },
-    //         gap: 2,
-    //         alignItems: "center",
-    //         width: { xs: "100%", md: "auto" },
-    //       }}
-    //     >
-    //       {primaryBtnLabel && (
-    //         <Button
-    //           startIcon={primaryBtnIcon}
-    //           sx={{
-    //             bgcolor: "#f3f3f3",
-    //             px: 2,
-    //             borderRadius: 2,
-    //             width: { xs: "100%", sm: "auto" },
-    //             whiteSpace: "nowrap",
-    //           }}
-    //         >
-    //           {primaryBtnLabel}
-    //         </Button>
-    //       )}
-
-    //       {secondaryBtnLabel && (
-    //         <Button
-    //           startIcon={secondaryBtnIcon}
-    //           sx={{
-    //             bgcolor: "#000000",
-    //             color: "#ffffff",
-    //             px: 2,
-    //             borderRadius: 2,
-    //             width: { xs: "100%", sm: "auto" },
-    //             whiteSpace: "nowrap",
-    //           }}
-    //         >
-    //           {secondaryBtnLabel}
-    //         </Button>
-    //       )}
-    //     </Box>
-    //   )}
-    // </Box>
     <Box
       sx={{
         display: "flex",

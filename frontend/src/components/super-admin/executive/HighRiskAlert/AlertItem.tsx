@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { cueColors } from "../../../theme/dashboard/cueColors";
+import { cueColors } from "../../../../theme/dashboard/cueColors";
 
 export interface AlertItemProps {
   type: "FAILED_PAYMENT" | "ABUSE_DETECTION" | "LATENCY_WARNING" | string;
