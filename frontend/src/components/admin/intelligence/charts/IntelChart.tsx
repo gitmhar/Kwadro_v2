@@ -1,12 +1,19 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import AdminCard from "../../../ui/cards/AdminCard";
-import InsightRow from "../../../ui/data-display/InsightRow";
-import Chart from "./Chart";
 import type { ReactNode } from "react";
+import { Box, Button } from "@mui/material";
+import AdminCard from "../../../ui/cards/AdminCard";
+import Chart from "./Chart";
+import SectionHeader from "../../../ui/shared/SectionHeader";
+import InsightPanel from "../../../ui/data-display/InsightPanel";
 
 interface IntelChartProps {
   chartComponent?: ReactNode;
 }
+
+const insightRows = [
+  { label: "Peak Hours", value: "19:00 - 21:00" },
+  { label: "Avg. Stay", value: "1h 24m" },
+  { label: "No Shows", value: "2.4%", valueColor: "#E11D48" },
+];
 
 export default function IntelChart({ chartComponent }: IntelChartProps) {
   return (
@@ -39,29 +46,25 @@ export default function IntelChart({ chartComponent }: IntelChartProps) {
               gap: 3,
             }}
           >
-            <Box>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: 700,
-                  fontSize: { xs: "1.25rem", sm: "1.4rem" },
-                  color: "#1a1c1c",
-                  mb: 0.5,
-                }}
-              >
-                Booking Volume
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontSize: { xs: "0.8rem", sm: "0.9rem" },
-                  color: "#777",
-                  fontWeight: 700,
-                }}
-              >
-                Weekly performance tracking
-              </Typography>
-            </Box>
+            <SectionHeader
+              variant="admin"
+              titleFirst
+              title="Booking Volume"
+              textVariant="h5"
+              titleSx={{
+                fontSize: { xs: "1.25rem", sm: "1.4rem" },
+                fontWeight: 700,
+                mb: 0.5,
+              }}
+              subtitle="Weekly performance tracking"
+              subtitleVariant="body2"
+              subtitleSx={{
+                fontSize: { xs: "0.8rem", sm: "0.9rem" },
+                fontWeight: 700,
+                textTransform: "none",
+                letterSpacing: "none",
+              }}
+            />
 
             {/* Toggle Buttons: Filters */}
             <Box
@@ -112,9 +115,7 @@ export default function IntelChart({ chartComponent }: IntelChartProps) {
 
           {/* Chart */}
           <Box sx={{ height: { xs: 220, sm: 280 }, width: "100%" }}>
-            {chartComponent ? (
-              chartComponent
-            ) : (
+            {chartComponent || (
               <Box
                 sx={{
                   width: "100%",
@@ -132,69 +133,16 @@ export default function IntelChart({ chartComponent }: IntelChartProps) {
             )}
           </Box>
         </Box>
+
         {/* Right Side: Insight */}
-        <Box
-          sx={{
-            width: { xs: "100%", md: "320px" },
-            p: { xs: 2.5, sm: 4 },
-            borderTop: { xs: "1px solid #f0f0f0", md: "none" },
-            borderLeft: { md: "1px solid #f0f0f0" },
-            bgcolor: "#fafafa",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
+        <InsightPanel
+          title="Traffic Insights"
+          rows={insightRows}
+          tip={{
+            title: "Smart Tips:",
+            message: "Demand is projected to increase by 15% tomorrow evening",
           }}
-        >
-          <Box>
-            <Typography
-              variant="overline"
-              sx={{
-                color: "#a3a3a3",
-                fontWeight: 800,
-                letterSpacing: 1.5,
-                fontSize: "0.7rem",
-              }}
-            >
-              Traffic Insights
-            </Typography>
-
-            <Stack spacing={2.5} sx={{ my: 3 }}>
-              <InsightRow label="Peak Hours" value="19:00 - 21:00" />
-              <InsightRow label="Avg. Stay" value="1h 24m" />
-              <InsightRow label="No Shows" value="2.4%" valueColor="#e11d48" />
-            </Stack>
-          </Box>
-
-          {/* Smart Tip Box */}
-          <Box
-            sx={{
-              bgcolor: "#fff",
-              p: 2.5,
-              borderRadius: "18px",
-              border: "1px solid #e5e5e5",
-              boxShadow: "none",
-              mt: 2,
-            }}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 800,
-                fontSize: "0.8rem",
-                color: "#1a1c1c",
-                mb: 0.5,
-              }}
-            >
-              Smart Tip:
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ color: "#666", fontSize: "0.75rem", lineHeight: 1.4 }}
-            >
-              Demand is projected to increase by 15% tomorrow evening.
-            </Typography>
-          </Box>
-        </Box>
+        />
       </Box>
     </AdminCard>
   );

@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, type TypographyProps } from "@mui/material";
 import { Box } from "@mui/system";
 import type { ReactNode } from "react";
 import { cueColors } from "../../../theme/dashboard/cueColors";
@@ -27,6 +27,10 @@ interface SectionHeaderProps {
   hideButtonOnMobile?: boolean;
   titleFirst?: boolean;
   sx?: object;
+  titleSx?: object;
+  subtitleSx?: object;
+  textVariant?: TypographyProps["variant"];
+  subtitleVariant?: TypographyProps["variant"];
 }
 
 export default function SectionHeader({
@@ -44,18 +48,28 @@ export default function SectionHeader({
   variant = "admin",
   titleFirst = false,
   sx,
+  titleSx,
+  textVariant,
+  subtitleVariant = "caption",
+  subtitleSx,
   statusBadgeSx,
 }: SectionHeaderProps) {
   const titleNode = title && (
     <Typography
+      variant={textVariant}
       sx={{
         fontWeight: 600,
         fontFamily:
           variant === "super-admin" ? '"JetBrains Mono", monospace' : undefined,
         color: variant === "super-admin" ? cueColors.onSurface : undefined,
-        fontSize: variant === "super-admin" ? "0.6875rem" : "2.125rem",
+        fontSize: textVariant
+          ? undefined
+          : variant === "super-admin"
+            ? "0.6875rem"
+            : "2.125rem",
         letterSpacing: variant === "super-admin" ? "0.05em" : undefined,
         textTransform: variant === "super-admin" ? "uppercase" : undefined,
+        ...titleSx,
       }}
     >
       {title}
@@ -64,7 +78,7 @@ export default function SectionHeader({
 
   const subtitleNode = subtitle && (
     <Typography
-      variant="caption"
+      variant={subtitleVariant}
       sx={{
         fontWeight: 600,
         textTransform: "uppercase",
@@ -75,7 +89,12 @@ export default function SectionHeader({
             : headerTheme.admin.subtitleColor,
         fontFamily:
           variant === "super-admin" ? '"JetBrains Mono", monospace' : undefined,
-        fontSize: variant === "super-admin" ? "0.625rem" : undefined,
+        fontSize: subtitleVariant
+          ? undefined
+          : variant === "super-admin"
+            ? "0.6875rem"
+            : undefined,
+        ...subtitleSx,
       }}
     >
       {subtitle}

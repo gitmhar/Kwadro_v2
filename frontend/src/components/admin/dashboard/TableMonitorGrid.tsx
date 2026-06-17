@@ -1,8 +1,25 @@
 import { Box } from "@mui/material";
 import TableMonitorCard from "./TableMonitorCard";
 
-export default function TableMonitorGrid() {
-  const tables = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+interface TableData {
+  tableNumber: number;
+  status?: string;
+}
+
+interface TableMonitorGridProps {
+  tables?: TableData[];
+  onAssign?: (tableNumber: number) => void;
+}
+
+const defaultTables: TableData[] = Array.from({ length: 12 }, (_, i) => ({
+  tableNumber: i + 1,
+  status: "Available",
+}));
+
+export default function TableMonitorGrid({
+  tables = defaultTables,
+  onAssign,
+}: TableMonitorGridProps) {
   return (
     <Box
       sx={{
@@ -16,8 +33,13 @@ export default function TableMonitorGrid() {
         gap: 2,
       }}
     >
-      {tables.map((num) => (
-        <TableMonitorCard key={num} tableNumber={num} />
+      {tables.map((table) => (
+        <TableMonitorCard
+          key={table.tableNumber}
+          tableNumber={table.tableNumber}
+          status={table.status}
+          onAssign={onAssign}
+        />
       ))}
     </Box>
   );

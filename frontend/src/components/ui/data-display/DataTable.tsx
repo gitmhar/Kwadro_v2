@@ -10,7 +10,7 @@ import type { SxProps, Theme } from "@mui/material";
 import type { ReactNode } from "react";
 
 export type Column<T> = {
-  field: keyof T;
+  field?: keyof T | (string & {});
   headerName: string;
   width?: string | number;
   align?: "left" | "center" | "right";
@@ -43,7 +43,7 @@ export default function DataTable<T>({
           <TableRow>
             {columns.map((col) => (
               <TableCell
-                key={String(col.field)}
+                key={col.field ? String(col.field) : col.headerName}
                 align={col.align || "left"}
                 sx={{
                   color: "#a3a3a3",
@@ -74,13 +74,15 @@ export default function DataTable<T>({
                 };
                 return (
                   <TableCell
-                    key={String(col.field)}
+                    key={col.field ? String(col.field) : col.headerName}
                     align={col.align || "left"}
                     sx={baseSx}
                   >
                     {col.render
                       ? col.render(row)
-                      : (row[col.field] as ReactNode)}
+                      : col.field
+                        ? (row[col.field as keyof T] as ReactNode)
+                        : null}
                   </TableCell>
                 );
               })}

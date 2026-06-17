@@ -16,76 +16,126 @@ import SectionHeader from "../../../ui/shared/SectionHeader";
 import DataTable from "../../../ui/data-display/DataTable";
 import SearchInput from "../../../ui/inputs/SearchInput";
 import UserIdentity from "../../../ui/data-display/UserIdentity";
+import StatusChip from "../../../ui/data-display/StatusChip";
+import CustomerMobileCard from "./features/CustomerMobileCard";
+import type { CustomerData } from "../../../../types/crmRows";
 
-function createData(
-  name: string,
-  email: string,
-  value: string,
-  visits: string,
-  lastActive: string,
-  status: string,
-) {
-  return { name, email, value, visits, lastActive, status };
-}
+const tableData: CustomerData[] = [
+  {
+    name: "Client 1",
+    email: "client#1@billiard.com",
+    value: "$660.00",
+    visits: "3 visits",
+    lastActive: "1 hour ago",
+    status: "Occasional",
+  },
+  {
+    name: "Client 2",
+    email: "client#2@billiard.com",
+    value: "$11660.00",
+    visits: "3 visits",
+    lastActive: "1 hour ago",
+    status: "Regular",
+  },
+  {
+    name: "Client 3",
+    email: "client#3@billiard.com",
+    value: "$61650.00",
+    visits: "3 visits",
+    lastActive: "1 hour ago",
+    status: "Top Tier",
+  },
+  {
+    name: "Client 4",
+    email: "client#4@billiard.com",
+    value: "$62630.00",
+    visits: "3 visits",
+    lastActive: "1 hour ago",
+    status: "Top Tier",
+  },
+  {
+    name: "Client 5",
+    email: "client#5@billiard.com",
+    value: "$3.00",
+    visits: "3 visits",
+    lastActive: "1 hour ago",
+    status: "Newbie",
+  },
+];
+
+const desktopTable = [
+  {
+    field: "name",
+    headerName: "IDENTITY",
+    render: (row: CustomerData) => (
+      <UserIdentity name={row.name} email={row.email} />
+    ),
+  },
+  {
+    field: "value",
+    headerName: "LIFETIME VALUE",
+    render: (row: CustomerData) => (
+      <Typography sx={{ fontWeight: 700, color: "#474747" }}>
+        {row.value}
+      </Typography>
+    ),
+  },
+  {
+    field: "visits",
+    headerName: "VISITS",
+    render: (row: CustomerData) => (
+      <Typography sx={{ color: "#474747" }}>{row.visits}</Typography>
+    ),
+  },
+  {
+    field: "lastActive",
+    headerName: "LAST ACTIVE",
+    render: (row: CustomerData) => (
+      <Typography sx={{ color: "#474747" }}>{row.lastActive}</Typography>
+    ),
+  },
+  {
+    field: "status",
+    headerName: "STATUS",
+    render: (row: CustomerData) => (
+      <StatusChip
+        label={row.status}
+        bg="#F0F0F0"
+        color="#474747"
+        shape="pill"
+      />
+    ),
+  },
+];
+
+const filterOptions = [
+  "ALL CUSTOMERS",
+  "TOP TIER",
+  "REGULAR",
+  "OCCASIONAL",
+  "NEWBIE",
+];
 
 export default function CustomerCRM() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const tableData = [
-    createData(
-      "Client 1",
-      "client#1@billiard.com",
-      "$660.00",
-      "3 visits",
-      "1 hour ago",
-      "Occasional",
-    ),
-    createData(
-      "Client 2",
-      "client#2@billiard.com",
-      "$11660.00",
-      "3 visits",
-      "1 hour ago",
-      "Regular",
-    ),
-    createData(
-      "Client 3",
-      "client#3@billiard.com",
-      "$61650.00",
-      "3 visits",
-      "1 hour ago",
-      "Top Tier",
-    ),
-    createData(
-      "Client 4",
-      "client#4@billiard.com",
-      "$62630.00",
-      "3 visits",
-      "1 hour ago",
-      "Top Tier",
-    ),
-    createData(
-      "Client 5",
-      "client#5@billiard.com",
-      "$3.00",
-      "3 visits",
-      "1 hour ago",
-      "Newbie",
-    ),
-  ];
-
+  const handleEmailBlast = (customer: CustomerData) => {
+    console.log("Email Blasted to:", customer.email);
+  };
   return (
     <>
+      {/* Header */}
       <SectionHeader
         title="Customer CRM"
         subtitle="Intelligence"
         primaryBtnLabel="Export CSV"
         secondaryBtnLabel="Send Email Blast"
-        primaryBtnIcon=""
+        primaryBtnIcon={<Download />}
         secondaryBtnIcon={<Campaign />}
         hideButtonOnMobile={true}
       />
+      {/* Mobile View */}
       {isMobile ? (
         <Stack spacing={2} sx={{ mt: 2 }}>
           <Box>
@@ -93,100 +143,11 @@ export default function CustomerCRM() {
             <SearchInput placeholder="Search database by email, name or ID" />
           </Box>
           {tableData.map((row) => (
-            <AdminCard key={row.name} sx={{ p: 3, borderRadius: "24px" }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  mb: 3,
-                }}
-              >
-                <UserIdentity name={row.name} email={row.email} />
-              </Box>
-              <Grid container spacing={3} sx={{ mb: 3 }}>
-                <Grid size={{ xs: 6 }}>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: "#a3a3a3", fontWeight: 600, letterSpacing: 1 }}
-                  >
-                    LIFETIME VALUE
-                  </Typography>
-                  <Typography
-                    sx={{ fontWeight: 500, fontSize: "1rem", mt: 0.5 }}
-                  >
-                    {row.value}
-                  </Typography>
-                </Grid>
-                <Grid size={{ xs: 6 }}>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: "#a3a3a3", fontWeight: 600, letterSpacing: 1 }}
-                  >
-                    ACTIVITY
-                  </Typography>
-                  <Typography
-                    sx={{ fontWeight: 500, fontSize: "1rem", mt: 0.5 }}
-                  >
-                    {row.visits}
-                  </Typography>
-                </Grid>
-                <Grid size={{ xs: 6 }}>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: "#a3a3a3", fontWeight: 600, letterSpacing: 1 }}
-                  >
-                    STATUS
-                  </Typography>
-                  <Box
-                    sx={{
-                      bgcolor: "#000",
-                      color: "#fff",
-                      px: 1,
-                      py: 0.2,
-                      borderRadius: "8px",
-                      fontSize: "0.65rem",
-                      fontWeight: 800,
-                      mt: 0.5,
-                      width: "fit-content",
-                    }}
-                  >
-                    {row.status.toUpperCase()}
-                  </Box>
-                </Grid>
-                <Grid size={{ xs: 6 }}>
-                  <Typography
-                    variant="caption"
-                    sx={{ color: "#a3a3a3", fontWeight: 600, letterSpacing: 1 }}
-                  >
-                    LAST ACTIVE
-                  </Typography>
-                  <Typography
-                    sx={{ fontWeight: 500, fontSize: "1rem", mt: 0.5 }}
-                  >
-                    {row.lastActive}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<Campaign />}
-                sx={{
-                  display: { sm: "none" },
-                  bgcolor: "#000000",
-                  color: "#ffffff",
-                  py: 2,
-                  borderRadius: "16px",
-                  fontWeight: 800,
-                  fontSize: "0.85rem",
-                  letterSpacing: 1,
-                  "&:hover": { bgcolor: "#333333" },
-                }}
-              >
-                Send Email Blast
-              </Button>
-            </AdminCard>
+            <CustomerMobileCard
+              key={row.email}
+              customer={row}
+              onEmailBlast={handleEmailBlast}
+            />
           ))}
           <Button
             fullWidth
@@ -256,101 +217,30 @@ export default function CustomerCRM() {
                   },
                 }}
               >
-                <MenuItem
-                  value="ALL CUSTOMERS"
-                  sx={{
-                    color: "#000",
-                    "&.Mui-selected": {
-                      backgroundColor: "#eaeaea",
+                {filterOptions.map((option) => (
+                  <MenuItem
+                    key={option}
+                    value={option}
+                    sx={{
                       color: "#000",
-                    },
-                    "&.Mui-selected:hover": {
-                      backgroundColor: "#e0e0e0",
-                    },
-                  }}
-                >
-                  ALL CUSTOMERS
-                </MenuItem>
-                <MenuItem
-                  value="TOP TIER"
-                  sx={{
-                    color: "#000",
-                    "&.Mui-selected": {
-                      backgroundColor: "#eaeaea",
-                      color: "#000",
-                    },
-                    "&.Mui-selected:hover": {
-                      backgroundColor: "#e0e0e0",
-                    },
-                  }}
-                >
-                  TOP TIER
-                </MenuItem>
+                      "&.Mui-selected": {
+                        backgroundColor: "#eaeaea",
+                        color: "#000",
+                      },
+                      "&.Mui-selected:hover": {
+                        backgroundColor: "#e0e0e0",
+                      },
+                    }}
+                  >
+                    {option}
+                  </MenuItem>
+                ))}
               </TextField>
               <FilterList sx={{ color: "#a3a3a3", fontSize: 18 }} />
             </Box>
           </Box>
           <Divider sx={{ opacity: 0.5 }} />
-          <DataTable
-            columns={[
-              {
-                field: "name",
-                headerName: "IDENTITY",
-                render: (row) => (
-                  <UserIdentity name={row.name} email={row.email} />
-                ),
-              },
-              {
-                field: "value",
-                headerName: "LIFETIME VALUE",
-                render: (row) => (
-                  <Typography sx={{ fontWeight: 700, color: "#474747" }}>
-                    {row.value}
-                  </Typography>
-                ),
-              },
-              {
-                field: "visits",
-                headerName: "VISITS",
-                render: (row) => (
-                  <Typography sx={{ color: "#474747" }}>
-                    {row.visits}
-                  </Typography>
-                ),
-              },
-              {
-                field: "lastActive",
-                headerName: "LAST ACTIVE",
-                render: (row) => (
-                  <Typography sx={{ color: "#474747" }}>
-                    {row.lastActive}
-                  </Typography>
-                ),
-              },
-              {
-                field: "status",
-                headerName: "STATUS",
-                render: (row) => (
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      bgcolor: "#f0f0f0",
-                      px: 1.5,
-                      py: 0.5,
-                      borderRadius: "20px",
-                      fontSize: "0.65rem",
-                      fontWeight: 800,
-                      color: "#474747",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {row.status}
-                  </Box>
-                ),
-              },
-            ]}
-            data={tableData}
-          />
+          <DataTable columns={desktopTable} data={tableData} />
         </AdminCard>
       )}
     </>

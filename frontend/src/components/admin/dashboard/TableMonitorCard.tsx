@@ -1,25 +1,22 @@
 import { Box, Button, Typography } from "@mui/material";
 import AdminCard from "../../ui/cards/AdminCard";
 import { getStatusConfig } from "../../../utils/constants/status.config";
+import StatusDot from "../../ui/shared/StatusDot";
 
 interface TableMonitorCardProps {
   tableNumber: number;
   status?: string;
+  onAssign?: (tableNumber: number) => void;
 }
 
 export default function TableMonitorCard({
   tableNumber,
   status = "Available",
+  onAssign,
 }: TableMonitorCardProps) {
   const config = getStatusConfig(status);
 
-  const pulseAnimation = {
-    "@keyframes pulse": {
-      "0%": { transform: "scale(0.95)", opacity: 0.8 },
-      "50%": { transform: "scale(1)", opacity: 1 },
-      "100%": { transform: "scale(0.95)", opacity: 0.8 },
-    },
-  };
+  const isAvailable = status.toLowerCase() === "available";
 
   return (
     <AdminCard
@@ -41,20 +38,12 @@ export default function TableMonitorCard({
       }}
     >
       {/* Dot Indicator */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 20,
-          right: 20,
-          width: 10,
-          height: 10,
-          bgcolor: config.dot,
-          borderRadius: "50%",
-          boxShadow: `0 0 10px ${config.dot}`,
-          ...pulseAnimation,
-          animation:
-            status === "available" ? "pulse 2s infinite ease-in-out" : "none",
-        }}
+      <StatusDot
+        color={config.dot}
+        animated={isAvailable}
+        position="absolute"
+        top={20}
+        right={20}
       />
 
       <Typography

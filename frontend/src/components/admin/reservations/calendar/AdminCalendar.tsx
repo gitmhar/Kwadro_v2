@@ -5,6 +5,7 @@ import { calendarStyleWrapper as CalendarWrapper } from "./style/BookingCalendar
 import { useState } from "react";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { EventBusy } from "@mui/icons-material";
+import SectionHeader from "../../../ui/shared/SectionHeader";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -33,7 +34,7 @@ export default function AdminCalendar() {
   return (
     <AdminCard
       sx={{
-        bgcolor: "#f3f3f3",
+        bgcolor: "#F3F3F3",
         p: 3,
         borderRadius: "24px",
         display: "flex",
@@ -44,21 +45,14 @@ export default function AdminCalendar() {
       }}
     >
       {/* Header */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          maxWidth: "400px",
-          mb: 3,
-        }}
-      >
-        <Typography variant="h6" sx={{ fontWeight: 700, color: "#474747" }}>
-          Blackout Dates
-        </Typography>
-        <EventBusy sx={{ color: "#474747" }} />
-      </Box>
+      <SectionHeader
+        variant="admin"
+        title="Blackout Dates"
+        titleSx={{ color: "#474747", fontWeight: 700 }}
+        textVariant="h6"
+        rightElement={<EventBusy sx={{ color: "#474747" }} />}
+        sx={{ flexDirection: "row", width: "100%", maxWidth: "400px", mb: 3 }}
+      />
 
       {/* Calendar */}
       <CalendarWrapper>
@@ -73,11 +67,11 @@ export default function AdminCalendar() {
       <Box
         sx={{ mt: 3, width: "100%", maxWidth: "400px", textAlign: "center" }}
       >
-        <Divider sx={{ mb: 3, borderColor: "#e0e0e0" }} />
+        <Divider sx={{ mb: 3, borderColor: "#E0E0E0" }} />
         <Typography
           variant="body2"
           sx={{
-            color: "#8e8e8e",
+            color: "#8E8E8E",
             lineHeight: 1.5,
             mb: 3,
             fontSize: "0.85rem",
@@ -95,7 +89,7 @@ export default function AdminCalendar() {
           sx={{
             py: 1.6,
             borderRadius: "12px",
-            borderColor: "#d1d1d1",
+            borderColor: "#D1D1D1",
             color: "#474747",
             fontWeight: 700,
             fontSize: "0.75",
