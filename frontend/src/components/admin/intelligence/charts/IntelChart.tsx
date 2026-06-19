@@ -23,7 +23,6 @@ export default function IntelChart({ chartComponent }: IntelChartProps) {
         borderRadius: "24px",
         overflow: "hidden",
         bgcolor: "#ffffff",
-        border: "1px solid #f0f0f0",
         boxShadow: "none",
       }}
     >

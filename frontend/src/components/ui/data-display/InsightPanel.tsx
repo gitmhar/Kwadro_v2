@@ -31,7 +31,7 @@ export default function InsightPanel({
         p: { xs: 2.5, sm: 4 },
         borderTop: { xs: "1px solid #f0f0f0", md: "none" },
         borderLeft: { md: "1px solid #f0f0f0" },
-        bgcolor: "#fafafa",
+        bgcolor: "#f3f3f3",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",

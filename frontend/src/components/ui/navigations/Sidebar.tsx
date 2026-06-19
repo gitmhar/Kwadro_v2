@@ -162,7 +162,7 @@ export default function Sidebar({
         >
           <Avatar src="/path-to-avatar.jpg" sx={{ width: 32, height: 32 }} />
           <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: "0.75rem" }}>
+            <Typography sx={{ fontWeight: 700, fontSize: "0.75rem", color: "#1A1C1C" }}>
               {role}
             </Typography>
             <Typography sx={{ color: "#9e9e9e", fontSize: "0.65rem" }}>

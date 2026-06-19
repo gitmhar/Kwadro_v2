@@ -12,14 +12,13 @@ import { Menu } from "@mui/icons-material";
 import GlobalFab from "../components/ui/feedback/GlobalFab";
 import { adminSidebarConfig } from "../components/ui/navigations/admin.config";
 
-
 export default function AdminLayout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
   const [open, setOpen] = useState(false);
   const handleToggle = () => setOpen(!open);
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", overflow: "hidden" }}>
       <Sidebar
         config={adminSidebarConfig}
         role="ADMIN"
@@ -31,8 +30,10 @@ export default function AdminLayout() {
         component="main"
         sx={{
           flexGrow: 1,
-          backgroundColor: "#f9f9f9",
+          backgroundColor: "#fafafa",
           color: "#000",
+          minWidth: 0,
+          overflow: "hidden",
         }}
       >
         <Box
@@ -52,7 +53,7 @@ export default function AdminLayout() {
               <Menu />
             </IconButton>
           )}
-          <Typography variant="h4" sx={{ fontWeight: 600 }}>
+          <Typography variant="h4" sx={{ fontWeight: 600, textAlign: "center" }}>
             Operational Overview
           </Typography>
           <Typography
@@ -69,7 +70,15 @@ export default function AdminLayout() {
             Real-Time
           </Typography>
         </Box>
-        <Box sx={{ px: 3, flexGrow: 1 }}>
+        <Box
+          sx={{
+            px: { xs: 2, sm: 3 },
+            flexGrow: 1,
+            overflow: "hidden",
+            width: "100%",
+            maxWidth: "100%",
+          }}
+        >
           <Outlet />
           <GlobalFab />
         </Box>

@@ -18,7 +18,6 @@ export default function ReservationDesktopTable({
       sx={{
         p: 0,
         overflow: "hidden",
-        border: "1px solid #F0F0F0",
         boxShadow: "none",
         borderRadius: "24px",
         height: "auto",

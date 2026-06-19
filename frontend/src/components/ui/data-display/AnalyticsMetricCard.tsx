@@ -21,7 +21,7 @@ export default function AnalyticsMetricCard({
         p: { xs: 2.5, sm: 3 },
         bgcolor: "#fff",
         color: "#000",
-        border: "1px solid #f0f0f0",
+        // border: "1px solid #f0f0f0",
         boxShadow: "none",
         borderRadius: "24px",
         width: "100%",

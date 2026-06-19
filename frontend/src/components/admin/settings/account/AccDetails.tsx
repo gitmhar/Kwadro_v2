@@ -10,6 +10,7 @@ import {
 import AdminCard from "../../../ui/cards/AdminCard";
 import { CameraAlt } from "@mui/icons-material";
 import InputField from "../../../ui/inputs/InputField";
+import AvatarUpload from "../../../ui/shared/AvatarUpload";
 
 const fields = [
   {
@@ -41,42 +42,11 @@ const fields = [
 export default function AccountDetails() {
   return (
     <AdminCard sx={{ height: "100%" }}>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 3, mb: 4 }}>
-        <Badge
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          badgeContent={
-            <IconButton
-              sx={{
-                bgcolor: "#000000",
-                color: "#ffffff",
-                p: 0.5,
-                border: "2px solid #fff",
-                "&:hover": {
-                  bgcolor: "#333333",
-                },
-              }}
-            >
-              <CameraAlt sx={{ fontSize: "14px" }} />
-            </IconButton>
-          }
-        >
-          <Avatar
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alexander"
-            sx={{ width: 80, height: 80, border: "1px solid #000" }}
-          />
-        </Badge>
-        <Box>
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "#1a1c1c" }}>
-            Account Details
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 500, color: "#474747", cursor: "pointer" }}
-          >
-            Upload Photo
-          </Typography>
-        </Box>
+      <Box sx={{ mb: 4 }}>
+        <AvatarUpload
+          src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alexander"
+          title="Account Details"
+        />
       </Box>
       <Grid container spacing={3}>
         {fields.map((field) => (
@@ -94,13 +64,13 @@ export default function AccountDetails() {
           variant="outlined"
           sx={{
             bgcolor: "#000000",
-            color: "#fff",
+            color: "#FFFFFF",
             textTransform: "none",
             fontWeight: 600,
             borderRadius: "12px",
             px: 4,
             py: 1.5,
-            "&:hover": { bgcolor: "#333" },
+            "&:hover": { bgcolor: "#333333" },
           }}
         >
           Save Changes

@@ -1,6 +1,14 @@
 import { Box, Stack, Typography } from "@mui/material";
 import AdminCard from "../../../ui/cards/AdminCard";
 import { InfoOutline, VerifiedUser } from "@mui/icons-material";
+import PermissionRow from "../../../ui/data-display/PermissionRow";
+
+const permissions = [
+  "Booking Management",
+  "Table Monitoring",
+  "Transaction",
+  "System Settings",
+];
 
 export default function Permission() {
   return (
@@ -35,115 +43,26 @@ export default function Permission() {
         </Typography>
       </Box>
       <Stack spacing={3} my={3}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderBottom: "1px solid #262626",
-            pb: 1,
-          }}
-        >
-          <Typography sx={{ color: "#fff" }}>Booking Management</Typography>
-          <Box
-            sx={{
-              borderRadius: 1,
-              bgcolor: "#262626",
-              color: "#fff",
-              fontSize: "0.8rem",
-              px: 0.9,
-              py: 0.2,
-            }}
-          >
-            Enabled
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderBottom: "1px solid #262626",
-            pb: 1,
-          }}
-        >
-          <Typography sx={{ color: "#fff" }}>Table Monitoring</Typography>
-          <Box
-            sx={{
-              borderRadius: 1,
-              bgcolor: "#262626",
-              color: "#fff",
-              fontSize: "0.8rem",
-              px: 0.9,
-              py: 0.2,
-            }}
-          >
-            Enabled
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderBottom: "1px solid #262626",
-            pb: 1,
-          }}
-        >
-          <Typography sx={{ color: "#fff" }}>Transaction</Typography>
-          <Box
-            sx={{
-              borderRadius: 1,
-              bgcolor: "#262626",
-              color: "#fff",
-              fontSize: "0.8rem",
-              px: 0.9,
-              py: 0.2,
-            }}
-          >
-            Enabled
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderBottom: "1px solid #262626",
-            pb: 1,
-          }}
-        >
-          <Typography sx={{ color: "#fff" }}>System Settings</Typography>
-          <Box
-            sx={{
-              borderRadius: 1,
-              bgcolor: "#262626",
-              color: "#fff",
-              fontSize: "0.8rem",
-              px: 0.9,
-              py: 0.2,
-            }}
-          >
-            Enabled
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 0.5,
-            bgcolor: "#171717",
-            p: 1.5,
-            borderRadius: "12px",
-          }}
-        >
-          <InfoOutline sx={{ fontSize: 18, color: "#737373" }} />
-          <Typography variant="caption" sx={{ color: "#a3a3a3" }}>
-            Permission levels are managed by the Head of Operations. Contact IT
-            support or Manager to requrest additional access.
-          </Typography>
-        </Box>
+        {permissions.map((permission, i) => (
+          <PermissionRow key={i} label={permission} />
+        ))}
       </Stack>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: 0.5,
+          bgcolor: "#171717",
+          p: 1.5,
+          borderRadius: "12px",
+        }}
+      >
+        <InfoOutline sx={{ fontSize: 18, color: "#737373" }} />
+        <Typography variant="caption" sx={{ color: "#a3a3a3" }}>
+          Permission levels are managed by the Head of Operations. Contact IT
+          support or Manager to requrest additional access.
+        </Typography>
+      </Box>
     </AdminCard>
   );
 }

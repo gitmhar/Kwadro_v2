@@ -1,21 +1,14 @@
 import {
   Box,
-  Typography,
-  Chip,
   Paper,
-  useTheme,
-  useMediaQuery,
 } from "@mui/material";
 import {
   Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
 } from "@mui/lab";
+import SectionHeader from "../../../ui/shared/SectionHeader";
+import AuditTimelineItem, { type AuditEntry } from "../../../ui/data-display/AudtitTimelineItem";
 
-const auditData = [
+const auditData: AuditEntry[] = [
   {
     id: "#AUDIT-8842",
     time: "TODAY, 04:12 PM",
@@ -40,28 +33,33 @@ const auditData = [
 ];
 
 export default function SystemAuditTrail() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <Box sx={{ mt: 5, mb: 8 }}>
       {/* Header */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, color: "#1a1c1c" }}>
-          System Audit Trail
-        </Typography>
-        <Typography variant="body2" sx={{ color: "#a3a3a3", fontWeight: 500 }}>
-          Immutable chronicle of administrative modifications.
-        </Typography>
-      </Box>
+      <SectionHeader
+        variant="admin"
+        titleFirst
+        title="System Audit Trail"
+        titleSx={{ fontWeight: 600 }}
+        subtitle="Immutable chronicle of administrative modifications"
+        subtitleSx={{
+          fontWeight: 500,
+          color: "#A3A3A3",
+          letterSpacing: "none",
+          textTransform: "none",
+        }}
+        subtitleVariant="body2"
+        sx={{ mb: 3 }}
+      />
 
       {/* Audit Card */}
       <Paper
         elevation={0}
         sx={{
-          bgcolor: "#f5f5f5",
+          bgcolor: "#F5F5F5",
           borderRadius: "28px",
           p: { xs: 3, md: 5 },
-          border: "1px solid #f3f4f6",
+          border: "1px solid #F3F4F6",
         }}
       >
         <Timeline
@@ -73,85 +71,12 @@ export default function SystemAuditTrail() {
             },
           }}
         >
-          {auditData.map((item, index) => (
-            <TimelineItem key={item.id}>
-              <TimelineSeparator>
-                <TimelineDot
-                  sx={{
-                    bgcolor: item.active ? "#000" : "#d1d1d1",
-                    boxShadow: item.active
-                      ? "0 0 0 4px rgba(0,0,0,0.05)"
-                      : "none",
-                    width: 12,
-                    height: 12,
-                    my: 1.5,
-                  }}
-                />
-                {index !== auditData.length - 1 && (
-                  <TimelineConnector
-                    sx={{ bgcolor: "#e0e0e0", width: "1px" }}
-                  />
-                )}
-              </TimelineSeparator>
-
-              <TimelineContent sx={{ pb: 6, ml: { xs: 1, md: 3 } }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    // SWITCH DIRECTION ON MOBILE
-                    flexDirection: isMobile ? "column" : "row",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    gap: isMobile ? 1.5 : 0,
-                  }}
-                >
-                  <Box sx={{ maxWidth: { md: "80%" } }}>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        fontWeight: 700,
-                        color: item.active ? "#1a1c1f" : "#a3a3a3",
-                        letterSpacing: 0.5,
-                      }}
-                    >
-                      {item.time}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontWeight: 700,
-                        color: item.active ? "#1a1c1f" : "#a3a3a3",
-                        mt: 0.5,
-                        lineHeight: 1.3,
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "#a3a3a3", mt: 0.5 }}
-                    >
-                      {item.desc}
-                    </Typography>
-                  </Box>
-
-                  <Chip
-                    label={item.id}
-                    sx={{
-                      bgcolor: "#fff",
-                      color: item.active ? "#1a1c1c" : "#a3a3a3",
-                      fontWeight: 700,
-                      fontSize: "0.65rem",
-                      borderRadius: "8px",
-                      height: "28px",
-                      border: "1px solid #e5e7eb",
-                      alignSelf: "flex-start",
-                      mt: isMobile ? 1 : 0.5,
-                    }}
-                  />
-                </Box>
-              </TimelineContent>
-            </TimelineItem>
+          {auditData.map((entry, index) => (
+            <AuditTimelineItem
+              key={entry.id}
+              entry={entry}
+              isLast={index === auditData.length}
+            />
           ))}
         </Timeline>
       </Paper>

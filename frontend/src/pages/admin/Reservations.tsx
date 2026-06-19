@@ -12,7 +12,9 @@ export default function Reservations() {
         maxWidth: "1450px",
         width: "100%",
         mx: "auto",
-        px: { xs: 2, sm: 3, lg: 4 },
+        px: { xs: 1, sm: 2, lg: 0 },
+        overflow: "hidden",
+        boxSizing: "border-box",
       }}
     >
       {/* Header */}
@@ -23,7 +25,11 @@ export default function Reservations() {
       />
 
       {/* Main Management Panel */}
-      <Grid container spacing={4} sx={{ mt: 2, alignItems: "stretch" }}>
+      <Grid
+        container
+        spacing={{ xs: 2, sm: 3, md: 4 }}
+        sx={{ mt: { xs: 1, sm: 2 }, alignItems: "stretch" }}
+      >
         <Grid size={{ xs: 12, md: 8 }}>
           <ReservationList />
         </Grid>
@@ -34,7 +40,16 @@ export default function Reservations() {
       </Grid>
 
       {/* Secondary Operational Priorities */}
-      <Box sx={{ mt: 6, display: "flex", flexDirection: "column", gap: 6 }}>
+      <Box
+        sx={{
+          mt: { xs: 4, sm: 6 },
+          display: "flex",
+          flexDirection: "column",
+          gap: { xs: 4, sm: 6 },
+          width: "100%",
+          overflow: "hidden",
+        }}
+      >
         <ArrivingSoon />
         <ActiveBookings />
       </Box>
