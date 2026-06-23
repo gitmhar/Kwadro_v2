@@ -42,7 +42,7 @@ export const superAdminSidebar: SidebarItem[] = [
   {
     text: "Staff",
     icon: BadgeIcon,
-    path: "/super-admin/staff",
+    path: "/super-admin/staff-and-role-management",
     group: "system",
   },
   {
@@ -60,7 +60,7 @@ export const superAdminSidebarConfig: SidebarConfig = {
     subtitle: "SUPER ADMIN",
     // avatarBg: "#fafafa",
     titleColor: "#ffffff",
-    subtitleColor: "#ffffff"
+    subtitleColor: "#ffffff",
   },
   sections: [
     {

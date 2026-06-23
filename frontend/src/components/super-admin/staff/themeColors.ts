@@ -1,0 +1,68 @@
+export const themeColors = {
+  background: '#121414',
+  surface: '#121414',
+  surfaceContainer: '#1f2020',
+  surfaceContainerLow: '#1b1c1c',
+  surfaceContainerHigh: '#292a2a',
+  surfaceContainerHighest: '#343535',
+  surfaceBright: '#383939',
+  outlineVariant: '#444748',
+  primary: '#ffffff',
+  onPrimary: '#2f3131',
+  secondary: '#c8c6c5',
+  error: '#ffb4ab',
+  onSurface: '#e3e2e2',
+  onSurfaceVariant: '#c4c7c8',
+  outline: '#8e9192',
+  yellowElevated: '#ca8a04',
+  redCritical: '#dc2626',
+};
+
+export const themeFonts = {
+  labelMono: {
+    fontFamily: '"JetBrains Mono", monospace',
+    fontSize: '11px',
+    fontWeight: 500,
+    letterSpacing: '0.05em',
+    lineHeight: 1.2,
+  },
+  bodyMd: {
+    fontFamily: '"Inter", sans-serif',
+    fontSize: '14px',
+    fontWeight: 400,
+    lineHeight: 1.5,
+  },
+  headlineMd: {
+    fontFamily: '"Inter", sans-serif',
+    fontSize: '24px',
+    fontWeight: 600,
+    letterSpacing: '-0.01em',
+    lineHeight: 1.3,
+  },
+  titleSm: {
+    fontFamily: '"Inter", sans-serif',
+    fontSize: '18px',
+    fontWeight: 600,
+    lineHeight: 1.4,
+  },
+  bodySm: {
+    fontFamily: '"Inter", sans-serif',
+    fontSize: '12px',
+    fontWeight: 400,
+    lineHeight: 1.5,
+  },
+  displayLg: {
+    fontFamily: '"Inter", sans-serif',
+    fontSize: '32px',
+    fontWeight: 700,
+    letterSpacing: '-0.02em',
+    lineHeight: 1.2,
+  },
+  tableHeader: {
+    fontFamily: '"Inter", sans-serif',
+    fontSize: '11px',
+    fontWeight: 700,
+    letterSpacing: '0.08em',
+    lineHeight: 1,
+  },
+};

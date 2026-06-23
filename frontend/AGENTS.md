@@ -94,7 +94,7 @@ You MUST convert Tailwind classes into equivalent MUI patterns:
 - Use MUI components as primary building blocks:
   - Box (layout container)
   - Stack (vertical/horizontal layouts)
-  - Grid2 (Ensure you are using the modern MUI v7 Grid/Grid2 implementation)
+  - Grid (Ensure you are using the modern MUI v7 Grid/Grid2 implementation)
   - Typography (text)
   - Button, TextField, Card, Paper
 

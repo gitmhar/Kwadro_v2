@@ -24,6 +24,8 @@ import Operations from "./pages/super-admin/Operations";
 import Financial from "./pages/super-admin/Financial";
 import Security from "./pages/super-admin/Security";
 import SA_Intelligence from "./pages/super-admin/SA_Intelligence";
+import StaffAndRoleManagement from "./pages/super-admin/StaffAndRoleManagement";
+import SystemManagement from "./pages/super-admin/SystemManagement";
 
 function App() {
   useEffect(() => {
@@ -71,8 +73,19 @@ function App() {
               <Route index element={<Executive />} />
               <Route path="/super-admin/operations" element={<Operations />} />
               <Route path="/super-admin/financial" element={<Financial />} />
-              <Route path="/super-admin/intelligence" element={<SA_Intelligence/>} />
+              <Route
+                path="/super-admin/intelligence"
+                element={<SA_Intelligence />}
+              />
               <Route path="/super-admin/security" element={<Security />} />
+              <Route
+                path="/super-admin/staff-and-role-management"
+                element={<StaffAndRoleManagement />}
+              />
+              <Route
+                path="/super-admin/system-management"
+                element={<SystemManagement />}
+              />
             </Route>
           </Route>
         </Routes>
