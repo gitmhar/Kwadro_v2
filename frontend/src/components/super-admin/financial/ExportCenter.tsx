@@ -1,10 +1,10 @@
-import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import GavelIcon from "@mui/icons-material/Gavel";
 import SecurityUpdateWarningIcon from "@mui/icons-material/SecurityUpdateWarning";
 import DownloadIcon from "@mui/icons-material/Download";
 import { cueColors } from "../../../theme/dashboard/cueColors";
+import AdminCard from "../../ui/cards/AdminCard";
 
 export interface ExportOption {
   id: string;
@@ -25,25 +25,18 @@ export default function ExportCenter({
   ],
   onExport,
 }: ExportCenterProps) {
-  const renderIcon = (type: "ledger" | "tax" | "audit") => {
-    const iconStyle = { fontSize: "18px" };
-    switch (type) {
-      case "ledger":
-        return <ReceiptLongIcon sx={iconStyle} />;
-      case "tax":
-        return <GavelIcon sx={iconStyle} />;
-      case "audit":
-        return <SecurityUpdateWarningIcon sx={iconStyle} />;
-      default:
-        return <ReceiptLongIcon sx={iconStyle} />;
-    }
+  const iconMap = {
+    ledger: <ReceiptLongIcon sx={{ fontSize: "18px" }} />,
+    tax: <GavelIcon sx={{ fontSize: "18px" }} />,
+    audit: <SecurityUpdateWarningIcon sx={{ fontSize: "18px" }} />,
   };
 
   return (
-    <Box
+    <AdminCard
       sx={{
         backgroundColor: "#141414",
         border: "1px solid #2E2E2E",
+        borderRadius: 0,
         padding: "24px",
         boxSizing: "border-box",
         height: "100%",
@@ -90,8 +83,15 @@ export default function ExportCenter({
               display: "flex",
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: "12px", color: "inherit" }}>
-              {renderIcon(opt.iconType)}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                color: "inherit",
+              }}
+            >
+              {iconMap[opt.iconType]}
               <Typography
                 sx={{
                   fontFamily: '"JetBrains Mono", monospace',
@@ -107,6 +107,6 @@ export default function ExportCenter({
           </Button>
         ))}
       </Box>
-    </Box>
+    </AdminCard>
   );
 }

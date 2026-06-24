@@ -1,7 +1,9 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import { keyframes } from "@mui/system";
 import { cueColors } from "../../../theme/dashboard/cueColors";
+import SectionHeader from "../../ui/shared/SectionHeader";
+import SuspiciousActivityItem from "./SuspiciousActivityItem";
 
 const pulse = keyframes`
   0% { opacity: 1; }
@@ -31,7 +33,8 @@ export default function SuspiciousActivityFeed({
       id: "1",
       type: "UNUSUAL CUSTOMER ACTIVITY",
       node: "0x8F4A...B2C",
-      description: "High-velocity micro-transactions from singular IP in Chicago. Pattern suggests node spoofing.",
+      description:
+        "High-velocity micro-transactions from singular IP in Chicago. Pattern suggests node spoofing.",
       riskScore: 0.89,
       isCritical: true,
       actionText: "VIEW MAP",
@@ -40,7 +43,8 @@ export default function SuspiciousActivityFeed({
       id: "2",
       type: "TERMINAL MISMATCH",
       node: "0x2D1F...E3D",
-      description: "Physical location sensor discrepancy on Node-92. Audit recommended.",
+      description:
+        "Physical location sensor discrepancy on Node-92. Audit recommended.",
       riskScore: 0.64,
       isCritical: false,
       actionText: "DISMISS",
@@ -62,146 +66,36 @@ export default function SuspiciousActivityFeed({
       }}
     >
       {/* Header */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: "24px",
+      <SectionHeader
+        variant="super-admin"
+        title="Suspicious Activity"
+        titleSx={{
+          fontFamily: '"Inter", sans-serif',
+          fontSize: "18px",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          color: cueColors.primary,
         }}
-      >
-        <Typography
-          sx={{
-            fontFamily: '"Inter", sans-serif',
-            fontSize: "18px",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            color: cueColors.primary,
-          }}
-        >
-          Suspicious Activity
-        </Typography>
-        <CrisisAlertIcon
-          sx={{
-            color: "#ef4444",
-            fontSize: "20px",
-            animation: `${pulse} 2s infinite ease-in-out`,
-          }}
-        />
-      </Box>
+        rightElement={
+          <CrisisAlertIcon
+            sx={{
+              color: "#ef4444",
+              fontSize: "20px",
+              animation: `${pulse} 2s infinite ease-in-out`,
+            }}
+          />
+        }
+        sx={{ borderBottom: "none", mb: 1.5 }}
+      />
 
       {/* Activities List */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         {activities.map((item) => (
-          <Box
+          <SuspiciousActivityItem
             key={item.id}
-            sx={{
-              p: "12px",
-              backgroundColor: cueColors.surfaceContainerLow,
-              border: "1px solid #2E2E2E",
-              opacity: item.opacity ?? 1,
-              boxSizing: "border-box",
-            }}
-          >
-            {/* Item Header */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                mb: "8px",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  color: item.isCritical ? "#ef4444" : "#f59e0b", // red-500 or yellow-500
-                }}
-              >
-                {item.type}
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: "10px",
-                  color: cueColors.primary,
-                  opacity: 0.4,
-                }}
-              >
-                {item.node}
-              </Typography>
-            </Box>
-
-            {/* Description */}
-            <Typography
-              sx={{
-                fontFamily: '"Inter", sans-serif',
-                fontSize: "12px",
-                lineHeight: 1.5,
-                color: cueColors.primary,
-                opacity: 0.7,
-                mb: "12px",
-              }}
-            >
-              {item.description}
-            </Typography>
-
-            {/* Footer */}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <Typography
-                  sx={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: "10px",
-                    color: cueColors.primary,
-                    opacity: 0.4,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Risk Score
-                </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    color: item.isCritical ? "#ef4444" : "#f59e0b",
-                  }}
-                >
-                  {item.riskScore.toFixed(2)}
-                </Typography>
-              </Box>
-
-              <Button
-                variant="text"
-                onClick={() => onAction && onAction(item.id, item.actionText)}
-                sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  color: cueColors.primary,
-                  textDecoration: "underline",
-                  p: 0,
-                  minWidth: "auto",
-                  "&:hover": {
-                    textDecoration: "underline",
-                    backgroundColor: "transparent",
-                    opacity: 0.8,
-                  },
-                }}
-              >
-                {item.actionText}
-              </Button>
-            </Box>
-          </Box>
+            item={item}
+            onAction={onAction}
+          />
         ))}
       </Box>
     </Box>

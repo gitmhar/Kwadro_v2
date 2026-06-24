@@ -4,11 +4,15 @@ import { cueColors } from "../../../theme/dashboard/cueColors";
 interface ProgressBarProps {
   percentageFilled: number;
   color?: string;
+  sx?: object;
+  barSx?: object;
 }
 
 export default function ProgressBar({
   percentageFilled,
   color = "rgba(34, 197, 94, 0.2)",
+  sx,
+  barSx,
 }: ProgressBarProps) {
   return (
     <Box
@@ -18,6 +22,7 @@ export default function ProgressBar({
         backgroundColor: cueColors.surfaceDim,
         position: "relative",
         overflow: "hidden",
+        ...sx,
       }}
     >
       <Box
@@ -28,6 +33,7 @@ export default function ProgressBar({
           left: 0,
           backgroundColor: color,
           width: `${percentageFilled}%`,
+          ...barSx,
         }}
       />
     </Box>

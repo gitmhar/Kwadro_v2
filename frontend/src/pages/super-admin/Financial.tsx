@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { Box, Grid } from "@mui/material";
-import GrossRevenueCard from "../../components/super-admin/financial/GrossRevenueCard";
-import NetCashflowCard from "../../components/super-admin/financial/NetCashflowCard";
-import ProfitabilityCard from "../../components/super-admin/financial/ProfitabilityCard";
 import PendingRefundsTable, {
   type RefundTransaction,
 } from "../../components/super-admin/financial/PendingRefundsTable";
@@ -14,6 +11,7 @@ import SuspiciousActivityFeed, {
 } from "../../components/super-admin/financial/SuspiciousActivityFeed";
 import ExportCenter from "../../components/super-admin/financial/ExportCenter";
 import PaymentGatewayHealth from "../../components/super-admin/financial/PaymentGatewayHealth";
+import FinancialKpiGrid from "../../components/super-admin/financial/FinancialKpiGrid";
 
 export default function Financial() {
   // 1. Pending Refunds State
@@ -97,51 +95,7 @@ export default function Financial() {
       }}
     >
       {/* Row 1: Revenue Analytics */}
-      <Grid
-        container
-        spacing={3}
-        columns={12}
-        sx={{
-          width: "100%",
-          maxWidth: "100%",
-          boxSizing: "border-box",
-        }}
-      >
-        <Grid
-          size={{ xs: 12, lg: 4 }}
-          sx={{ width: "100%", boxSizing: "border-box" }}
-        >
-          <GrossRevenueCard
-            amount="$142,890.42"
-            changePercent="+12.4%"
-            history={[25, 50, 37.5, 75, 100, 62.5]}
-          />
-        </Grid>
-        <Grid
-          size={{ xs: 12, lg: 4 }}
-          sx={{ width: "100%", boxSizing: "border-box" }}
-        >
-          <NetCashflowCard velocity="$4.2k/hr" percentage={65} />
-        </Grid>
-        <Grid
-          size={{ xs: 12, lg: 4 }}
-          sx={{ width: "100%", boxSizing: "border-box" }}
-        >
-          <ProfitabilityCard
-            percentage="88.4%"
-            statusText="TARGET REACHED"
-            history={[
-              { heightPercent: 40, isHighlight: false },
-              { heightPercent: 60, isHighlight: false },
-              { heightPercent: 85, isHighlight: true },
-              { heightPercent: 55, isHighlight: false },
-              { heightPercent: 70, isHighlight: false },
-              { heightPercent: 95, isHighlight: true },
-              { heightPercent: 50, isHighlight: false },
-            ]}
-          />
-        </Grid>
-      </Grid>
+      <FinancialKpiGrid />
 
       {/* Row 2: Refund Queue & Suspicious Activity Feed */}
       <Grid
