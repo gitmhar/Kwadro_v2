@@ -49,7 +49,13 @@ export default function FinancialKpiGrid() {
         <FinancialMetricCard
           label="Net Cashflow Velocity"
           value="$4.2k/hr"
-          renderFooter={<VelocityBar value={75} />}
+          renderFooter={
+            <VelocityBar
+              value={75}
+              minLabel="MIN FLOW"
+              maxLabel="PEAK CAPACITY"
+            />
+          }
         />
       </Grid>
 

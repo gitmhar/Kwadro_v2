@@ -1,11 +1,51 @@
+import type { ECBasicOption } from "echarts/types/dist/shared";
 import { DAYS, HOURS } from "./constants";
 import { formatHeatmapTooltip } from "./formatHeatmapTooltip";
 
-export function buildHeatmapOption(seriesData: [number, number, number][]) {
+interface BuildOptionsParams {
+  rawData: number[][];
+  xAxisLabels: string[];
+  yAxisLabels: string[];
+  xAxisTickInterval?: (index: number, value: string) => boolean;
+  tooltipFormatter?: (params: any) => string;
+}
+
+export function buildHeatmapOption({
+  rawData,
+  xAxisLabels,
+  yAxisLabels,
+  xAxisTickInterval,
+  tooltipFormatter,
+}: BuildOptionsParams): ECBasicOption {
+  if (!yAxisLabels || !xAxisLabels || !rawData) {
+    return {
+      xAxis: { type: "category", data: [] },
+      yAxis: { type: "category", data: [] },
+      series: [],
+    };
+  }
+
+  const seriesData: [number, number, number][] = [];
+  const totalRows = yAxisLabels.length;
+  const totalCols = xAxisLabels.length;
+
+  for (let r = 0; r < totalRows; r++) {
+    for (let c = 0; c < totalCols; c++) {
+      const intensity = rawData[r]?.[c] ?? 0;
+      // Invert rows so index 0 (e.g., T-12 or Monday) stays perfectly at the top of your visual canvas
+      const invertedRowIndex = totalRows - 1 - r;
+      seriesData.push([c, invertedRowIndex, intensity]);
+    }
+  }
+
   return {
     tooltip: {
       trigger: "item",
-      formatter: formatHeatmapTooltip,
+      formatter:
+        formatHeatmapTooltip ||
+        ((params: any) => {
+          return `Value: ${(params.value[2] * 100).toFixed(0)}%`;
+        }),
       backgroundColor: "rgba(33, 33, 33, 0.95)",
       borderColor: "#444",
       borderWidth: 1,
@@ -18,7 +58,7 @@ export function buildHeatmapOption(seriesData: [number, number, number][]) {
 
     xAxis: {
       type: "category",
-      data: HOURS,
+      data: xAxisLabels,
       position: "top",
       axisLine: { show: false },
       axisTick: { show: false },
@@ -26,14 +66,15 @@ export function buildHeatmapOption(seriesData: [number, number, number][]) {
         color: "#9E9E9E",
         fontFamily: '"JetBrains Mono", monospace',
         fontSize: 10,
-        interval: 0,
+        interval: xAxisTickInterval || 0,
         margin: 12,
       },
     },
 
     yAxis: {
       type: "category",
-      data: DAYS,
+      data: [...yAxisLabels].reverse(),
+      splitArea: { show: false },
       axisLine: { show: false },
       axisTick: { show: false },
       axisLabel: {
@@ -49,7 +90,14 @@ export function buildHeatmapOption(seriesData: [number, number, number][]) {
       min: 0,
       max: 1,
       inRange: {
-        color: ["#262626", "#424242", "#616161", "#9E9E9E", "#BDBDBD", "#FFFFFF"],
+        color: [
+          "#262626",
+          "#424242",
+          "#616161",
+          "#9E9E9E",
+          "#BDBDBD",
+          "#FFFFFF",
+        ],
       },
     },
 
@@ -74,7 +122,7 @@ export function buildHeatmapOption(seriesData: [number, number, number][]) {
 
     grid: {
       containLabel: true,
-      left: 10,
+      left: 42,
       right: 10,
       top: 10,
       bottom: 20,
